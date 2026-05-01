@@ -27,7 +27,7 @@ pub const XDR_FILES_SHA256: [(&str, &str); 13] = [
     ),
     (
         "xdr/Stellar-contract-config-setting.x",
-        "56eb21162887b96ec423cab36e924ab085d52f885b7d41bcd3cd040e8dfe616d",
+        "3c5435807fa844e2907447ebc90092cc3013aa3fbb29bde941fe451bc392074f",
     ),
     (
         "xdr/Stellar-contract-env-meta.x",
@@ -63,11 +63,11 @@ pub const XDR_FILES_SHA256: [(&str, &str); 13] = [
     ),
     (
         "xdr/Stellar-overlay.x",
-        "ad2ea6b317d8b0e72bf8b08b6a4b11dc81352afb7bf6409dc4c84e48dd76b092",
+        "1645397cdf7684281936b19cd168b1ddee36d929e9c9e94dd668887a70fe6f85",
     ),
     (
         "xdr/Stellar-transaction.x",
-        "52815125acb35d8aa7bfe979df1f6028a81c25cef13d2f7645b23b299792bede",
+        "0dccdd1787f9067d41627cce75b43ccbc13a6feb32b3f7fdccd075c7addcb8b7",
     ),
     (
         "xdr/Stellar-types.x",
@@ -4150,9 +4150,6 @@ pub use scp_envelope::*;
 mod scp_quorum_set;
 #[allow(unused_imports)]
 pub use scp_quorum_set::*;
-mod encoded_ledger_key;
-#[allow(unused_imports)]
-pub use encoded_ledger_key::*;
 mod config_setting_contract_execution_lanes_v0;
 #[allow(unused_imports)]
 pub use config_setting_contract_execution_lanes_v0::*;
@@ -4192,18 +4189,6 @@ pub use eviction_iterator::*;
 mod config_setting_scp_timing;
 #[allow(unused_imports)]
 pub use config_setting_scp_timing::*;
-mod frozen_ledger_keys;
-#[allow(unused_imports)]
-pub use frozen_ledger_keys::*;
-mod frozen_ledger_keys_delta;
-#[allow(unused_imports)]
-pub use frozen_ledger_keys_delta::*;
-mod freeze_bypass_txs;
-#[allow(unused_imports)]
-pub use freeze_bypass_txs::*;
-mod freeze_bypass_txs_delta;
-#[allow(unused_imports)]
-pub use freeze_bypass_txs_delta::*;
 mod contract_cost_count_limit;
 #[allow(unused_imports)]
 pub use contract_cost_count_limit::*;
@@ -5011,6 +4996,24 @@ pub use authenticated_message_v0::*;
 mod authenticated_message;
 #[allow(unused_imports)]
 pub use authenticated_message::*;
+mod compact_tx_set;
+#[allow(unused_imports)]
+pub use compact_tx_set::*;
+mod compact_tx_set_get;
+#[allow(unused_imports)]
+pub use compact_tx_set_get::*;
+mod compact_tx_set_get_txs;
+#[allow(unused_imports)]
+pub use compact_tx_set_get_txs::*;
+mod compact_tx_set_txs;
+#[allow(unused_imports)]
+pub use compact_tx_set_txs::*;
+mod compact_tx_set_message_type;
+#[allow(unused_imports)]
+pub use compact_tx_set_message_type::*;
+mod compact_tx_set_message;
+#[allow(unused_imports)]
+pub use compact_tx_set_message::*;
 mod max_ops_per_tx;
 #[allow(unused_imports)]
 pub use max_ops_per_tx::*;
@@ -5140,12 +5143,6 @@ pub use soroban_authorized_invocation::*;
 mod soroban_address_credentials;
 #[allow(unused_imports)]
 pub use soroban_address_credentials::*;
-mod soroban_delegate_signature;
-#[allow(unused_imports)]
-pub use soroban_delegate_signature::*;
-mod soroban_address_credentials_with_delegates;
-#[allow(unused_imports)]
-pub use soroban_address_credentials_with_delegates::*;
 mod soroban_credentials_type;
 #[allow(unused_imports)]
 pub use soroban_credentials_type::*;
@@ -5185,9 +5182,6 @@ pub use hash_id_preimage_contract_id::*;
 mod hash_id_preimage_soroban_authorization;
 #[allow(unused_imports)]
 pub use hash_id_preimage_soroban_authorization::*;
-mod hash_id_preimage_soroban_authorization_with_address;
-#[allow(unused_imports)]
-pub use hash_id_preimage_soroban_authorization_with_address::*;
 mod hash_id_preimage;
 #[allow(unused_imports)]
 pub use hash_id_preimage::*;
@@ -5581,9 +5575,6 @@ pub use claimable_balance_id_type::*;
 mod claimable_balance_id;
 #[allow(unused_imports)]
 pub use claimable_balance_id::*;
-mod test_next_type;
-#[allow(unused_imports)]
-pub use test_next_type::*;
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 #[cfg_attr(
     all(feature = "serde", feature = "alloc"),
@@ -5603,7 +5594,6 @@ pub enum TypeVariant {
     ScpStatementExternalize,
     ScpEnvelope,
     ScpQuorumSet,
-    EncodedLedgerKey,
     ConfigSettingContractExecutionLanesV0,
     ConfigSettingContractComputeV0,
     ConfigSettingContractParallelComputeV0,
@@ -5617,10 +5607,6 @@ pub enum TypeVariant {
     StateArchivalSettings,
     EvictionIterator,
     ConfigSettingScpTiming,
-    FrozenLedgerKeys,
-    FrozenLedgerKeysDelta,
-    FreezeBypassTxs,
-    FreezeBypassTxsDelta,
     ContractCostParams,
     ConfigSettingId,
     ConfigSettingEntry,
@@ -5875,6 +5861,12 @@ pub enum TypeVariant {
     StellarMessage,
     AuthenticatedMessage,
     AuthenticatedMessageV0,
+    CompactTxSet,
+    CompactTxSetGet,
+    CompactTxSetGetTxs,
+    CompactTxSetTxs,
+    CompactTxSetMessageType,
+    CompactTxSetMessage,
     LiquidityPoolParameters,
     MuxedAccount,
     MuxedAccountMed25519,
@@ -5916,10 +5908,6 @@ pub enum TypeVariant {
     SorobanAuthorizedFunction,
     SorobanAuthorizedInvocation,
     SorobanAddressCredentials,
-    #[cfg(feature = "cap_0071")]
-    SorobanDelegateSignature,
-    #[cfg(feature = "cap_0071")]
-    SorobanAddressCredentialsWithDelegates,
     SorobanCredentialsType,
     SorobanCredentials,
     SorobanAuthorizationEntry,
@@ -5934,8 +5922,6 @@ pub enum TypeVariant {
     HashIdPreimageRevokeId,
     HashIdPreimageContractId,
     HashIdPreimageSorobanAuthorization,
-    #[cfg(feature = "cap_0071")]
-    HashIdPreimageSorobanAuthorizationWithAddress,
     MemoType,
     Memo,
     TimeBounds,
@@ -6066,8 +6052,6 @@ pub enum TypeVariant {
     PoolId,
     ClaimableBalanceIdType,
     ClaimableBalanceId,
-    #[cfg(feature = "test_feature")]
-    TestNextType,
 }
 
 impl TypeVariant {
@@ -6083,7 +6067,6 @@ impl TypeVariant {
         TypeVariant::ScpStatementExternalize,
         TypeVariant::ScpEnvelope,
         TypeVariant::ScpQuorumSet,
-        TypeVariant::EncodedLedgerKey,
         TypeVariant::ConfigSettingContractExecutionLanesV0,
         TypeVariant::ConfigSettingContractComputeV0,
         TypeVariant::ConfigSettingContractParallelComputeV0,
@@ -6097,10 +6080,6 @@ impl TypeVariant {
         TypeVariant::StateArchivalSettings,
         TypeVariant::EvictionIterator,
         TypeVariant::ConfigSettingScpTiming,
-        TypeVariant::FrozenLedgerKeys,
-        TypeVariant::FrozenLedgerKeysDelta,
-        TypeVariant::FreezeBypassTxs,
-        TypeVariant::FreezeBypassTxsDelta,
         TypeVariant::ContractCostParams,
         TypeVariant::ConfigSettingId,
         TypeVariant::ConfigSettingEntry,
@@ -6355,6 +6334,12 @@ impl TypeVariant {
         TypeVariant::StellarMessage,
         TypeVariant::AuthenticatedMessage,
         TypeVariant::AuthenticatedMessageV0,
+        TypeVariant::CompactTxSet,
+        TypeVariant::CompactTxSetGet,
+        TypeVariant::CompactTxSetGetTxs,
+        TypeVariant::CompactTxSetTxs,
+        TypeVariant::CompactTxSetMessageType,
+        TypeVariant::CompactTxSetMessage,
         TypeVariant::LiquidityPoolParameters,
         TypeVariant::MuxedAccount,
         TypeVariant::MuxedAccountMed25519,
@@ -6396,10 +6381,6 @@ impl TypeVariant {
         TypeVariant::SorobanAuthorizedFunction,
         TypeVariant::SorobanAuthorizedInvocation,
         TypeVariant::SorobanAddressCredentials,
-        #[cfg(feature = "cap_0071")]
-        TypeVariant::SorobanDelegateSignature,
-        #[cfg(feature = "cap_0071")]
-        TypeVariant::SorobanAddressCredentialsWithDelegates,
         TypeVariant::SorobanCredentialsType,
         TypeVariant::SorobanCredentials,
         TypeVariant::SorobanAuthorizationEntry,
@@ -6414,8 +6395,6 @@ impl TypeVariant {
         TypeVariant::HashIdPreimageRevokeId,
         TypeVariant::HashIdPreimageContractId,
         TypeVariant::HashIdPreimageSorobanAuthorization,
-        #[cfg(feature = "cap_0071")]
-        TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress,
         TypeVariant::MemoType,
         TypeVariant::Memo,
         TypeVariant::TimeBounds,
@@ -6546,8 +6525,6 @@ impl TypeVariant {
         TypeVariant::PoolId,
         TypeVariant::ClaimableBalanceIdType,
         TypeVariant::ClaimableBalanceId,
-        #[cfg(feature = "test_feature")]
-        TypeVariant::TestNextType,
     ];
     pub const VARIANTS: [TypeVariant; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -6570,7 +6547,6 @@ impl TypeVariant {
         "ScpStatementExternalize",
         "ScpEnvelope",
         "ScpQuorumSet",
-        "EncodedLedgerKey",
         "ConfigSettingContractExecutionLanesV0",
         "ConfigSettingContractComputeV0",
         "ConfigSettingContractParallelComputeV0",
@@ -6584,10 +6560,6 @@ impl TypeVariant {
         "StateArchivalSettings",
         "EvictionIterator",
         "ConfigSettingScpTiming",
-        "FrozenLedgerKeys",
-        "FrozenLedgerKeysDelta",
-        "FreezeBypassTxs",
-        "FreezeBypassTxsDelta",
         "ContractCostParams",
         "ConfigSettingId",
         "ConfigSettingEntry",
@@ -6842,6 +6814,12 @@ impl TypeVariant {
         "StellarMessage",
         "AuthenticatedMessage",
         "AuthenticatedMessageV0",
+        "CompactTxSet",
+        "CompactTxSetGet",
+        "CompactTxSetGetTxs",
+        "CompactTxSetTxs",
+        "CompactTxSetMessageType",
+        "CompactTxSetMessage",
         "LiquidityPoolParameters",
         "MuxedAccount",
         "MuxedAccountMed25519",
@@ -6883,10 +6861,6 @@ impl TypeVariant {
         "SorobanAuthorizedFunction",
         "SorobanAuthorizedInvocation",
         "SorobanAddressCredentials",
-        #[cfg(feature = "cap_0071")]
-        "SorobanDelegateSignature",
-        #[cfg(feature = "cap_0071")]
-        "SorobanAddressCredentialsWithDelegates",
         "SorobanCredentialsType",
         "SorobanCredentials",
         "SorobanAuthorizationEntry",
@@ -6901,8 +6875,6 @@ impl TypeVariant {
         "HashIdPreimageRevokeId",
         "HashIdPreimageContractId",
         "HashIdPreimageSorobanAuthorization",
-        #[cfg(feature = "cap_0071")]
-        "HashIdPreimageSorobanAuthorizationWithAddress",
         "MemoType",
         "Memo",
         "TimeBounds",
@@ -7033,8 +7005,6 @@ impl TypeVariant {
         "PoolId",
         "ClaimableBalanceIdType",
         "ClaimableBalanceId",
-        #[cfg(feature = "test_feature")]
-        "TestNextType",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -7061,7 +7031,6 @@ impl TypeVariant {
             Self::ScpStatementExternalize => "ScpStatementExternalize",
             Self::ScpEnvelope => "ScpEnvelope",
             Self::ScpQuorumSet => "ScpQuorumSet",
-            Self::EncodedLedgerKey => "EncodedLedgerKey",
             Self::ConfigSettingContractExecutionLanesV0 => "ConfigSettingContractExecutionLanesV0",
             Self::ConfigSettingContractComputeV0 => "ConfigSettingContractComputeV0",
             Self::ConfigSettingContractParallelComputeV0 => {
@@ -7077,10 +7046,6 @@ impl TypeVariant {
             Self::StateArchivalSettings => "StateArchivalSettings",
             Self::EvictionIterator => "EvictionIterator",
             Self::ConfigSettingScpTiming => "ConfigSettingScpTiming",
-            Self::FrozenLedgerKeys => "FrozenLedgerKeys",
-            Self::FrozenLedgerKeysDelta => "FrozenLedgerKeysDelta",
-            Self::FreezeBypassTxs => "FreezeBypassTxs",
-            Self::FreezeBypassTxsDelta => "FreezeBypassTxsDelta",
             Self::ContractCostParams => "ContractCostParams",
             Self::ConfigSettingId => "ConfigSettingId",
             Self::ConfigSettingEntry => "ConfigSettingEntry",
@@ -7343,6 +7308,12 @@ impl TypeVariant {
             Self::StellarMessage => "StellarMessage",
             Self::AuthenticatedMessage => "AuthenticatedMessage",
             Self::AuthenticatedMessageV0 => "AuthenticatedMessageV0",
+            Self::CompactTxSet => "CompactTxSet",
+            Self::CompactTxSetGet => "CompactTxSetGet",
+            Self::CompactTxSetGetTxs => "CompactTxSetGetTxs",
+            Self::CompactTxSetTxs => "CompactTxSetTxs",
+            Self::CompactTxSetMessageType => "CompactTxSetMessageType",
+            Self::CompactTxSetMessage => "CompactTxSetMessage",
             Self::LiquidityPoolParameters => "LiquidityPoolParameters",
             Self::MuxedAccount => "MuxedAccount",
             Self::MuxedAccountMed25519 => "MuxedAccountMed25519",
@@ -7384,12 +7355,6 @@ impl TypeVariant {
             Self::SorobanAuthorizedFunction => "SorobanAuthorizedFunction",
             Self::SorobanAuthorizedInvocation => "SorobanAuthorizedInvocation",
             Self::SorobanAddressCredentials => "SorobanAddressCredentials",
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanDelegateSignature => "SorobanDelegateSignature",
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAddressCredentialsWithDelegates => {
-                "SorobanAddressCredentialsWithDelegates"
-            }
             Self::SorobanCredentialsType => "SorobanCredentialsType",
             Self::SorobanCredentials => "SorobanCredentials",
             Self::SorobanAuthorizationEntry => "SorobanAuthorizationEntry",
@@ -7404,10 +7369,6 @@ impl TypeVariant {
             Self::HashIdPreimageRevokeId => "HashIdPreimageRevokeId",
             Self::HashIdPreimageContractId => "HashIdPreimageContractId",
             Self::HashIdPreimageSorobanAuthorization => "HashIdPreimageSorobanAuthorization",
-            #[cfg(feature = "cap_0071")]
-            Self::HashIdPreimageSorobanAuthorizationWithAddress => {
-                "HashIdPreimageSorobanAuthorizationWithAddress"
-            }
             Self::MemoType => "MemoType",
             Self::Memo => "Memo",
             Self::TimeBounds => "TimeBounds",
@@ -7542,8 +7503,6 @@ impl TypeVariant {
             Self::PoolId => "PoolId",
             Self::ClaimableBalanceIdType => "ClaimableBalanceIdType",
             Self::ClaimableBalanceId => "ClaimableBalanceId",
-            #[cfg(feature = "test_feature")]
-            Self::TestNextType => "TestNextType",
         }
     }
 
@@ -7569,7 +7528,6 @@ impl TypeVariant {
             Self::ScpStatementExternalize => gen.into_root_schema_for::<ScpStatementExternalize>(),
             Self::ScpEnvelope => gen.into_root_schema_for::<ScpEnvelope>(),
             Self::ScpQuorumSet => gen.into_root_schema_for::<ScpQuorumSet>(),
-            Self::EncodedLedgerKey => gen.into_root_schema_for::<EncodedLedgerKey>(),
             Self::ConfigSettingContractExecutionLanesV0 => {
                 gen.into_root_schema_for::<ConfigSettingContractExecutionLanesV0>()
             }
@@ -7599,10 +7557,6 @@ impl TypeVariant {
             Self::StateArchivalSettings => gen.into_root_schema_for::<StateArchivalSettings>(),
             Self::EvictionIterator => gen.into_root_schema_for::<EvictionIterator>(),
             Self::ConfigSettingScpTiming => gen.into_root_schema_for::<ConfigSettingScpTiming>(),
-            Self::FrozenLedgerKeys => gen.into_root_schema_for::<FrozenLedgerKeys>(),
-            Self::FrozenLedgerKeysDelta => gen.into_root_schema_for::<FrozenLedgerKeysDelta>(),
-            Self::FreezeBypassTxs => gen.into_root_schema_for::<FreezeBypassTxs>(),
-            Self::FreezeBypassTxsDelta => gen.into_root_schema_for::<FreezeBypassTxsDelta>(),
             Self::ContractCostParams => gen.into_root_schema_for::<ContractCostParams>(),
             Self::ConfigSettingId => gen.into_root_schema_for::<ConfigSettingId>(),
             Self::ConfigSettingEntry => gen.into_root_schema_for::<ConfigSettingEntry>(),
@@ -7943,6 +7897,12 @@ impl TypeVariant {
             Self::StellarMessage => gen.into_root_schema_for::<StellarMessage>(),
             Self::AuthenticatedMessage => gen.into_root_schema_for::<AuthenticatedMessage>(),
             Self::AuthenticatedMessageV0 => gen.into_root_schema_for::<AuthenticatedMessageV0>(),
+            Self::CompactTxSet => gen.into_root_schema_for::<CompactTxSet>(),
+            Self::CompactTxSetGet => gen.into_root_schema_for::<CompactTxSetGet>(),
+            Self::CompactTxSetGetTxs => gen.into_root_schema_for::<CompactTxSetGetTxs>(),
+            Self::CompactTxSetTxs => gen.into_root_schema_for::<CompactTxSetTxs>(),
+            Self::CompactTxSetMessageType => gen.into_root_schema_for::<CompactTxSetMessageType>(),
+            Self::CompactTxSetMessage => gen.into_root_schema_for::<CompactTxSetMessage>(),
             Self::LiquidityPoolParameters => gen.into_root_schema_for::<LiquidityPoolParameters>(),
             Self::MuxedAccount => gen.into_root_schema_for::<MuxedAccount>(),
             Self::MuxedAccountMed25519 => gen.into_root_schema_for::<MuxedAccountMed25519>(),
@@ -8006,14 +7966,6 @@ impl TypeVariant {
             Self::SorobanAddressCredentials => {
                 gen.into_root_schema_for::<SorobanAddressCredentials>()
             }
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanDelegateSignature => {
-                gen.into_root_schema_for::<SorobanDelegateSignature>()
-            }
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAddressCredentialsWithDelegates => {
-                gen.into_root_schema_for::<SorobanAddressCredentialsWithDelegates>()
-            }
             Self::SorobanCredentialsType => gen.into_root_schema_for::<SorobanCredentialsType>(),
             Self::SorobanCredentials => gen.into_root_schema_for::<SorobanCredentials>(),
             Self::SorobanAuthorizationEntry => {
@@ -8037,10 +7989,6 @@ impl TypeVariant {
             }
             Self::HashIdPreimageSorobanAuthorization => {
                 gen.into_root_schema_for::<HashIdPreimageSorobanAuthorization>()
-            }
-            #[cfg(feature = "cap_0071")]
-            Self::HashIdPreimageSorobanAuthorizationWithAddress => {
-                gen.into_root_schema_for::<HashIdPreimageSorobanAuthorizationWithAddress>()
             }
             Self::MemoType => gen.into_root_schema_for::<MemoType>(),
             Self::Memo => gen.into_root_schema_for::<Memo>(),
@@ -8254,8 +8202,6 @@ impl TypeVariant {
             Self::PoolId => gen.into_root_schema_for::<PoolId>(),
             Self::ClaimableBalanceIdType => gen.into_root_schema_for::<ClaimableBalanceIdType>(),
             Self::ClaimableBalanceId => gen.into_root_schema_for::<ClaimableBalanceId>(),
-            #[cfg(feature = "test_feature")]
-            Self::TestNextType => gen.into_root_schema_for::<TestNextType>(),
         }
     }
 }
@@ -8289,7 +8235,6 @@ impl core::str::FromStr for TypeVariant {
             "ScpStatementExternalize" => Ok(Self::ScpStatementExternalize),
             "ScpEnvelope" => Ok(Self::ScpEnvelope),
             "ScpQuorumSet" => Ok(Self::ScpQuorumSet),
-            "EncodedLedgerKey" => Ok(Self::EncodedLedgerKey),
             "ConfigSettingContractExecutionLanesV0" => {
                 Ok(Self::ConfigSettingContractExecutionLanesV0)
             }
@@ -8311,10 +8256,6 @@ impl core::str::FromStr for TypeVariant {
             "StateArchivalSettings" => Ok(Self::StateArchivalSettings),
             "EvictionIterator" => Ok(Self::EvictionIterator),
             "ConfigSettingScpTiming" => Ok(Self::ConfigSettingScpTiming),
-            "FrozenLedgerKeys" => Ok(Self::FrozenLedgerKeys),
-            "FrozenLedgerKeysDelta" => Ok(Self::FrozenLedgerKeysDelta),
-            "FreezeBypassTxs" => Ok(Self::FreezeBypassTxs),
-            "FreezeBypassTxsDelta" => Ok(Self::FreezeBypassTxsDelta),
             "ContractCostParams" => Ok(Self::ContractCostParams),
             "ConfigSettingId" => Ok(Self::ConfigSettingId),
             "ConfigSettingEntry" => Ok(Self::ConfigSettingEntry),
@@ -8583,6 +8524,12 @@ impl core::str::FromStr for TypeVariant {
             "StellarMessage" => Ok(Self::StellarMessage),
             "AuthenticatedMessage" => Ok(Self::AuthenticatedMessage),
             "AuthenticatedMessageV0" => Ok(Self::AuthenticatedMessageV0),
+            "CompactTxSet" => Ok(Self::CompactTxSet),
+            "CompactTxSetGet" => Ok(Self::CompactTxSetGet),
+            "CompactTxSetGetTxs" => Ok(Self::CompactTxSetGetTxs),
+            "CompactTxSetTxs" => Ok(Self::CompactTxSetTxs),
+            "CompactTxSetMessageType" => Ok(Self::CompactTxSetMessageType),
+            "CompactTxSetMessage" => Ok(Self::CompactTxSetMessage),
             "LiquidityPoolParameters" => Ok(Self::LiquidityPoolParameters),
             "MuxedAccount" => Ok(Self::MuxedAccount),
             "MuxedAccountMed25519" => Ok(Self::MuxedAccountMed25519),
@@ -8624,12 +8571,6 @@ impl core::str::FromStr for TypeVariant {
             "SorobanAuthorizedFunction" => Ok(Self::SorobanAuthorizedFunction),
             "SorobanAuthorizedInvocation" => Ok(Self::SorobanAuthorizedInvocation),
             "SorobanAddressCredentials" => Ok(Self::SorobanAddressCredentials),
-            #[cfg(feature = "cap_0071")]
-            "SorobanDelegateSignature" => Ok(Self::SorobanDelegateSignature),
-            #[cfg(feature = "cap_0071")]
-            "SorobanAddressCredentialsWithDelegates" => {
-                Ok(Self::SorobanAddressCredentialsWithDelegates)
-            }
             "SorobanCredentialsType" => Ok(Self::SorobanCredentialsType),
             "SorobanCredentials" => Ok(Self::SorobanCredentials),
             "SorobanAuthorizationEntry" => Ok(Self::SorobanAuthorizationEntry),
@@ -8644,10 +8585,6 @@ impl core::str::FromStr for TypeVariant {
             "HashIdPreimageRevokeId" => Ok(Self::HashIdPreimageRevokeId),
             "HashIdPreimageContractId" => Ok(Self::HashIdPreimageContractId),
             "HashIdPreimageSorobanAuthorization" => Ok(Self::HashIdPreimageSorobanAuthorization),
-            #[cfg(feature = "cap_0071")]
-            "HashIdPreimageSorobanAuthorizationWithAddress" => {
-                Ok(Self::HashIdPreimageSorobanAuthorizationWithAddress)
-            }
             "MemoType" => Ok(Self::MemoType),
             "Memo" => Ok(Self::Memo),
             "TimeBounds" => Ok(Self::TimeBounds),
@@ -8786,8 +8723,6 @@ impl core::str::FromStr for TypeVariant {
             "PoolId" => Ok(Self::PoolId),
             "ClaimableBalanceIdType" => Ok(Self::ClaimableBalanceIdType),
             "ClaimableBalanceId" => Ok(Self::ClaimableBalanceId),
-            #[cfg(feature = "test_feature")]
-            "TestNextType" => Ok(Self::TestNextType),
             _ => Err(Error::Invalid),
         }
     }
@@ -8813,7 +8748,6 @@ pub enum Type {
     ScpStatementExternalize(Box<ScpStatementExternalize>),
     ScpEnvelope(Box<ScpEnvelope>),
     ScpQuorumSet(Box<ScpQuorumSet>),
-    EncodedLedgerKey(Box<EncodedLedgerKey>),
     ConfigSettingContractExecutionLanesV0(Box<ConfigSettingContractExecutionLanesV0>),
     ConfigSettingContractComputeV0(Box<ConfigSettingContractComputeV0>),
     ConfigSettingContractParallelComputeV0(Box<ConfigSettingContractParallelComputeV0>),
@@ -8827,10 +8761,6 @@ pub enum Type {
     StateArchivalSettings(Box<StateArchivalSettings>),
     EvictionIterator(Box<EvictionIterator>),
     ConfigSettingScpTiming(Box<ConfigSettingScpTiming>),
-    FrozenLedgerKeys(Box<FrozenLedgerKeys>),
-    FrozenLedgerKeysDelta(Box<FrozenLedgerKeysDelta>),
-    FreezeBypassTxs(Box<FreezeBypassTxs>),
-    FreezeBypassTxsDelta(Box<FreezeBypassTxsDelta>),
     ContractCostParams(Box<ContractCostParams>),
     ConfigSettingId(Box<ConfigSettingId>),
     ConfigSettingEntry(Box<ConfigSettingEntry>),
@@ -9085,6 +9015,12 @@ pub enum Type {
     StellarMessage(Box<StellarMessage>),
     AuthenticatedMessage(Box<AuthenticatedMessage>),
     AuthenticatedMessageV0(Box<AuthenticatedMessageV0>),
+    CompactTxSet(Box<CompactTxSet>),
+    CompactTxSetGet(Box<CompactTxSetGet>),
+    CompactTxSetGetTxs(Box<CompactTxSetGetTxs>),
+    CompactTxSetTxs(Box<CompactTxSetTxs>),
+    CompactTxSetMessageType(Box<CompactTxSetMessageType>),
+    CompactTxSetMessage(Box<CompactTxSetMessage>),
     LiquidityPoolParameters(Box<LiquidityPoolParameters>),
     MuxedAccount(Box<MuxedAccount>),
     MuxedAccountMed25519(Box<MuxedAccountMed25519>),
@@ -9126,10 +9062,6 @@ pub enum Type {
     SorobanAuthorizedFunction(Box<SorobanAuthorizedFunction>),
     SorobanAuthorizedInvocation(Box<SorobanAuthorizedInvocation>),
     SorobanAddressCredentials(Box<SorobanAddressCredentials>),
-    #[cfg(feature = "cap_0071")]
-    SorobanDelegateSignature(Box<SorobanDelegateSignature>),
-    #[cfg(feature = "cap_0071")]
-    SorobanAddressCredentialsWithDelegates(Box<SorobanAddressCredentialsWithDelegates>),
     SorobanCredentialsType(Box<SorobanCredentialsType>),
     SorobanCredentials(Box<SorobanCredentials>),
     SorobanAuthorizationEntry(Box<SorobanAuthorizationEntry>),
@@ -9144,10 +9076,6 @@ pub enum Type {
     HashIdPreimageRevokeId(Box<HashIdPreimageRevokeId>),
     HashIdPreimageContractId(Box<HashIdPreimageContractId>),
     HashIdPreimageSorobanAuthorization(Box<HashIdPreimageSorobanAuthorization>),
-    #[cfg(feature = "cap_0071")]
-    HashIdPreimageSorobanAuthorizationWithAddress(
-        Box<HashIdPreimageSorobanAuthorizationWithAddress>,
-    ),
     MemoType(Box<MemoType>),
     Memo(Box<Memo>),
     TimeBounds(Box<TimeBounds>),
@@ -9278,8 +9206,6 @@ pub enum Type {
     PoolId(Box<PoolId>),
     ClaimableBalanceIdType(Box<ClaimableBalanceIdType>),
     ClaimableBalanceId(Box<ClaimableBalanceId>),
-    #[cfg(feature = "test_feature")]
-    TestNextType(Box<TestNextType>),
 }
 
 impl Type {
@@ -9295,7 +9221,6 @@ impl Type {
         TypeVariant::ScpStatementExternalize,
         TypeVariant::ScpEnvelope,
         TypeVariant::ScpQuorumSet,
-        TypeVariant::EncodedLedgerKey,
         TypeVariant::ConfigSettingContractExecutionLanesV0,
         TypeVariant::ConfigSettingContractComputeV0,
         TypeVariant::ConfigSettingContractParallelComputeV0,
@@ -9309,10 +9234,6 @@ impl Type {
         TypeVariant::StateArchivalSettings,
         TypeVariant::EvictionIterator,
         TypeVariant::ConfigSettingScpTiming,
-        TypeVariant::FrozenLedgerKeys,
-        TypeVariant::FrozenLedgerKeysDelta,
-        TypeVariant::FreezeBypassTxs,
-        TypeVariant::FreezeBypassTxsDelta,
         TypeVariant::ContractCostParams,
         TypeVariant::ConfigSettingId,
         TypeVariant::ConfigSettingEntry,
@@ -9567,6 +9488,12 @@ impl Type {
         TypeVariant::StellarMessage,
         TypeVariant::AuthenticatedMessage,
         TypeVariant::AuthenticatedMessageV0,
+        TypeVariant::CompactTxSet,
+        TypeVariant::CompactTxSetGet,
+        TypeVariant::CompactTxSetGetTxs,
+        TypeVariant::CompactTxSetTxs,
+        TypeVariant::CompactTxSetMessageType,
+        TypeVariant::CompactTxSetMessage,
         TypeVariant::LiquidityPoolParameters,
         TypeVariant::MuxedAccount,
         TypeVariant::MuxedAccountMed25519,
@@ -9608,10 +9535,6 @@ impl Type {
         TypeVariant::SorobanAuthorizedFunction,
         TypeVariant::SorobanAuthorizedInvocation,
         TypeVariant::SorobanAddressCredentials,
-        #[cfg(feature = "cap_0071")]
-        TypeVariant::SorobanDelegateSignature,
-        #[cfg(feature = "cap_0071")]
-        TypeVariant::SorobanAddressCredentialsWithDelegates,
         TypeVariant::SorobanCredentialsType,
         TypeVariant::SorobanCredentials,
         TypeVariant::SorobanAuthorizationEntry,
@@ -9626,8 +9549,6 @@ impl Type {
         TypeVariant::HashIdPreimageRevokeId,
         TypeVariant::HashIdPreimageContractId,
         TypeVariant::HashIdPreimageSorobanAuthorization,
-        #[cfg(feature = "cap_0071")]
-        TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress,
         TypeVariant::MemoType,
         TypeVariant::Memo,
         TypeVariant::TimeBounds,
@@ -9758,8 +9679,6 @@ impl Type {
         TypeVariant::PoolId,
         TypeVariant::ClaimableBalanceIdType,
         TypeVariant::ClaimableBalanceId,
-        #[cfg(feature = "test_feature")]
-        TypeVariant::TestNextType,
     ];
     pub const VARIANTS: [TypeVariant; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -9782,7 +9701,6 @@ impl Type {
         "ScpStatementExternalize",
         "ScpEnvelope",
         "ScpQuorumSet",
-        "EncodedLedgerKey",
         "ConfigSettingContractExecutionLanesV0",
         "ConfigSettingContractComputeV0",
         "ConfigSettingContractParallelComputeV0",
@@ -9796,10 +9714,6 @@ impl Type {
         "StateArchivalSettings",
         "EvictionIterator",
         "ConfigSettingScpTiming",
-        "FrozenLedgerKeys",
-        "FrozenLedgerKeysDelta",
-        "FreezeBypassTxs",
-        "FreezeBypassTxsDelta",
         "ContractCostParams",
         "ConfigSettingId",
         "ConfigSettingEntry",
@@ -10054,6 +9968,12 @@ impl Type {
         "StellarMessage",
         "AuthenticatedMessage",
         "AuthenticatedMessageV0",
+        "CompactTxSet",
+        "CompactTxSetGet",
+        "CompactTxSetGetTxs",
+        "CompactTxSetTxs",
+        "CompactTxSetMessageType",
+        "CompactTxSetMessage",
         "LiquidityPoolParameters",
         "MuxedAccount",
         "MuxedAccountMed25519",
@@ -10095,10 +10015,6 @@ impl Type {
         "SorobanAuthorizedFunction",
         "SorobanAuthorizedInvocation",
         "SorobanAddressCredentials",
-        #[cfg(feature = "cap_0071")]
-        "SorobanDelegateSignature",
-        #[cfg(feature = "cap_0071")]
-        "SorobanAddressCredentialsWithDelegates",
         "SorobanCredentialsType",
         "SorobanCredentials",
         "SorobanAuthorizationEntry",
@@ -10113,8 +10029,6 @@ impl Type {
         "HashIdPreimageRevokeId",
         "HashIdPreimageContractId",
         "HashIdPreimageSorobanAuthorization",
-        #[cfg(feature = "cap_0071")]
-        "HashIdPreimageSorobanAuthorizationWithAddress",
         "MemoType",
         "Memo",
         "TimeBounds",
@@ -10245,8 +10159,6 @@ impl Type {
         "PoolId",
         "ClaimableBalanceIdType",
         "ClaimableBalanceId",
-        #[cfg(feature = "test_feature")]
-        "TestNextType",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -10304,11 +10216,6 @@ impl Type {
             }
             TypeVariant::ScpQuorumSet => r.with_limited_depth(|r| {
                 Ok(Self::ScpQuorumSet(Box::new(ScpQuorumSet::read_xdr(r)?)))
-            }),
-            TypeVariant::EncodedLedgerKey => r.with_limited_depth(|r| {
-                Ok(Self::EncodedLedgerKey(Box::new(
-                    EncodedLedgerKey::read_xdr(r)?,
-                )))
             }),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => r.with_limited_depth(|r| {
                 Ok(Self::ConfigSettingContractExecutionLanesV0(Box::new(
@@ -10373,26 +10280,6 @@ impl Type {
             TypeVariant::ConfigSettingScpTiming => r.with_limited_depth(|r| {
                 Ok(Self::ConfigSettingScpTiming(Box::new(
                     ConfigSettingScpTiming::read_xdr(r)?,
-                )))
-            }),
-            TypeVariant::FrozenLedgerKeys => r.with_limited_depth(|r| {
-                Ok(Self::FrozenLedgerKeys(Box::new(
-                    FrozenLedgerKeys::read_xdr(r)?,
-                )))
-            }),
-            TypeVariant::FrozenLedgerKeysDelta => r.with_limited_depth(|r| {
-                Ok(Self::FrozenLedgerKeysDelta(Box::new(
-                    FrozenLedgerKeysDelta::read_xdr(r)?,
-                )))
-            }),
-            TypeVariant::FreezeBypassTxs => r.with_limited_depth(|r| {
-                Ok(Self::FreezeBypassTxs(Box::new(FreezeBypassTxs::read_xdr(
-                    r,
-                )?)))
-            }),
-            TypeVariant::FreezeBypassTxsDelta => r.with_limited_depth(|r| {
-                Ok(Self::FreezeBypassTxsDelta(Box::new(
-                    FreezeBypassTxsDelta::read_xdr(r)?,
                 )))
             }),
             TypeVariant::ContractCostParams => r.with_limited_depth(|r| {
@@ -11477,6 +11364,34 @@ impl Type {
                     AuthenticatedMessageV0::read_xdr(r)?,
                 )))
             }),
+            TypeVariant::CompactTxSet => r.with_limited_depth(|r| {
+                Ok(Self::CompactTxSet(Box::new(CompactTxSet::read_xdr(r)?)))
+            }),
+            TypeVariant::CompactTxSetGet => r.with_limited_depth(|r| {
+                Ok(Self::CompactTxSetGet(Box::new(CompactTxSetGet::read_xdr(
+                    r,
+                )?)))
+            }),
+            TypeVariant::CompactTxSetGetTxs => r.with_limited_depth(|r| {
+                Ok(Self::CompactTxSetGetTxs(Box::new(
+                    CompactTxSetGetTxs::read_xdr(r)?,
+                )))
+            }),
+            TypeVariant::CompactTxSetTxs => r.with_limited_depth(|r| {
+                Ok(Self::CompactTxSetTxs(Box::new(CompactTxSetTxs::read_xdr(
+                    r,
+                )?)))
+            }),
+            TypeVariant::CompactTxSetMessageType => r.with_limited_depth(|r| {
+                Ok(Self::CompactTxSetMessageType(Box::new(
+                    CompactTxSetMessageType::read_xdr(r)?,
+                )))
+            }),
+            TypeVariant::CompactTxSetMessage => r.with_limited_depth(|r| {
+                Ok(Self::CompactTxSetMessage(Box::new(
+                    CompactTxSetMessage::read_xdr(r)?,
+                )))
+            }),
             TypeVariant::LiquidityPoolParameters => r.with_limited_depth(|r| {
                 Ok(Self::LiquidityPoolParameters(Box::new(
                     LiquidityPoolParameters::read_xdr(r)?,
@@ -11662,18 +11577,6 @@ impl Type {
                     SorobanAddressCredentials::read_xdr(r)?,
                 )))
             }),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => r.with_limited_depth(|r| {
-                Ok(Self::SorobanDelegateSignature(Box::new(
-                    SorobanDelegateSignature::read_xdr(r)?,
-                )))
-            }),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => r.with_limited_depth(|r| {
-                Ok(Self::SorobanAddressCredentialsWithDelegates(Box::new(
-                    SorobanAddressCredentialsWithDelegates::read_xdr(r)?,
-                )))
-            }),
             TypeVariant::SorobanCredentialsType => r.with_limited_depth(|r| {
                 Ok(Self::SorobanCredentialsType(Box::new(
                     SorobanCredentialsType::read_xdr(r)?,
@@ -11738,14 +11641,6 @@ impl Type {
                     HashIdPreimageSorobanAuthorization::read_xdr(r)?,
                 )))
             }),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => {
-                r.with_limited_depth(|r| {
-                    Ok(Self::HashIdPreimageSorobanAuthorizationWithAddress(
-                        Box::new(HashIdPreimageSorobanAuthorizationWithAddress::read_xdr(r)?),
-                    ))
-                })
-            }
             TypeVariant::MemoType => {
                 r.with_limited_depth(|r| Ok(Self::MemoType(Box::new(MemoType::read_xdr(r)?))))
             }
@@ -12326,10 +12221,6 @@ impl Type {
                     ClaimableBalanceId::read_xdr(r)?,
                 )))
             }),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => r.with_limited_depth(|r| {
-                Ok(Self::TestNextType(Box::new(TestNextType::read_xdr(r)?)))
-            }),
         }
     }
 
@@ -12425,10 +12316,6 @@ impl Type {
                 ReadXdrIter::<_, ScpQuorumSet>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::ScpQuorumSet(Box::new(t)))),
             ),
-            TypeVariant::EncodedLedgerKey => Box::new(
-                ReadXdrIter::<_, EncodedLedgerKey>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::EncodedLedgerKey(Box::new(t)))),
-            ),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => Box::new(
                 ReadXdrIter::<_, ConfigSettingContractExecutionLanesV0>::new(
                     &mut r.inner,
@@ -12504,22 +12391,6 @@ impl Type {
             TypeVariant::ConfigSettingScpTiming => Box::new(
                 ReadXdrIter::<_, ConfigSettingScpTiming>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::ConfigSettingScpTiming(Box::new(t)))),
-            ),
-            TypeVariant::FrozenLedgerKeys => Box::new(
-                ReadXdrIter::<_, FrozenLedgerKeys>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FrozenLedgerKeys(Box::new(t)))),
-            ),
-            TypeVariant::FrozenLedgerKeysDelta => Box::new(
-                ReadXdrIter::<_, FrozenLedgerKeysDelta>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FrozenLedgerKeysDelta(Box::new(t)))),
-            ),
-            TypeVariant::FreezeBypassTxs => Box::new(
-                ReadXdrIter::<_, FreezeBypassTxs>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FreezeBypassTxs(Box::new(t)))),
-            ),
-            TypeVariant::FreezeBypassTxsDelta => Box::new(
-                ReadXdrIter::<_, FreezeBypassTxsDelta>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FreezeBypassTxsDelta(Box::new(t)))),
             ),
             TypeVariant::ContractCostParams => Box::new(
                 ReadXdrIter::<_, ContractCostParams>::new(&mut r.inner, r.limits.clone())
@@ -13590,6 +13461,30 @@ impl Type {
                 ReadXdrIter::<_, AuthenticatedMessageV0>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::AuthenticatedMessageV0(Box::new(t)))),
             ),
+            TypeVariant::CompactTxSet => Box::new(
+                ReadXdrIter::<_, CompactTxSet>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSet(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetGet => Box::new(
+                ReadXdrIter::<_, CompactTxSetGet>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetGet(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetGetTxs => Box::new(
+                ReadXdrIter::<_, CompactTxSetGetTxs>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetGetTxs(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetTxs => Box::new(
+                ReadXdrIter::<_, CompactTxSetTxs>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetTxs(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetMessageType => Box::new(
+                ReadXdrIter::<_, CompactTxSetMessageType>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetMessageType(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetMessage => Box::new(
+                ReadXdrIter::<_, CompactTxSetMessage>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetMessage(Box::new(t)))),
+            ),
             TypeVariant::LiquidityPoolParameters => Box::new(
                 ReadXdrIter::<_, LiquidityPoolParameters>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::LiquidityPoolParameters(Box::new(t)))),
@@ -13763,19 +13658,6 @@ impl Type {
                 ReadXdrIter::<_, SorobanAddressCredentials>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::SorobanAddressCredentials(Box::new(t)))),
             ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Box::new(
-                ReadXdrIter::<_, SorobanDelegateSignature>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::SorobanDelegateSignature(Box::new(t)))),
-            ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => Box::new(
-                ReadXdrIter::<_, SorobanAddressCredentialsWithDelegates>::new(
-                    &mut r.inner,
-                    r.limits.clone(),
-                )
-                .map(|r| r.map(|t| Self::SorobanAddressCredentialsWithDelegates(Box::new(t)))),
-            ),
             TypeVariant::SorobanCredentialsType => Box::new(
                 ReadXdrIter::<_, SorobanCredentialsType>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::SorobanCredentialsType(Box::new(t)))),
@@ -13834,16 +13716,6 @@ impl Type {
                     r.limits.clone(),
                 )
                 .map(|r| r.map(|t| Self::HashIdPreimageSorobanAuthorization(Box::new(t)))),
-            ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => Box::new(
-                ReadXdrIter::<_, HashIdPreimageSorobanAuthorizationWithAddress>::new(
-                    &mut r.inner,
-                    r.limits.clone(),
-                )
-                .map(|r| {
-                    r.map(|t| Self::HashIdPreimageSorobanAuthorizationWithAddress(Box::new(t)))
-                }),
             ),
             TypeVariant::MemoType => Box::new(
                 ReadXdrIter::<_, MemoType>::new(&mut r.inner, r.limits.clone())
@@ -14421,11 +14293,6 @@ impl Type {
                 ReadXdrIter::<_, ClaimableBalanceId>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::ClaimableBalanceId(Box::new(t)))),
             ),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => Box::new(
-                ReadXdrIter::<_, TestNextType>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::TestNextType(Box::new(t)))),
-            ),
         }
     }
 
@@ -14482,10 +14349,6 @@ impl Type {
             TypeVariant::ScpQuorumSet => Box::new(
                 ReadXdrIter::<_, Frame<ScpQuorumSet>>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::ScpQuorumSet(Box::new(t.0)))),
-            ),
-            TypeVariant::EncodedLedgerKey => Box::new(
-                ReadXdrIter::<_, Frame<EncodedLedgerKey>>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::EncodedLedgerKey(Box::new(t.0)))),
             ),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => Box::new(
                 ReadXdrIter::<_, Frame<ConfigSettingContractExecutionLanesV0>>::new(
@@ -14568,22 +14431,6 @@ impl Type {
                     r.limits.clone(),
                 )
                 .map(|r| r.map(|t| Self::ConfigSettingScpTiming(Box::new(t.0)))),
-            ),
-            TypeVariant::FrozenLedgerKeys => Box::new(
-                ReadXdrIter::<_, Frame<FrozenLedgerKeys>>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FrozenLedgerKeys(Box::new(t.0)))),
-            ),
-            TypeVariant::FrozenLedgerKeysDelta => Box::new(
-                ReadXdrIter::<_, Frame<FrozenLedgerKeysDelta>>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FrozenLedgerKeysDelta(Box::new(t.0)))),
-            ),
-            TypeVariant::FreezeBypassTxs => Box::new(
-                ReadXdrIter::<_, Frame<FreezeBypassTxs>>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FreezeBypassTxs(Box::new(t.0)))),
-            ),
-            TypeVariant::FreezeBypassTxsDelta => Box::new(
-                ReadXdrIter::<_, Frame<FreezeBypassTxsDelta>>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FreezeBypassTxsDelta(Box::new(t.0)))),
             ),
             TypeVariant::ContractCostParams => Box::new(
                 ReadXdrIter::<_, Frame<ContractCostParams>>::new(&mut r.inner, r.limits.clone())
@@ -15788,6 +15635,33 @@ impl Type {
                 )
                 .map(|r| r.map(|t| Self::AuthenticatedMessageV0(Box::new(t.0)))),
             ),
+            TypeVariant::CompactTxSet => Box::new(
+                ReadXdrIter::<_, Frame<CompactTxSet>>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSet(Box::new(t.0)))),
+            ),
+            TypeVariant::CompactTxSetGet => Box::new(
+                ReadXdrIter::<_, Frame<CompactTxSetGet>>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetGet(Box::new(t.0)))),
+            ),
+            TypeVariant::CompactTxSetGetTxs => Box::new(
+                ReadXdrIter::<_, Frame<CompactTxSetGetTxs>>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetGetTxs(Box::new(t.0)))),
+            ),
+            TypeVariant::CompactTxSetTxs => Box::new(
+                ReadXdrIter::<_, Frame<CompactTxSetTxs>>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetTxs(Box::new(t.0)))),
+            ),
+            TypeVariant::CompactTxSetMessageType => Box::new(
+                ReadXdrIter::<_, Frame<CompactTxSetMessageType>>::new(
+                    &mut r.inner,
+                    r.limits.clone(),
+                )
+                .map(|r| r.map(|t| Self::CompactTxSetMessageType(Box::new(t.0)))),
+            ),
+            TypeVariant::CompactTxSetMessage => Box::new(
+                ReadXdrIter::<_, Frame<CompactTxSetMessage>>::new(&mut r.inner, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetMessage(Box::new(t.0)))),
+            ),
             TypeVariant::LiquidityPoolParameters => Box::new(
                 ReadXdrIter::<_, Frame<LiquidityPoolParameters>>::new(
                     &mut r.inner,
@@ -16003,22 +15877,6 @@ impl Type {
                 )
                 .map(|r| r.map(|t| Self::SorobanAddressCredentials(Box::new(t.0)))),
             ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Box::new(
-                ReadXdrIter::<_, Frame<SorobanDelegateSignature>>::new(
-                    &mut r.inner,
-                    r.limits.clone(),
-                )
-                .map(|r| r.map(|t| Self::SorobanDelegateSignature(Box::new(t.0)))),
-            ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => Box::new(
-                ReadXdrIter::<_, Frame<SorobanAddressCredentialsWithDelegates>>::new(
-                    &mut r.inner,
-                    r.limits.clone(),
-                )
-                .map(|r| r.map(|t| Self::SorobanAddressCredentialsWithDelegates(Box::new(t.0)))),
-            ),
             TypeVariant::SorobanCredentialsType => Box::new(
                 ReadXdrIter::<_, Frame<SorobanCredentialsType>>::new(
                     &mut r.inner,
@@ -16095,16 +15953,6 @@ impl Type {
                     r.limits.clone(),
                 )
                 .map(|r| r.map(|t| Self::HashIdPreimageSorobanAuthorization(Box::new(t.0)))),
-            ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => Box::new(
-                ReadXdrIter::<_, Frame<HashIdPreimageSorobanAuthorizationWithAddress>>::new(
-                    &mut r.inner,
-                    r.limits.clone(),
-                )
-                .map(|r| {
-                    r.map(|t| Self::HashIdPreimageSorobanAuthorizationWithAddress(Box::new(t.0)))
-                }),
             ),
             TypeVariant::MemoType => Box::new(
                 ReadXdrIter::<_, Frame<MemoType>>::new(&mut r.inner, r.limits.clone())
@@ -16781,11 +16629,6 @@ impl Type {
                 ReadXdrIter::<_, Frame<ClaimableBalanceId>>::new(&mut r.inner, r.limits.clone())
                     .map(|r| r.map(|t| Self::ClaimableBalanceId(Box::new(t.0)))),
             ),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => Box::new(
-                ReadXdrIter::<_, Frame<TestNextType>>::new(&mut r.inner, r.limits.clone())
-                    .map(|r| r.map(|t| Self::TestNextType(Box::new(t.0)))),
-            ),
         }
     }
 
@@ -16844,10 +16687,6 @@ impl Type {
                 ReadXdrIter::<_, ScpQuorumSet>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::ScpQuorumSet(Box::new(t)))),
             ),
-            TypeVariant::EncodedLedgerKey => Box::new(
-                ReadXdrIter::<_, EncodedLedgerKey>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::EncodedLedgerKey(Box::new(t)))),
-            ),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => Box::new(
                 ReadXdrIter::<_, ConfigSettingContractExecutionLanesV0>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::ConfigSettingContractExecutionLanesV0(Box::new(t)))),
@@ -16902,22 +16741,6 @@ impl Type {
             TypeVariant::ConfigSettingScpTiming => Box::new(
                 ReadXdrIter::<_, ConfigSettingScpTiming>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::ConfigSettingScpTiming(Box::new(t)))),
-            ),
-            TypeVariant::FrozenLedgerKeys => Box::new(
-                ReadXdrIter::<_, FrozenLedgerKeys>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FrozenLedgerKeys(Box::new(t)))),
-            ),
-            TypeVariant::FrozenLedgerKeysDelta => Box::new(
-                ReadXdrIter::<_, FrozenLedgerKeysDelta>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FrozenLedgerKeysDelta(Box::new(t)))),
-            ),
-            TypeVariant::FreezeBypassTxs => Box::new(
-                ReadXdrIter::<_, FreezeBypassTxs>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FreezeBypassTxs(Box::new(t)))),
-            ),
-            TypeVariant::FreezeBypassTxsDelta => Box::new(
-                ReadXdrIter::<_, FreezeBypassTxsDelta>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::FreezeBypassTxsDelta(Box::new(t)))),
             ),
             TypeVariant::ContractCostParams => Box::new(
                 ReadXdrIter::<_, ContractCostParams>::new(dec, r.limits.clone())
@@ -17949,6 +17772,30 @@ impl Type {
                 ReadXdrIter::<_, AuthenticatedMessageV0>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::AuthenticatedMessageV0(Box::new(t)))),
             ),
+            TypeVariant::CompactTxSet => Box::new(
+                ReadXdrIter::<_, CompactTxSet>::new(dec, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSet(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetGet => Box::new(
+                ReadXdrIter::<_, CompactTxSetGet>::new(dec, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetGet(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetGetTxs => Box::new(
+                ReadXdrIter::<_, CompactTxSetGetTxs>::new(dec, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetGetTxs(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetTxs => Box::new(
+                ReadXdrIter::<_, CompactTxSetTxs>::new(dec, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetTxs(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetMessageType => Box::new(
+                ReadXdrIter::<_, CompactTxSetMessageType>::new(dec, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetMessageType(Box::new(t)))),
+            ),
+            TypeVariant::CompactTxSetMessage => Box::new(
+                ReadXdrIter::<_, CompactTxSetMessage>::new(dec, r.limits.clone())
+                    .map(|r| r.map(|t| Self::CompactTxSetMessage(Box::new(t)))),
+            ),
             TypeVariant::LiquidityPoolParameters => Box::new(
                 ReadXdrIter::<_, LiquidityPoolParameters>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::LiquidityPoolParameters(Box::new(t)))),
@@ -18113,19 +17960,6 @@ impl Type {
                 ReadXdrIter::<_, SorobanAddressCredentials>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::SorobanAddressCredentials(Box::new(t)))),
             ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Box::new(
-                ReadXdrIter::<_, SorobanDelegateSignature>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::SorobanDelegateSignature(Box::new(t)))),
-            ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => Box::new(
-                ReadXdrIter::<_, SorobanAddressCredentialsWithDelegates>::new(
-                    dec,
-                    r.limits.clone(),
-                )
-                .map(|r| r.map(|t| Self::SorobanAddressCredentialsWithDelegates(Box::new(t)))),
-            ),
             TypeVariant::SorobanCredentialsType => Box::new(
                 ReadXdrIter::<_, SorobanCredentialsType>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::SorobanCredentialsType(Box::new(t)))),
@@ -18181,16 +18015,6 @@ impl Type {
             TypeVariant::HashIdPreimageSorobanAuthorization => Box::new(
                 ReadXdrIter::<_, HashIdPreimageSorobanAuthorization>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::HashIdPreimageSorobanAuthorization(Box::new(t)))),
-            ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => Box::new(
-                ReadXdrIter::<_, HashIdPreimageSorobanAuthorizationWithAddress>::new(
-                    dec,
-                    r.limits.clone(),
-                )
-                .map(|r| {
-                    r.map(|t| Self::HashIdPreimageSorobanAuthorizationWithAddress(Box::new(t)))
-                }),
             ),
             TypeVariant::MemoType => Box::new(
                 ReadXdrIter::<_, MemoType>::new(dec, r.limits.clone())
@@ -18720,11 +18544,6 @@ impl Type {
                 ReadXdrIter::<_, ClaimableBalanceId>::new(dec, r.limits.clone())
                     .map(|r| r.map(|t| Self::ClaimableBalanceId(Box::new(t)))),
             ),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => Box::new(
-                ReadXdrIter::<_, TestNextType>::new(dec, r.limits.clone())
-                    .map(|r| r.map(|t| Self::TestNextType(Box::new(t)))),
-            ),
         }
     }
 
@@ -18795,9 +18614,6 @@ impl Type {
             TypeVariant::ScpQuorumSet => {
                 Ok(Self::ScpQuorumSet(Box::new(serde_json::from_reader(r)?)))
             }
-            TypeVariant::EncodedLedgerKey => Ok(Self::EncodedLedgerKey(Box::new(
-                serde_json::from_reader(r)?,
-            ))),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => Ok(
                 Self::ConfigSettingContractExecutionLanesV0(Box::new(serde_json::from_reader(r)?)),
             ),
@@ -18835,18 +18651,6 @@ impl Type {
                 serde_json::from_reader(r)?,
             ))),
             TypeVariant::ConfigSettingScpTiming => Ok(Self::ConfigSettingScpTiming(Box::new(
-                serde_json::from_reader(r)?,
-            ))),
-            TypeVariant::FrozenLedgerKeys => Ok(Self::FrozenLedgerKeys(Box::new(
-                serde_json::from_reader(r)?,
-            ))),
-            TypeVariant::FrozenLedgerKeysDelta => Ok(Self::FrozenLedgerKeysDelta(Box::new(
-                serde_json::from_reader(r)?,
-            ))),
-            TypeVariant::FreezeBypassTxs => {
-                Ok(Self::FreezeBypassTxs(Box::new(serde_json::from_reader(r)?)))
-            }
-            TypeVariant::FreezeBypassTxsDelta => Ok(Self::FreezeBypassTxsDelta(Box::new(
                 serde_json::from_reader(r)?,
             ))),
             TypeVariant::ContractCostParams => Ok(Self::ContractCostParams(Box::new(
@@ -19533,6 +19337,24 @@ impl Type {
             TypeVariant::AuthenticatedMessageV0 => Ok(Self::AuthenticatedMessageV0(Box::new(
                 serde_json::from_reader(r)?,
             ))),
+            TypeVariant::CompactTxSet => {
+                Ok(Self::CompactTxSet(Box::new(serde_json::from_reader(r)?)))
+            }
+            TypeVariant::CompactTxSetGet => {
+                Ok(Self::CompactTxSetGet(Box::new(serde_json::from_reader(r)?)))
+            }
+            TypeVariant::CompactTxSetGetTxs => Ok(Self::CompactTxSetGetTxs(Box::new(
+                serde_json::from_reader(r)?,
+            ))),
+            TypeVariant::CompactTxSetTxs => {
+                Ok(Self::CompactTxSetTxs(Box::new(serde_json::from_reader(r)?)))
+            }
+            TypeVariant::CompactTxSetMessageType => Ok(Self::CompactTxSetMessageType(Box::new(
+                serde_json::from_reader(r)?,
+            ))),
+            TypeVariant::CompactTxSetMessage => Ok(Self::CompactTxSetMessage(Box::new(
+                serde_json::from_reader(r)?,
+            ))),
             TypeVariant::LiquidityPoolParameters => Ok(Self::LiquidityPoolParameters(Box::new(
                 serde_json::from_reader(r)?,
             ))),
@@ -19652,14 +19474,6 @@ impl Type {
             TypeVariant::SorobanAddressCredentials => Ok(Self::SorobanAddressCredentials(
                 Box::new(serde_json::from_reader(r)?),
             )),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Ok(Self::SorobanDelegateSignature(Box::new(
-                serde_json::from_reader(r)?,
-            ))),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => Ok(
-                Self::SorobanAddressCredentialsWithDelegates(Box::new(serde_json::from_reader(r)?)),
-            ),
             TypeVariant::SorobanCredentialsType => Ok(Self::SorobanCredentialsType(Box::new(
                 serde_json::from_reader(r)?,
             ))),
@@ -19700,12 +19514,6 @@ impl Type {
             TypeVariant::HashIdPreimageSorobanAuthorization => Ok(
                 Self::HashIdPreimageSorobanAuthorization(Box::new(serde_json::from_reader(r)?)),
             ),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => {
-                Ok(Self::HashIdPreimageSorobanAuthorizationWithAddress(
-                    Box::new(serde_json::from_reader(r)?),
-                ))
-            }
             TypeVariant::MemoType => Ok(Self::MemoType(Box::new(serde_json::from_reader(r)?))),
             TypeVariant::Memo => Ok(Self::Memo(Box::new(serde_json::from_reader(r)?))),
             TypeVariant::TimeBounds => Ok(Self::TimeBounds(Box::new(serde_json::from_reader(r)?))),
@@ -20062,10 +19870,6 @@ impl Type {
             TypeVariant::ClaimableBalanceId => Ok(Self::ClaimableBalanceId(Box::new(
                 serde_json::from_reader(r)?,
             ))),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => {
-                Ok(Self::TestNextType(Box::new(serde_json::from_reader(r)?)))
-            }
         }
     }
 
@@ -20107,9 +19911,6 @@ impl Type {
                 serde::de::Deserialize::deserialize(r)?,
             ))),
             TypeVariant::ScpQuorumSet => Ok(Self::ScpQuorumSet(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
-            TypeVariant::EncodedLedgerKey => Ok(Self::EncodedLedgerKey(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
             ))),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => {
@@ -20163,18 +19964,6 @@ impl Type {
                 serde::de::Deserialize::deserialize(r)?,
             ))),
             TypeVariant::ConfigSettingScpTiming => Ok(Self::ConfigSettingScpTiming(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
-            TypeVariant::FrozenLedgerKeys => Ok(Self::FrozenLedgerKeys(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
-            TypeVariant::FrozenLedgerKeysDelta => Ok(Self::FrozenLedgerKeysDelta(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
-            TypeVariant::FreezeBypassTxs => Ok(Self::FreezeBypassTxs(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
-            TypeVariant::FreezeBypassTxsDelta => Ok(Self::FreezeBypassTxsDelta(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
             ))),
             TypeVariant::ContractCostParams => Ok(Self::ContractCostParams(Box::new(
@@ -20971,6 +20760,24 @@ impl Type {
             TypeVariant::AuthenticatedMessageV0 => Ok(Self::AuthenticatedMessageV0(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
             ))),
+            TypeVariant::CompactTxSet => Ok(Self::CompactTxSet(Box::new(
+                serde::de::Deserialize::deserialize(r)?,
+            ))),
+            TypeVariant::CompactTxSetGet => Ok(Self::CompactTxSetGet(Box::new(
+                serde::de::Deserialize::deserialize(r)?,
+            ))),
+            TypeVariant::CompactTxSetGetTxs => Ok(Self::CompactTxSetGetTxs(Box::new(
+                serde::de::Deserialize::deserialize(r)?,
+            ))),
+            TypeVariant::CompactTxSetTxs => Ok(Self::CompactTxSetTxs(Box::new(
+                serde::de::Deserialize::deserialize(r)?,
+            ))),
+            TypeVariant::CompactTxSetMessageType => Ok(Self::CompactTxSetMessageType(Box::new(
+                serde::de::Deserialize::deserialize(r)?,
+            ))),
+            TypeVariant::CompactTxSetMessage => Ok(Self::CompactTxSetMessage(Box::new(
+                serde::de::Deserialize::deserialize(r)?,
+            ))),
             TypeVariant::LiquidityPoolParameters => Ok(Self::LiquidityPoolParameters(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
             ))),
@@ -21096,16 +20903,6 @@ impl Type {
             TypeVariant::SorobanAddressCredentials => Ok(Self::SorobanAddressCredentials(
                 Box::new(serde::de::Deserialize::deserialize(r)?),
             )),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Ok(Self::SorobanDelegateSignature(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => {
-                Ok(Self::SorobanAddressCredentialsWithDelegates(Box::new(
-                    serde::de::Deserialize::deserialize(r)?,
-                )))
-            }
             TypeVariant::SorobanCredentialsType => Ok(Self::SorobanCredentialsType(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
             ))),
@@ -21149,12 +20946,6 @@ impl Type {
                 Ok(Self::HashIdPreimageSorobanAuthorization(Box::new(
                     serde::de::Deserialize::deserialize(r)?,
                 )))
-            }
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => {
-                Ok(Self::HashIdPreimageSorobanAuthorizationWithAddress(
-                    Box::new(serde::de::Deserialize::deserialize(r)?),
-                ))
             }
             TypeVariant::MemoType => Ok(Self::MemoType(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
@@ -21578,10 +21369,6 @@ impl Type {
             TypeVariant::ClaimableBalanceId => Ok(Self::ClaimableBalanceId(Box::new(
                 serde::de::Deserialize::deserialize(r)?,
             ))),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => Ok(Self::TestNextType(Box::new(
-                serde::de::Deserialize::deserialize(r)?,
-            ))),
         }
     }
 
@@ -21616,9 +21403,6 @@ impl Type {
             TypeVariant::ScpQuorumSet => {
                 Ok(Self::ScpQuorumSet(Box::new(ScpQuorumSet::arbitrary(u)?)))
             }
-            TypeVariant::EncodedLedgerKey => Ok(Self::EncodedLedgerKey(Box::new(
-                EncodedLedgerKey::arbitrary(u)?,
-            ))),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => {
                 Ok(Self::ConfigSettingContractExecutionLanesV0(Box::new(
                     ConfigSettingContractExecutionLanesV0::arbitrary(u)?,
@@ -21671,18 +21455,6 @@ impl Type {
             ))),
             TypeVariant::ConfigSettingScpTiming => Ok(Self::ConfigSettingScpTiming(Box::new(
                 ConfigSettingScpTiming::arbitrary(u)?,
-            ))),
-            TypeVariant::FrozenLedgerKeys => Ok(Self::FrozenLedgerKeys(Box::new(
-                FrozenLedgerKeys::arbitrary(u)?,
-            ))),
-            TypeVariant::FrozenLedgerKeysDelta => Ok(Self::FrozenLedgerKeysDelta(Box::new(
-                FrozenLedgerKeysDelta::arbitrary(u)?,
-            ))),
-            TypeVariant::FreezeBypassTxs => Ok(Self::FreezeBypassTxs(Box::new(
-                FreezeBypassTxs::arbitrary(u)?,
-            ))),
-            TypeVariant::FreezeBypassTxsDelta => Ok(Self::FreezeBypassTxsDelta(Box::new(
-                FreezeBypassTxsDelta::arbitrary(u)?,
             ))),
             TypeVariant::ContractCostParams => Ok(Self::ContractCostParams(Box::new(
                 ContractCostParams::arbitrary(u)?,
@@ -22366,6 +22138,24 @@ impl Type {
             TypeVariant::AuthenticatedMessageV0 => Ok(Self::AuthenticatedMessageV0(Box::new(
                 AuthenticatedMessageV0::arbitrary(u)?,
             ))),
+            TypeVariant::CompactTxSet => {
+                Ok(Self::CompactTxSet(Box::new(CompactTxSet::arbitrary(u)?)))
+            }
+            TypeVariant::CompactTxSetGet => Ok(Self::CompactTxSetGet(Box::new(
+                CompactTxSetGet::arbitrary(u)?,
+            ))),
+            TypeVariant::CompactTxSetGetTxs => Ok(Self::CompactTxSetGetTxs(Box::new(
+                CompactTxSetGetTxs::arbitrary(u)?,
+            ))),
+            TypeVariant::CompactTxSetTxs => Ok(Self::CompactTxSetTxs(Box::new(
+                CompactTxSetTxs::arbitrary(u)?,
+            ))),
+            TypeVariant::CompactTxSetMessageType => Ok(Self::CompactTxSetMessageType(Box::new(
+                CompactTxSetMessageType::arbitrary(u)?,
+            ))),
+            TypeVariant::CompactTxSetMessage => Ok(Self::CompactTxSetMessage(Box::new(
+                CompactTxSetMessage::arbitrary(u)?,
+            ))),
             TypeVariant::LiquidityPoolParameters => Ok(Self::LiquidityPoolParameters(Box::new(
                 LiquidityPoolParameters::arbitrary(u)?,
             ))),
@@ -22487,16 +22277,6 @@ impl Type {
             TypeVariant::SorobanAddressCredentials => Ok(Self::SorobanAddressCredentials(
                 Box::new(SorobanAddressCredentials::arbitrary(u)?),
             )),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Ok(Self::SorobanDelegateSignature(Box::new(
-                SorobanDelegateSignature::arbitrary(u)?,
-            ))),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => {
-                Ok(Self::SorobanAddressCredentialsWithDelegates(Box::new(
-                    SorobanAddressCredentialsWithDelegates::arbitrary(u)?,
-                )))
-            }
             TypeVariant::SorobanCredentialsType => Ok(Self::SorobanCredentialsType(Box::new(
                 SorobanCredentialsType::arbitrary(u)?,
             ))),
@@ -22538,12 +22318,6 @@ impl Type {
                 Ok(Self::HashIdPreimageSorobanAuthorization(Box::new(
                     HashIdPreimageSorobanAuthorization::arbitrary(u)?,
                 )))
-            }
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => {
-                Ok(Self::HashIdPreimageSorobanAuthorizationWithAddress(
-                    Box::new(HashIdPreimageSorobanAuthorizationWithAddress::arbitrary(u)?),
-                ))
             }
             TypeVariant::MemoType => Ok(Self::MemoType(Box::new(MemoType::arbitrary(u)?))),
             TypeVariant::Memo => Ok(Self::Memo(Box::new(Memo::arbitrary(u)?))),
@@ -22927,10 +22701,6 @@ impl Type {
             TypeVariant::ClaimableBalanceId => Ok(Self::ClaimableBalanceId(Box::new(
                 ClaimableBalanceId::arbitrary(u)?,
             ))),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => {
-                Ok(Self::TestNextType(Box::new(TestNextType::arbitrary(u)?)))
-            }
         }
     }
 
@@ -22950,7 +22720,6 @@ impl Type {
             TypeVariant::ScpStatementExternalize => Self::ScpStatementExternalize(Box::default()),
             TypeVariant::ScpEnvelope => Self::ScpEnvelope(Box::default()),
             TypeVariant::ScpQuorumSet => Self::ScpQuorumSet(Box::default()),
-            TypeVariant::EncodedLedgerKey => Self::EncodedLedgerKey(Box::default()),
             TypeVariant::ConfigSettingContractExecutionLanesV0 => {
                 Self::ConfigSettingContractExecutionLanesV0(Box::default())
             }
@@ -22980,10 +22749,6 @@ impl Type {
             TypeVariant::StateArchivalSettings => Self::StateArchivalSettings(Box::default()),
             TypeVariant::EvictionIterator => Self::EvictionIterator(Box::default()),
             TypeVariant::ConfigSettingScpTiming => Self::ConfigSettingScpTiming(Box::default()),
-            TypeVariant::FrozenLedgerKeys => Self::FrozenLedgerKeys(Box::default()),
-            TypeVariant::FrozenLedgerKeysDelta => Self::FrozenLedgerKeysDelta(Box::default()),
-            TypeVariant::FreezeBypassTxs => Self::FreezeBypassTxs(Box::default()),
-            TypeVariant::FreezeBypassTxsDelta => Self::FreezeBypassTxsDelta(Box::default()),
             TypeVariant::ContractCostParams => Self::ContractCostParams(Box::default()),
             TypeVariant::ConfigSettingId => Self::ConfigSettingId(Box::default()),
             TypeVariant::ConfigSettingEntry => Self::ConfigSettingEntry(Box::default()),
@@ -23308,6 +23073,12 @@ impl Type {
             TypeVariant::StellarMessage => Self::StellarMessage(Box::default()),
             TypeVariant::AuthenticatedMessage => Self::AuthenticatedMessage(Box::default()),
             TypeVariant::AuthenticatedMessageV0 => Self::AuthenticatedMessageV0(Box::default()),
+            TypeVariant::CompactTxSet => Self::CompactTxSet(Box::default()),
+            TypeVariant::CompactTxSetGet => Self::CompactTxSetGet(Box::default()),
+            TypeVariant::CompactTxSetGetTxs => Self::CompactTxSetGetTxs(Box::default()),
+            TypeVariant::CompactTxSetTxs => Self::CompactTxSetTxs(Box::default()),
+            TypeVariant::CompactTxSetMessageType => Self::CompactTxSetMessageType(Box::default()),
+            TypeVariant::CompactTxSetMessage => Self::CompactTxSetMessage(Box::default()),
             TypeVariant::LiquidityPoolParameters => Self::LiquidityPoolParameters(Box::default()),
             TypeVariant::MuxedAccount => Self::MuxedAccount(Box::default()),
             TypeVariant::MuxedAccountMed25519 => Self::MuxedAccountMed25519(Box::default()),
@@ -23367,12 +23138,6 @@ impl Type {
             TypeVariant::SorobanAddressCredentials => {
                 Self::SorobanAddressCredentials(Box::default())
             }
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanDelegateSignature => Self::SorobanDelegateSignature(Box::default()),
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::SorobanAddressCredentialsWithDelegates => {
-                Self::SorobanAddressCredentialsWithDelegates(Box::default())
-            }
             TypeVariant::SorobanCredentialsType => Self::SorobanCredentialsType(Box::default()),
             TypeVariant::SorobanCredentials => Self::SorobanCredentials(Box::default()),
             TypeVariant::SorobanAuthorizationEntry => {
@@ -23394,10 +23159,6 @@ impl Type {
             TypeVariant::HashIdPreimageContractId => Self::HashIdPreimageContractId(Box::default()),
             TypeVariant::HashIdPreimageSorobanAuthorization => {
                 Self::HashIdPreimageSorobanAuthorization(Box::default())
-            }
-            #[cfg(feature = "cap_0071")]
-            TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress => {
-                Self::HashIdPreimageSorobanAuthorizationWithAddress(Box::default())
             }
             TypeVariant::MemoType => Self::MemoType(Box::default()),
             TypeVariant::Memo => Self::Memo(Box::default()),
@@ -23603,8 +23364,6 @@ impl Type {
             TypeVariant::PoolId => Self::PoolId(Box::default()),
             TypeVariant::ClaimableBalanceIdType => Self::ClaimableBalanceIdType(Box::default()),
             TypeVariant::ClaimableBalanceId => Self::ClaimableBalanceId(Box::default()),
-            #[cfg(feature = "test_feature")]
-            TypeVariant::TestNextType => Self::TestNextType(Box::default()),
         }
     }
 
@@ -23625,7 +23384,6 @@ impl Type {
             Self::ScpStatementExternalize(ref v) => v.as_ref(),
             Self::ScpEnvelope(ref v) => v.as_ref(),
             Self::ScpQuorumSet(ref v) => v.as_ref(),
-            Self::EncodedLedgerKey(ref v) => v.as_ref(),
             Self::ConfigSettingContractExecutionLanesV0(ref v) => v.as_ref(),
             Self::ConfigSettingContractComputeV0(ref v) => v.as_ref(),
             Self::ConfigSettingContractParallelComputeV0(ref v) => v.as_ref(),
@@ -23639,10 +23397,6 @@ impl Type {
             Self::StateArchivalSettings(ref v) => v.as_ref(),
             Self::EvictionIterator(ref v) => v.as_ref(),
             Self::ConfigSettingScpTiming(ref v) => v.as_ref(),
-            Self::FrozenLedgerKeys(ref v) => v.as_ref(),
-            Self::FrozenLedgerKeysDelta(ref v) => v.as_ref(),
-            Self::FreezeBypassTxs(ref v) => v.as_ref(),
-            Self::FreezeBypassTxsDelta(ref v) => v.as_ref(),
             Self::ContractCostParams(ref v) => v.as_ref(),
             Self::ConfigSettingId(ref v) => v.as_ref(),
             Self::ConfigSettingEntry(ref v) => v.as_ref(),
@@ -23897,6 +23651,12 @@ impl Type {
             Self::StellarMessage(ref v) => v.as_ref(),
             Self::AuthenticatedMessage(ref v) => v.as_ref(),
             Self::AuthenticatedMessageV0(ref v) => v.as_ref(),
+            Self::CompactTxSet(ref v) => v.as_ref(),
+            Self::CompactTxSetGet(ref v) => v.as_ref(),
+            Self::CompactTxSetGetTxs(ref v) => v.as_ref(),
+            Self::CompactTxSetTxs(ref v) => v.as_ref(),
+            Self::CompactTxSetMessageType(ref v) => v.as_ref(),
+            Self::CompactTxSetMessage(ref v) => v.as_ref(),
             Self::LiquidityPoolParameters(ref v) => v.as_ref(),
             Self::MuxedAccount(ref v) => v.as_ref(),
             Self::MuxedAccountMed25519(ref v) => v.as_ref(),
@@ -23938,10 +23698,6 @@ impl Type {
             Self::SorobanAuthorizedFunction(ref v) => v.as_ref(),
             Self::SorobanAuthorizedInvocation(ref v) => v.as_ref(),
             Self::SorobanAddressCredentials(ref v) => v.as_ref(),
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanDelegateSignature(ref v) => v.as_ref(),
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAddressCredentialsWithDelegates(ref v) => v.as_ref(),
             Self::SorobanCredentialsType(ref v) => v.as_ref(),
             Self::SorobanCredentials(ref v) => v.as_ref(),
             Self::SorobanAuthorizationEntry(ref v) => v.as_ref(),
@@ -23956,8 +23712,6 @@ impl Type {
             Self::HashIdPreimageRevokeId(ref v) => v.as_ref(),
             Self::HashIdPreimageContractId(ref v) => v.as_ref(),
             Self::HashIdPreimageSorobanAuthorization(ref v) => v.as_ref(),
-            #[cfg(feature = "cap_0071")]
-            Self::HashIdPreimageSorobanAuthorizationWithAddress(ref v) => v.as_ref(),
             Self::MemoType(ref v) => v.as_ref(),
             Self::Memo(ref v) => v.as_ref(),
             Self::TimeBounds(ref v) => v.as_ref(),
@@ -24088,8 +23842,6 @@ impl Type {
             Self::PoolId(ref v) => v.as_ref(),
             Self::ClaimableBalanceIdType(ref v) => v.as_ref(),
             Self::ClaimableBalanceId(ref v) => v.as_ref(),
-            #[cfg(feature = "test_feature")]
-            Self::TestNextType(ref v) => v.as_ref(),
         }
     }
 
@@ -24108,7 +23860,6 @@ impl Type {
             Self::ScpStatementExternalize(_) => "ScpStatementExternalize",
             Self::ScpEnvelope(_) => "ScpEnvelope",
             Self::ScpQuorumSet(_) => "ScpQuorumSet",
-            Self::EncodedLedgerKey(_) => "EncodedLedgerKey",
             Self::ConfigSettingContractExecutionLanesV0(_) => {
                 "ConfigSettingContractExecutionLanesV0"
             }
@@ -24128,10 +23879,6 @@ impl Type {
             Self::StateArchivalSettings(_) => "StateArchivalSettings",
             Self::EvictionIterator(_) => "EvictionIterator",
             Self::ConfigSettingScpTiming(_) => "ConfigSettingScpTiming",
-            Self::FrozenLedgerKeys(_) => "FrozenLedgerKeys",
-            Self::FrozenLedgerKeysDelta(_) => "FrozenLedgerKeysDelta",
-            Self::FreezeBypassTxs(_) => "FreezeBypassTxs",
-            Self::FreezeBypassTxsDelta(_) => "FreezeBypassTxsDelta",
             Self::ContractCostParams(_) => "ContractCostParams",
             Self::ConfigSettingId(_) => "ConfigSettingId",
             Self::ConfigSettingEntry(_) => "ConfigSettingEntry",
@@ -24398,6 +24145,12 @@ impl Type {
             Self::StellarMessage(_) => "StellarMessage",
             Self::AuthenticatedMessage(_) => "AuthenticatedMessage",
             Self::AuthenticatedMessageV0(_) => "AuthenticatedMessageV0",
+            Self::CompactTxSet(_) => "CompactTxSet",
+            Self::CompactTxSetGet(_) => "CompactTxSetGet",
+            Self::CompactTxSetGetTxs(_) => "CompactTxSetGetTxs",
+            Self::CompactTxSetTxs(_) => "CompactTxSetTxs",
+            Self::CompactTxSetMessageType(_) => "CompactTxSetMessageType",
+            Self::CompactTxSetMessage(_) => "CompactTxSetMessage",
             Self::LiquidityPoolParameters(_) => "LiquidityPoolParameters",
             Self::MuxedAccount(_) => "MuxedAccount",
             Self::MuxedAccountMed25519(_) => "MuxedAccountMed25519",
@@ -24439,12 +24192,6 @@ impl Type {
             Self::SorobanAuthorizedFunction(_) => "SorobanAuthorizedFunction",
             Self::SorobanAuthorizedInvocation(_) => "SorobanAuthorizedInvocation",
             Self::SorobanAddressCredentials(_) => "SorobanAddressCredentials",
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanDelegateSignature(_) => "SorobanDelegateSignature",
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAddressCredentialsWithDelegates(_) => {
-                "SorobanAddressCredentialsWithDelegates"
-            }
             Self::SorobanCredentialsType(_) => "SorobanCredentialsType",
             Self::SorobanCredentials(_) => "SorobanCredentials",
             Self::SorobanAuthorizationEntry(_) => "SorobanAuthorizationEntry",
@@ -24459,10 +24206,6 @@ impl Type {
             Self::HashIdPreimageRevokeId(_) => "HashIdPreimageRevokeId",
             Self::HashIdPreimageContractId(_) => "HashIdPreimageContractId",
             Self::HashIdPreimageSorobanAuthorization(_) => "HashIdPreimageSorobanAuthorization",
-            #[cfg(feature = "cap_0071")]
-            Self::HashIdPreimageSorobanAuthorizationWithAddress(_) => {
-                "HashIdPreimageSorobanAuthorizationWithAddress"
-            }
             Self::MemoType(_) => "MemoType",
             Self::Memo(_) => "Memo",
             Self::TimeBounds(_) => "TimeBounds",
@@ -24601,8 +24344,6 @@ impl Type {
             Self::PoolId(_) => "PoolId",
             Self::ClaimableBalanceIdType(_) => "ClaimableBalanceIdType",
             Self::ClaimableBalanceId(_) => "ClaimableBalanceId",
-            #[cfg(feature = "test_feature")]
-            Self::TestNextType(_) => "TestNextType",
         }
     }
 
@@ -24627,7 +24368,6 @@ impl Type {
             Self::ScpStatementExternalize(_) => TypeVariant::ScpStatementExternalize,
             Self::ScpEnvelope(_) => TypeVariant::ScpEnvelope,
             Self::ScpQuorumSet(_) => TypeVariant::ScpQuorumSet,
-            Self::EncodedLedgerKey(_) => TypeVariant::EncodedLedgerKey,
             Self::ConfigSettingContractExecutionLanesV0(_) => {
                 TypeVariant::ConfigSettingContractExecutionLanesV0
             }
@@ -24653,10 +24393,6 @@ impl Type {
             Self::StateArchivalSettings(_) => TypeVariant::StateArchivalSettings,
             Self::EvictionIterator(_) => TypeVariant::EvictionIterator,
             Self::ConfigSettingScpTiming(_) => TypeVariant::ConfigSettingScpTiming,
-            Self::FrozenLedgerKeys(_) => TypeVariant::FrozenLedgerKeys,
-            Self::FrozenLedgerKeysDelta(_) => TypeVariant::FrozenLedgerKeysDelta,
-            Self::FreezeBypassTxs(_) => TypeVariant::FreezeBypassTxs,
-            Self::FreezeBypassTxsDelta(_) => TypeVariant::FreezeBypassTxsDelta,
             Self::ContractCostParams(_) => TypeVariant::ContractCostParams,
             Self::ConfigSettingId(_) => TypeVariant::ConfigSettingId,
             Self::ConfigSettingEntry(_) => TypeVariant::ConfigSettingEntry,
@@ -24939,6 +24675,12 @@ impl Type {
             Self::StellarMessage(_) => TypeVariant::StellarMessage,
             Self::AuthenticatedMessage(_) => TypeVariant::AuthenticatedMessage,
             Self::AuthenticatedMessageV0(_) => TypeVariant::AuthenticatedMessageV0,
+            Self::CompactTxSet(_) => TypeVariant::CompactTxSet,
+            Self::CompactTxSetGet(_) => TypeVariant::CompactTxSetGet,
+            Self::CompactTxSetGetTxs(_) => TypeVariant::CompactTxSetGetTxs,
+            Self::CompactTxSetTxs(_) => TypeVariant::CompactTxSetTxs,
+            Self::CompactTxSetMessageType(_) => TypeVariant::CompactTxSetMessageType,
+            Self::CompactTxSetMessage(_) => TypeVariant::CompactTxSetMessage,
             Self::LiquidityPoolParameters(_) => TypeVariant::LiquidityPoolParameters,
             Self::MuxedAccount(_) => TypeVariant::MuxedAccount,
             Self::MuxedAccountMed25519(_) => TypeVariant::MuxedAccountMed25519,
@@ -24982,12 +24724,6 @@ impl Type {
             Self::SorobanAuthorizedFunction(_) => TypeVariant::SorobanAuthorizedFunction,
             Self::SorobanAuthorizedInvocation(_) => TypeVariant::SorobanAuthorizedInvocation,
             Self::SorobanAddressCredentials(_) => TypeVariant::SorobanAddressCredentials,
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanDelegateSignature(_) => TypeVariant::SorobanDelegateSignature,
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAddressCredentialsWithDelegates(_) => {
-                TypeVariant::SorobanAddressCredentialsWithDelegates
-            }
             Self::SorobanCredentialsType(_) => TypeVariant::SorobanCredentialsType,
             Self::SorobanCredentials(_) => TypeVariant::SorobanCredentials,
             Self::SorobanAuthorizationEntry(_) => TypeVariant::SorobanAuthorizationEntry,
@@ -25003,10 +24739,6 @@ impl Type {
             Self::HashIdPreimageContractId(_) => TypeVariant::HashIdPreimageContractId,
             Self::HashIdPreimageSorobanAuthorization(_) => {
                 TypeVariant::HashIdPreimageSorobanAuthorization
-            }
-            #[cfg(feature = "cap_0071")]
-            Self::HashIdPreimageSorobanAuthorizationWithAddress(_) => {
-                TypeVariant::HashIdPreimageSorobanAuthorizationWithAddress
             }
             Self::MemoType(_) => TypeVariant::MemoType,
             Self::Memo(_) => TypeVariant::Memo,
@@ -25164,8 +24896,6 @@ impl Type {
             Self::PoolId(_) => TypeVariant::PoolId,
             Self::ClaimableBalanceIdType(_) => TypeVariant::ClaimableBalanceIdType,
             Self::ClaimableBalanceId(_) => TypeVariant::ClaimableBalanceId,
-            #[cfg(feature = "test_feature")]
-            Self::TestNextType(_) => TypeVariant::TestNextType,
         }
     }
 }
@@ -25199,7 +24929,6 @@ impl WriteXdr for Type {
             Self::ScpStatementExternalize(v) => v.write_xdr(w),
             Self::ScpEnvelope(v) => v.write_xdr(w),
             Self::ScpQuorumSet(v) => v.write_xdr(w),
-            Self::EncodedLedgerKey(v) => v.write_xdr(w),
             Self::ConfigSettingContractExecutionLanesV0(v) => v.write_xdr(w),
             Self::ConfigSettingContractComputeV0(v) => v.write_xdr(w),
             Self::ConfigSettingContractParallelComputeV0(v) => v.write_xdr(w),
@@ -25213,10 +24942,6 @@ impl WriteXdr for Type {
             Self::StateArchivalSettings(v) => v.write_xdr(w),
             Self::EvictionIterator(v) => v.write_xdr(w),
             Self::ConfigSettingScpTiming(v) => v.write_xdr(w),
-            Self::FrozenLedgerKeys(v) => v.write_xdr(w),
-            Self::FrozenLedgerKeysDelta(v) => v.write_xdr(w),
-            Self::FreezeBypassTxs(v) => v.write_xdr(w),
-            Self::FreezeBypassTxsDelta(v) => v.write_xdr(w),
             Self::ContractCostParams(v) => v.write_xdr(w),
             Self::ConfigSettingId(v) => v.write_xdr(w),
             Self::ConfigSettingEntry(v) => v.write_xdr(w),
@@ -25471,6 +25196,12 @@ impl WriteXdr for Type {
             Self::StellarMessage(v) => v.write_xdr(w),
             Self::AuthenticatedMessage(v) => v.write_xdr(w),
             Self::AuthenticatedMessageV0(v) => v.write_xdr(w),
+            Self::CompactTxSet(v) => v.write_xdr(w),
+            Self::CompactTxSetGet(v) => v.write_xdr(w),
+            Self::CompactTxSetGetTxs(v) => v.write_xdr(w),
+            Self::CompactTxSetTxs(v) => v.write_xdr(w),
+            Self::CompactTxSetMessageType(v) => v.write_xdr(w),
+            Self::CompactTxSetMessage(v) => v.write_xdr(w),
             Self::LiquidityPoolParameters(v) => v.write_xdr(w),
             Self::MuxedAccount(v) => v.write_xdr(w),
             Self::MuxedAccountMed25519(v) => v.write_xdr(w),
@@ -25512,10 +25243,6 @@ impl WriteXdr for Type {
             Self::SorobanAuthorizedFunction(v) => v.write_xdr(w),
             Self::SorobanAuthorizedInvocation(v) => v.write_xdr(w),
             Self::SorobanAddressCredentials(v) => v.write_xdr(w),
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanDelegateSignature(v) => v.write_xdr(w),
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAddressCredentialsWithDelegates(v) => v.write_xdr(w),
             Self::SorobanCredentialsType(v) => v.write_xdr(w),
             Self::SorobanCredentials(v) => v.write_xdr(w),
             Self::SorobanAuthorizationEntry(v) => v.write_xdr(w),
@@ -25530,8 +25257,6 @@ impl WriteXdr for Type {
             Self::HashIdPreimageRevokeId(v) => v.write_xdr(w),
             Self::HashIdPreimageContractId(v) => v.write_xdr(w),
             Self::HashIdPreimageSorobanAuthorization(v) => v.write_xdr(w),
-            #[cfg(feature = "cap_0071")]
-            Self::HashIdPreimageSorobanAuthorizationWithAddress(v) => v.write_xdr(w),
             Self::MemoType(v) => v.write_xdr(w),
             Self::Memo(v) => v.write_xdr(w),
             Self::TimeBounds(v) => v.write_xdr(w),
@@ -25662,8 +25387,6 @@ impl WriteXdr for Type {
             Self::PoolId(v) => v.write_xdr(w),
             Self::ClaimableBalanceIdType(v) => v.write_xdr(w),
             Self::ClaimableBalanceId(v) => v.write_xdr(w),
-            #[cfg(feature = "test_feature")]
-            Self::TestNextType(v) => v.write_xdr(w),
         }
     }
 }

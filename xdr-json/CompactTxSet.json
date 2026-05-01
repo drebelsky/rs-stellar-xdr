@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "title": "CompactTxSet",
+  "description": "CompactTxSet is an XDR Struct defined as:\n\n```text struct CompactTxSet { Hash txSetHash; // hash of the full tx set Hash previousLedgerHash; int64* baseFee; // 6 byte siphashes opaque txs<>; }; ```",
+  "type": "object",
+  "required": [
+    "previous_ledger_hash",
+    "tx_set_hash",
+    "txs"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "base_fee": {
+      "default": null,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "previous_ledger_hash": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "contentEncoding": "hex",
+      "contentMediaType": "application/binary"
+    },
+    "tx_set_hash": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "contentEncoding": "hex",
+      "contentMediaType": "application/binary"
+    },
+    "txs": {
+      "type": "string",
+      "contentEncoding": "hex",
+      "contentMediaType": "application/binary"
+    }
+  },
+  "unevaluatedProperties": false
+}

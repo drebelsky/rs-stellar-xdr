@@ -15,7 +15,6 @@ use super::*;
 /// case LIQUIDITY_POOL_DEPOSIT_LINE_FULL:
 /// case LIQUIDITY_POOL_DEPOSIT_BAD_PRICE:
 /// case LIQUIDITY_POOL_DEPOSIT_POOL_FULL:
-/// case LIQUIDITY_POOL_DEPOSIT_TRUSTLINE_FROZEN:
 ///     void;
 /// };
 /// ```
@@ -41,7 +40,6 @@ pub enum LiquidityPoolDepositResult {
     LineFull,
     BadPrice,
     PoolFull,
-    TrustlineFrozen,
 }
 
 #[cfg(feature = "alloc")]
@@ -61,7 +59,6 @@ impl LiquidityPoolDepositResult {
         LiquidityPoolDepositResultCode::LineFull,
         LiquidityPoolDepositResultCode::BadPrice,
         LiquidityPoolDepositResultCode::PoolFull,
-        LiquidityPoolDepositResultCode::TrustlineFrozen,
     ];
     pub const VARIANTS: [LiquidityPoolDepositResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -81,7 +78,6 @@ impl LiquidityPoolDepositResult {
         "LineFull",
         "BadPrice",
         "PoolFull",
-        "TrustlineFrozen",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -104,7 +100,6 @@ impl LiquidityPoolDepositResult {
             Self::LineFull => "LineFull",
             Self::BadPrice => "BadPrice",
             Self::PoolFull => "PoolFull",
-            Self::TrustlineFrozen => "TrustlineFrozen",
         }
     }
 
@@ -120,7 +115,6 @@ impl LiquidityPoolDepositResult {
             Self::LineFull => LiquidityPoolDepositResultCode::LineFull,
             Self::BadPrice => LiquidityPoolDepositResultCode::BadPrice,
             Self::PoolFull => LiquidityPoolDepositResultCode::PoolFull,
-            Self::TrustlineFrozen => LiquidityPoolDepositResultCode::TrustlineFrozen,
         }
     }
 
@@ -168,7 +162,6 @@ impl ReadXdr for LiquidityPoolDepositResult {
                 LiquidityPoolDepositResultCode::LineFull => Self::LineFull,
                 LiquidityPoolDepositResultCode::BadPrice => Self::BadPrice,
                 LiquidityPoolDepositResultCode::PoolFull => Self::PoolFull,
-                LiquidityPoolDepositResultCode::TrustlineFrozen => Self::TrustlineFrozen,
                 #[allow(unreachable_patterns)]
                 _ => return Err(Error::Invalid),
             };
@@ -192,7 +185,6 @@ impl WriteXdr for LiquidityPoolDepositResult {
                 Self::LineFull => ().write_xdr(w)?,
                 Self::BadPrice => ().write_xdr(w)?,
                 Self::PoolFull => ().write_xdr(w)?,
-                Self::TrustlineFrozen => ().write_xdr(w)?,
             };
             Ok(())
         })

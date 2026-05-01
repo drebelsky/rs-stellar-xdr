@@ -13,7 +13,6 @@ use super::*;
 /// case LIQUIDITY_POOL_WITHDRAW_UNDERFUNDED:
 /// case LIQUIDITY_POOL_WITHDRAW_LINE_FULL:
 /// case LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM:
-/// case LIQUIDITY_POOL_WITHDRAW_TRUSTLINE_FROZEN:
 ///     void;
 /// };
 /// ```
@@ -37,7 +36,6 @@ pub enum LiquidityPoolWithdrawResult {
     Underfunded,
     LineFull,
     UnderMinimum,
-    TrustlineFrozen,
 }
 
 #[cfg(feature = "alloc")]
@@ -55,7 +53,6 @@ impl LiquidityPoolWithdrawResult {
         LiquidityPoolWithdrawResultCode::Underfunded,
         LiquidityPoolWithdrawResultCode::LineFull,
         LiquidityPoolWithdrawResultCode::UnderMinimum,
-        LiquidityPoolWithdrawResultCode::TrustlineFrozen,
     ];
     pub const VARIANTS: [LiquidityPoolWithdrawResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -73,7 +70,6 @@ impl LiquidityPoolWithdrawResult {
         "Underfunded",
         "LineFull",
         "UnderMinimum",
-        "TrustlineFrozen",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -94,7 +90,6 @@ impl LiquidityPoolWithdrawResult {
             Self::Underfunded => "Underfunded",
             Self::LineFull => "LineFull",
             Self::UnderMinimum => "UnderMinimum",
-            Self::TrustlineFrozen => "TrustlineFrozen",
         }
     }
 
@@ -108,7 +103,6 @@ impl LiquidityPoolWithdrawResult {
             Self::Underfunded => LiquidityPoolWithdrawResultCode::Underfunded,
             Self::LineFull => LiquidityPoolWithdrawResultCode::LineFull,
             Self::UnderMinimum => LiquidityPoolWithdrawResultCode::UnderMinimum,
-            Self::TrustlineFrozen => LiquidityPoolWithdrawResultCode::TrustlineFrozen,
         }
     }
 
@@ -154,7 +148,6 @@ impl ReadXdr for LiquidityPoolWithdrawResult {
                 LiquidityPoolWithdrawResultCode::Underfunded => Self::Underfunded,
                 LiquidityPoolWithdrawResultCode::LineFull => Self::LineFull,
                 LiquidityPoolWithdrawResultCode::UnderMinimum => Self::UnderMinimum,
-                LiquidityPoolWithdrawResultCode::TrustlineFrozen => Self::TrustlineFrozen,
                 #[allow(unreachable_patterns)]
                 _ => return Err(Error::Invalid),
             };
@@ -176,7 +169,6 @@ impl WriteXdr for LiquidityPoolWithdrawResult {
                 Self::Underfunded => ().write_xdr(w)?,
                 Self::LineFull => ().write_xdr(w)?,
                 Self::UnderMinimum => ().write_xdr(w)?,
-                Self::TrustlineFrozen => ().write_xdr(w)?,
             };
             Ok(())
         })

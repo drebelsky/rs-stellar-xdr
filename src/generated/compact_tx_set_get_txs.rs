@@ -1,11 +1,14 @@
 #[allow(unused_imports, clippy::wildcard_imports)]
 use super::*;
 
-/// FreezeBypassTxs is an XDR Struct defined as:
+/// CompactTxSetGetTxs is an XDR Struct defined as:
 ///
 /// ```text
-/// struct FreezeBypassTxs {
-///     Hash txHashes<>;
+/// struct CompactTxSetGetTxs
+/// {
+///     Hash txSetHash;
+///     // differentially encoded indices of transactions requested
+///     opaque indices<>;
 /// };
 /// ```
 ///
@@ -20,26 +23,29 @@ use super::*;
     serde(rename_all = "snake_case")
 )]
 #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
-pub struct FreezeBypassTxs {
-    pub tx_hashes: VecM<Hash>,
+pub struct CompactTxSetGetTxs {
+    pub tx_set_hash: Hash,
+    pub indices: BytesM,
 }
 
-impl ReadXdr for FreezeBypassTxs {
+impl ReadXdr for CompactTxSetGetTxs {
     #[cfg(feature = "std")]
     fn read_xdr<R: Read>(r: &mut Limited<R>) -> Result<Self, Error> {
         r.with_limited_depth(|r| {
             Ok(Self {
-                tx_hashes: VecM::<Hash>::read_xdr(r)?,
+                tx_set_hash: Hash::read_xdr(r)?,
+                indices: BytesM::read_xdr(r)?,
             })
         })
     }
 }
 
-impl WriteXdr for FreezeBypassTxs {
+impl WriteXdr for CompactTxSetGetTxs {
     #[cfg(feature = "std")]
     fn write_xdr<W: Write>(&self, w: &mut Limited<W>) -> Result<(), Error> {
         w.with_limited_depth(|w| {
-            self.tx_hashes.write_xdr(w)?;
+            self.tx_set_hash.write_xdr(w)?;
+            self.indices.write_xdr(w)?;
             Ok(())
         })
     }

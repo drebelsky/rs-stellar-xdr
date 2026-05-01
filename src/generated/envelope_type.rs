@@ -16,10 +16,6 @@ use super::*;
 ///     ENVELOPE_TYPE_POOL_REVOKE_OP_ID = 7,
 ///     ENVELOPE_TYPE_CONTRACT_ID = 8,
 ///     ENVELOPE_TYPE_SOROBAN_AUTHORIZATION = 9
-/// #ifdef CAP_0071
-///     ,
-///     ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS = 10
-/// #endif
 /// };
 /// ```
 ///
@@ -46,8 +42,6 @@ pub enum EnvelopeType {
     PoolRevokeOpId = 7,
     ContractId = 8,
     SorobanAuthorization = 9,
-    #[cfg(feature = "cap_0071")]
-    SorobanAuthorizationWithAddress = 10,
 }
 
 impl EnvelopeType {
@@ -62,8 +56,6 @@ impl EnvelopeType {
         EnvelopeType::PoolRevokeOpId,
         EnvelopeType::ContractId,
         EnvelopeType::SorobanAuthorization,
-        #[cfg(feature = "cap_0071")]
-        EnvelopeType::SorobanAuthorizationWithAddress,
     ];
     pub const VARIANTS: [EnvelopeType; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -85,8 +77,6 @@ impl EnvelopeType {
         "PoolRevokeOpId",
         "ContractId",
         "SorobanAuthorization",
-        #[cfg(feature = "cap_0071")]
-        "SorobanAuthorizationWithAddress",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -111,8 +101,6 @@ impl EnvelopeType {
             Self::PoolRevokeOpId => "PoolRevokeOpId",
             Self::ContractId => "ContractId",
             Self::SorobanAuthorization => "SorobanAuthorization",
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAuthorizationWithAddress => "SorobanAuthorizationWithAddress",
         }
     }
 
@@ -158,8 +146,6 @@ impl TryFrom<i32> for EnvelopeType {
             7 => EnvelopeType::PoolRevokeOpId,
             8 => EnvelopeType::ContractId,
             9 => EnvelopeType::SorobanAuthorization,
-            #[cfg(feature = "cap_0071")]
-            10 => EnvelopeType::SorobanAuthorizationWithAddress,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };

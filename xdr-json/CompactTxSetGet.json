@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "title": "CompactTxSetGet",
+  "description": "CompactTxSetGet is an XDR Struct defined as:\n\n```text struct CompactTxSetGet { Hash txSetHash; }; ```",
+  "type": "object",
+  "required": [
+    "tx_set_hash"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "tx_set_hash": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "contentEncoding": "hex",
+      "contentMediaType": "application/binary"
+    }
+  },
+  "unevaluatedProperties": false
+}

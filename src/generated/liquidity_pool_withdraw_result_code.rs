@@ -17,9 +17,7 @@ use super::*;
 ///                                                // pool share
 ///     LIQUIDITY_POOL_WITHDRAW_LINE_FULL = -4,    // would go above limit for one
 ///                                                // of the assets
-///     LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM = -5, // didn't withdraw enough
-///     LIQUIDITY_POOL_WITHDRAW_TRUSTLINE_FROZEN = -6  // trustline for one of the
-///                                                    // assets is frozen
+///     LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM = -5 // didn't withdraw enough
 /// };
 /// ```
 ///
@@ -42,7 +40,6 @@ pub enum LiquidityPoolWithdrawResultCode {
     Underfunded = -3,
     LineFull = -4,
     UnderMinimum = -5,
-    TrustlineFrozen = -6,
 }
 
 impl LiquidityPoolWithdrawResultCode {
@@ -53,7 +50,6 @@ impl LiquidityPoolWithdrawResultCode {
         LiquidityPoolWithdrawResultCode::Underfunded,
         LiquidityPoolWithdrawResultCode::LineFull,
         LiquidityPoolWithdrawResultCode::UnderMinimum,
-        LiquidityPoolWithdrawResultCode::TrustlineFrozen,
     ];
     pub const VARIANTS: [LiquidityPoolWithdrawResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -71,7 +67,6 @@ impl LiquidityPoolWithdrawResultCode {
         "Underfunded",
         "LineFull",
         "UnderMinimum",
-        "TrustlineFrozen",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -92,7 +87,6 @@ impl LiquidityPoolWithdrawResultCode {
             Self::Underfunded => "Underfunded",
             Self::LineFull => "LineFull",
             Self::UnderMinimum => "UnderMinimum",
-            Self::TrustlineFrozen => "TrustlineFrozen",
         }
     }
 
@@ -134,7 +128,6 @@ impl TryFrom<i32> for LiquidityPoolWithdrawResultCode {
             -3 => LiquidityPoolWithdrawResultCode::Underfunded,
             -4 => LiquidityPoolWithdrawResultCode::LineFull,
             -5 => LiquidityPoolWithdrawResultCode::UnderMinimum,
-            -6 => LiquidityPoolWithdrawResultCode::TrustlineFrozen,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };

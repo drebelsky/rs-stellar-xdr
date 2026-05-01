@@ -40,14 +40,6 @@ use super::*;
 ///     ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;
 /// case CONFIG_SETTING_SCP_TIMING:
 ///     ConfigSettingSCPTiming contractSCPTiming;
-/// case CONFIG_SETTING_FROZEN_LEDGER_KEYS:
-///     FrozenLedgerKeys frozenLedgerKeys;
-/// case CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA:
-///     FrozenLedgerKeysDelta frozenLedgerKeysDelta;
-/// case CONFIG_SETTING_FREEZE_BYPASS_TXS:
-///     FreezeBypassTxs freezeBypassTxs;
-/// case CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA:
-///     FreezeBypassTxsDelta freezeBypassTxsDelta;
 /// };
 /// ```
 ///
@@ -87,10 +79,6 @@ pub enum ConfigSettingEntry {
     ContractParallelComputeV0(ConfigSettingContractParallelComputeV0),
     ContractLedgerCostExtV0(ConfigSettingContractLedgerCostExtV0),
     ScpTiming(ConfigSettingScpTiming),
-    FrozenLedgerKeys(FrozenLedgerKeys),
-    FrozenLedgerKeysDelta(FrozenLedgerKeysDelta),
-    FreezeBypassTxs(FreezeBypassTxs),
-    FreezeBypassTxsDelta(FreezeBypassTxsDelta),
 }
 
 #[cfg(feature = "alloc")]
@@ -119,10 +107,6 @@ impl ConfigSettingEntry {
         ConfigSettingId::ContractParallelComputeV0,
         ConfigSettingId::ContractLedgerCostExtV0,
         ConfigSettingId::ScpTiming,
-        ConfigSettingId::FrozenLedgerKeys,
-        ConfigSettingId::FrozenLedgerKeysDelta,
-        ConfigSettingId::FreezeBypassTxs,
-        ConfigSettingId::FreezeBypassTxsDelta,
     ];
     pub const VARIANTS: [ConfigSettingId; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -151,10 +135,6 @@ impl ConfigSettingEntry {
         "ContractParallelComputeV0",
         "ContractLedgerCostExtV0",
         "ScpTiming",
-        "FrozenLedgerKeys",
-        "FrozenLedgerKeysDelta",
-        "FreezeBypassTxs",
-        "FreezeBypassTxsDelta",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -186,10 +166,6 @@ impl ConfigSettingEntry {
             Self::ContractParallelComputeV0(_) => "ContractParallelComputeV0",
             Self::ContractLedgerCostExtV0(_) => "ContractLedgerCostExtV0",
             Self::ScpTiming(_) => "ScpTiming",
-            Self::FrozenLedgerKeys(_) => "FrozenLedgerKeys",
-            Self::FrozenLedgerKeysDelta(_) => "FrozenLedgerKeysDelta",
-            Self::FreezeBypassTxs(_) => "FreezeBypassTxs",
-            Self::FreezeBypassTxsDelta(_) => "FreezeBypassTxsDelta",
         }
     }
 
@@ -218,10 +194,6 @@ impl ConfigSettingEntry {
             Self::ContractParallelComputeV0(_) => ConfigSettingId::ContractParallelComputeV0,
             Self::ContractLedgerCostExtV0(_) => ConfigSettingId::ContractLedgerCostExtV0,
             Self::ScpTiming(_) => ConfigSettingId::ScpTiming,
-            Self::FrozenLedgerKeys(_) => ConfigSettingId::FrozenLedgerKeys,
-            Self::FrozenLedgerKeysDelta(_) => ConfigSettingId::FrozenLedgerKeysDelta,
-            Self::FreezeBypassTxs(_) => ConfigSettingId::FreezeBypassTxs,
-            Self::FreezeBypassTxsDelta(_) => ConfigSettingId::FreezeBypassTxsDelta,
         }
     }
 
@@ -309,18 +281,6 @@ impl ReadXdr for ConfigSettingEntry {
                     ConfigSettingContractLedgerCostExtV0::read_xdr(r)?,
                 ),
                 ConfigSettingId::ScpTiming => Self::ScpTiming(ConfigSettingScpTiming::read_xdr(r)?),
-                ConfigSettingId::FrozenLedgerKeys => {
-                    Self::FrozenLedgerKeys(FrozenLedgerKeys::read_xdr(r)?)
-                }
-                ConfigSettingId::FrozenLedgerKeysDelta => {
-                    Self::FrozenLedgerKeysDelta(FrozenLedgerKeysDelta::read_xdr(r)?)
-                }
-                ConfigSettingId::FreezeBypassTxs => {
-                    Self::FreezeBypassTxs(FreezeBypassTxs::read_xdr(r)?)
-                }
-                ConfigSettingId::FreezeBypassTxsDelta => {
-                    Self::FreezeBypassTxsDelta(FreezeBypassTxsDelta::read_xdr(r)?)
-                }
                 #[allow(unreachable_patterns)]
                 _ => return Err(Error::Invalid),
             };
@@ -353,10 +313,6 @@ impl WriteXdr for ConfigSettingEntry {
                 Self::ContractParallelComputeV0(v) => v.write_xdr(w)?,
                 Self::ContractLedgerCostExtV0(v) => v.write_xdr(w)?,
                 Self::ScpTiming(v) => v.write_xdr(w)?,
-                Self::FrozenLedgerKeys(v) => v.write_xdr(w)?,
-                Self::FrozenLedgerKeysDelta(v) => v.write_xdr(w)?,
-                Self::FreezeBypassTxs(v) => v.write_xdr(w)?,
-                Self::FreezeBypassTxsDelta(v) => v.write_xdr(w)?,
             };
             Ok(())
         })

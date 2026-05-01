@@ -7,7 +7,7 @@
     },
     {
       "name": "xdr/Stellar-contract-config-setting.x",
-      "sha256": "56eb21162887b96ec423cab36e924ab085d52f885b7d41bcd3cd040e8dfe616d"
+      "sha256": "3c5435807fa844e2907447ebc90092cc3013aa3fbb29bde941fe451bc392074f"
     },
     {
       "name": "xdr/Stellar-contract-env-meta.x",
@@ -43,11 +43,11 @@
     },
     {
       "name": "xdr/Stellar-overlay.x",
-      "sha256": "ad2ea6b317d8b0e72bf8b08b6a4b11dc81352afb7bf6409dc4c84e48dd76b092"
+      "sha256": "1645397cdf7684281936b19cd168b1ddee36d929e9c9e94dd668887a70fe6f85"
     },
     {
       "name": "xdr/Stellar-transaction.x",
-      "sha256": "52815125acb35d8aa7bfe979df1f6028a81c25cef13d2f7645b23b299792bede"
+      "sha256": "0dccdd1787f9067d41627cce75b43ccbc13a6feb32b3f7fdccd075c7addcb8b7"
     },
     {
       "name": "xdr/Stellar-types.x",
@@ -438,15 +438,6 @@
       ]
     },
     {
-      "kind": "typedef",
-      "name": "EncodedLedgerKey",
-      "source": "typedef opaque EncodedLedgerKey<>;",
-      "file_index": 1,
-      "type": {
-        "kind": "opaque_var"
-      }
-    },
-    {
       "kind": "struct",
       "name": "ConfigSettingContractExecutionLanesV0",
       "fixed_size": 4,
@@ -724,7 +715,7 @@
     {
       "kind": "enum",
       "name": "ContractCostType",
-      "source": "enum ContractCostType {\n    // Cost of running 1 wasm instruction\n    WasmInsnExec = 0,\n    // Cost of allocating a slice of memory (in bytes)\n    MemAlloc = 1,\n    // Cost of copying a slice of bytes into a pre-allocated memory\n    MemCpy = 2,\n    // Cost of comparing two slices of memory\n    MemCmp = 3,\n    // Cost of a host function dispatch, not including the actual work done by\n    // the function nor the cost of VM invocation machinary\n    DispatchHostFunction = 4,\n    // Cost of visiting a host object from the host object storage. Exists to \n    // make sure some baseline cost coverage, i.e. repeatly visiting objects\n    // by the guest will always incur some charges.\n    VisitObject = 5,\n    // Cost of serializing an xdr object to bytes\n    ValSer = 6,\n    // Cost of deserializing an xdr object from bytes\n    ValDeser = 7,\n    // Cost of computing the sha256 hash from bytes\n    ComputeSha256Hash = 8,\n    // Cost of computing the ed25519 pubkey from bytes\n    ComputeEd25519PubKey = 9,\n    // Cost of verifying ed25519 signature of a payload.\n    VerifyEd25519Sig = 10,\n    // Cost of instantiation a VM from wasm bytes code.\n    VmInstantiation = 11,\n    // Cost of instantiation a VM from a cached state.\n    VmCachedInstantiation = 12,\n    // Cost of invoking a function on the VM. If the function is a host function,\n    // additional cost will be covered by `DispatchHostFunction`.\n    InvokeVmFunction = 13,\n    // Cost of computing a keccak256 hash from bytes.\n    ComputeKeccak256Hash = 14,\n    // Cost of decoding an ECDSA signature computed from a 256-bit prime modulus\n    // curve (e.g. secp256k1 and secp256r1)\n    DecodeEcdsaCurve256Sig = 15,\n    // Cost of recovering an ECDSA secp256k1 key from a signature.\n    RecoverEcdsaSecp256k1Key = 16,\n    // Cost of int256 addition (`+`) and subtraction (`-`) operations\n    Int256AddSub = 17,\n    // Cost of int256 multiplication (`*`) operation\n    Int256Mul = 18,\n    // Cost of int256 division (`/`) operation\n    Int256Div = 19,\n    // Cost of int256 power (`exp`) operation\n    Int256Pow = 20,\n    // Cost of int256 shift (`shl`, `shr`) operation\n    Int256Shift = 21,\n    // Cost of drawing random bytes using a ChaCha20 PRNG\n    ChaCha20DrawBytes = 22,\n\n    // Cost of parsing wasm bytes that only encode instructions.\n    ParseWasmInstructions = 23,\n    // Cost of parsing a known number of wasm functions.\n    ParseWasmFunctions = 24,\n    // Cost of parsing a known number of wasm globals.\n    ParseWasmGlobals = 25,\n    // Cost of parsing a known number of wasm table entries.\n    ParseWasmTableEntries = 26,\n    // Cost of parsing a known number of wasm types.\n    ParseWasmTypes = 27,\n    // Cost of parsing a known number of wasm data segments.\n    ParseWasmDataSegments = 28,\n    // Cost of parsing a known number of wasm element segments.\n    ParseWasmElemSegments = 29,\n    // Cost of parsing a known number of wasm imports.\n    ParseWasmImports = 30,\n    // Cost of parsing a known number of wasm exports.\n    ParseWasmExports = 31,\n    // Cost of parsing a known number of data segment bytes.\n    ParseWasmDataSegmentBytes = 32,\n\n    // Cost of instantiating wasm bytes that only encode instructions.\n    InstantiateWasmInstructions = 33,\n    // Cost of instantiating a known number of wasm functions.\n    InstantiateWasmFunctions = 34,\n    // Cost of instantiating a known number of wasm globals.\n    InstantiateWasmGlobals = 35,\n    // Cost of instantiating a known number of wasm table entries.\n    InstantiateWasmTableEntries = 36,\n    // Cost of instantiating a known number of wasm types.\n    InstantiateWasmTypes = 37,\n    // Cost of instantiating a known number of wasm data segments.\n    InstantiateWasmDataSegments = 38,\n    // Cost of instantiating a known number of wasm element segments.\n    InstantiateWasmElemSegments = 39,\n    // Cost of instantiating a known number of wasm imports.\n    InstantiateWasmImports = 40,\n    // Cost of instantiating a known number of wasm exports.\n    InstantiateWasmExports = 41,\n    // Cost of instantiating a known number of data segment bytes.\n    InstantiateWasmDataSegmentBytes = 42,\n\n    // Cost of decoding a bytes array representing an uncompressed SEC-1 encoded\n    // point on a 256-bit elliptic curve\n    Sec1DecodePointUncompressed = 43,\n    // Cost of verifying an ECDSA Secp256r1 signature\n    VerifyEcdsaSecp256r1Sig = 44,\n\n    // Cost of encoding a BLS12-381 Fp (base field element)\n    Bls12381EncodeFp = 45,\n    // Cost of decoding a BLS12-381 Fp (base field element)\n    Bls12381DecodeFp = 46,\n    // Cost of checking a G1 point lies on the curve\n    Bls12381G1CheckPointOnCurve = 47,\n    // Cost of checking a G1 point belongs to the correct subgroup\n    Bls12381G1CheckPointInSubgroup = 48,\n    // Cost of checking a G2 point lies on the curve\n    Bls12381G2CheckPointOnCurve = 49,\n    // Cost of checking a G2 point belongs to the correct subgroup\n    Bls12381G2CheckPointInSubgroup = 50,\n    // Cost of converting a BLS12-381 G1 point from projective to affine coordinates\n    Bls12381G1ProjectiveToAffine = 51,\n    // Cost of converting a BLS12-381 G2 point from projective to affine coordinates\n    Bls12381G2ProjectiveToAffine = 52,\n    // Cost of performing BLS12-381 G1 point addition\n    Bls12381G1Add = 53,\n    // Cost of performing BLS12-381 G1 scalar multiplication\n    Bls12381G1Mul = 54,\n    // Cost of performing BLS12-381 G1 multi-scalar multiplication (MSM)\n    Bls12381G1Msm = 55,\n    // Cost of mapping a BLS12-381 Fp field element to a G1 point\n    Bls12381MapFpToG1 = 56,\n    // Cost of hashing to a BLS12-381 G1 point\n    Bls12381HashToG1 = 57,\n    // Cost of performing BLS12-381 G2 point addition\n    Bls12381G2Add = 58,\n    // Cost of performing BLS12-381 G2 scalar multiplication\n    Bls12381G2Mul = 59,\n    // Cost of performing BLS12-381 G2 multi-scalar multiplication (MSM)\n    Bls12381G2Msm = 60,\n    // Cost of mapping a BLS12-381 Fp2 field element to a G2 point\n    Bls12381MapFp2ToG2 = 61,\n    // Cost of hashing to a BLS12-381 G2 point\n    Bls12381HashToG2 = 62,\n    // Cost of performing BLS12-381 pairing operation\n    Bls12381Pairing = 63,\n    // Cost of converting a BLS12-381 scalar element from U256\n    Bls12381FrFromU256 = 64,\n    // Cost of converting a BLS12-381 scalar element to U256\n    Bls12381FrToU256 = 65,\n    // Cost of performing BLS12-381 scalar element addition/subtraction\n    Bls12381FrAddSub = 66,\n    // Cost of performing BLS12-381 scalar element multiplication\n    Bls12381FrMul = 67,\n    // Cost of performing BLS12-381 scalar element exponentiation\n    Bls12381FrPow = 68,\n    // Cost of performing BLS12-381 scalar element inversion\n    Bls12381FrInv = 69,\n\n    // Cost of encoding a BN254 Fp (base field element)\n    Bn254EncodeFp = 70,\n    // Cost of decoding a BN254 Fp (base field element)\n    Bn254DecodeFp = 71,\n    // Cost of checking a G1 point lies on the curve\n    Bn254G1CheckPointOnCurve = 72,\n    // Cost of checking a G2 point lies on the curve\n    Bn254G2CheckPointOnCurve = 73,\n    // Cost of checking a G2 point belongs to the correct subgroup\n    Bn254G2CheckPointInSubgroup = 74,\n    // Cost of converting a BN254 G1 point from projective to affine coordinates\n    Bn254G1ProjectiveToAffine = 75,\n    // Cost of performing BN254 G1 point addition\n    Bn254G1Add = 76,\n    // Cost of performing BN254 G1 scalar multiplication\n    Bn254G1Mul = 77,\n    // Cost of performing BN254 pairing operation\n    Bn254Pairing = 78,\n    // Cost of converting a BN254 scalar element from U256\n    Bn254FrFromU256 = 79,\n    // Cost of converting a BN254 scalar element to U256\n    Bn254FrToU256 = 80,\n    // // Cost of performing BN254 scalar element addition/subtraction\n    Bn254FrAddSub = 81,\n    // Cost of performing BN254 scalar element multiplication\n    Bn254FrMul = 82,\n    // Cost of performing BN254 scalar element exponentiation\n    Bn254FrPow = 83,\n     // Cost of performing BN254 scalar element inversion\n    Bn254FrInv = 84,\n    // Cost of performing BN254 G1 multi-scalar multiplication (MSM)\n    Bn254G1Msm = 85\n};",
+      "source": "enum ContractCostType {\n    // Cost of running 1 wasm instruction\n    WasmInsnExec = 0,\n    // Cost of allocating a slice of memory (in bytes)\n    MemAlloc = 1,\n    // Cost of copying a slice of bytes into a pre-allocated memory\n    MemCpy = 2,\n    // Cost of comparing two slices of memory\n    MemCmp = 3,\n    // Cost of a host function dispatch, not including the actual work done by\n    // the function nor the cost of VM invocation machinary\n    DispatchHostFunction = 4,\n    // Cost of visiting a host object from the host object storage. Exists to \n    // make sure some baseline cost coverage, i.e. repeatly visiting objects\n    // by the guest will always incur some charges.\n    VisitObject = 5,\n    // Cost of serializing an xdr object to bytes\n    ValSer = 6,\n    // Cost of deserializing an xdr object from bytes\n    ValDeser = 7,\n    // Cost of computing the sha256 hash from bytes\n    ComputeSha256Hash = 8,\n    // Cost of computing the ed25519 pubkey from bytes\n    ComputeEd25519PubKey = 9,\n    // Cost of verifying ed25519 signature of a payload.\n    VerifyEd25519Sig = 10,\n    // Cost of instantiation a VM from wasm bytes code.\n    VmInstantiation = 11,\n    // Cost of instantiation a VM from a cached state.\n    VmCachedInstantiation = 12,\n    // Cost of invoking a function on the VM. If the function is a host function,\n    // additional cost will be covered by `DispatchHostFunction`.\n    InvokeVmFunction = 13,\n    // Cost of computing a keccak256 hash from bytes.\n    ComputeKeccak256Hash = 14,\n    // Cost of decoding an ECDSA signature computed from a 256-bit prime modulus\n    // curve (e.g. secp256k1 and secp256r1)\n    DecodeEcdsaCurve256Sig = 15,\n    // Cost of recovering an ECDSA secp256k1 key from a signature.\n    RecoverEcdsaSecp256k1Key = 16,\n    // Cost of int256 addition (`+`) and subtraction (`-`) operations\n    Int256AddSub = 17,\n    // Cost of int256 multiplication (`*`) operation\n    Int256Mul = 18,\n    // Cost of int256 division (`/`) operation\n    Int256Div = 19,\n    // Cost of int256 power (`exp`) operation\n    Int256Pow = 20,\n    // Cost of int256 shift (`shl`, `shr`) operation\n    Int256Shift = 21,\n    // Cost of drawing random bytes using a ChaCha20 PRNG\n    ChaCha20DrawBytes = 22,\n\n    // Cost of parsing wasm bytes that only encode instructions.\n    ParseWasmInstructions = 23,\n    // Cost of parsing a known number of wasm functions.\n    ParseWasmFunctions = 24,\n    // Cost of parsing a known number of wasm globals.\n    ParseWasmGlobals = 25,\n    // Cost of parsing a known number of wasm table entries.\n    ParseWasmTableEntries = 26,\n    // Cost of parsing a known number of wasm types.\n    ParseWasmTypes = 27,\n    // Cost of parsing a known number of wasm data segments.\n    ParseWasmDataSegments = 28,\n    // Cost of parsing a known number of wasm element segments.\n    ParseWasmElemSegments = 29,\n    // Cost of parsing a known number of wasm imports.\n    ParseWasmImports = 30,\n    // Cost of parsing a known number of wasm exports.\n    ParseWasmExports = 31,\n    // Cost of parsing a known number of data segment bytes.\n    ParseWasmDataSegmentBytes = 32,\n\n    // Cost of instantiating wasm bytes that only encode instructions.\n    InstantiateWasmInstructions = 33,\n    // Cost of instantiating a known number of wasm functions.\n    InstantiateWasmFunctions = 34,\n    // Cost of instantiating a known number of wasm globals.\n    InstantiateWasmGlobals = 35,\n    // Cost of instantiating a known number of wasm table entries.\n    InstantiateWasmTableEntries = 36,\n    // Cost of instantiating a known number of wasm types.\n    InstantiateWasmTypes = 37,\n    // Cost of instantiating a known number of wasm data segments.\n    InstantiateWasmDataSegments = 38,\n    // Cost of instantiating a known number of wasm element segments.\n    InstantiateWasmElemSegments = 39,\n    // Cost of instantiating a known number of wasm imports.\n    InstantiateWasmImports = 40,\n    // Cost of instantiating a known number of wasm exports.\n    InstantiateWasmExports = 41,\n    // Cost of instantiating a known number of data segment bytes.\n    InstantiateWasmDataSegmentBytes = 42,\n\n    // Cost of decoding a bytes array representing an uncompressed SEC-1 encoded\n    // point on a 256-bit elliptic curve\n    Sec1DecodePointUncompressed = 43,\n    // Cost of verifying an ECDSA Secp256r1 signature\n    VerifyEcdsaSecp256r1Sig = 44,\n\n    // Cost of encoding a BLS12-381 Fp (base field element)\n    Bls12381EncodeFp = 45,\n    // Cost of decoding a BLS12-381 Fp (base field element)\n    Bls12381DecodeFp = 46,\n    // Cost of checking a G1 point lies on the curve\n    Bls12381G1CheckPointOnCurve = 47,\n    // Cost of checking a G1 point belongs to the correct subgroup\n    Bls12381G1CheckPointInSubgroup = 48,\n    // Cost of checking a G2 point lies on the curve\n    Bls12381G2CheckPointOnCurve = 49,\n    // Cost of checking a G2 point belongs to the correct subgroup\n    Bls12381G2CheckPointInSubgroup = 50,\n    // Cost of converting a BLS12-381 G1 point from projective to affine coordinates\n    Bls12381G1ProjectiveToAffine = 51,\n    // Cost of converting a BLS12-381 G2 point from projective to affine coordinates\n    Bls12381G2ProjectiveToAffine = 52,\n    // Cost of performing BLS12-381 G1 point addition\n    Bls12381G1Add = 53,\n    // Cost of performing BLS12-381 G1 scalar multiplication\n    Bls12381G1Mul = 54,\n    // Cost of performing BLS12-381 G1 multi-scalar multiplication (MSM)\n    Bls12381G1Msm = 55,\n    // Cost of mapping a BLS12-381 Fp field element to a G1 point\n    Bls12381MapFpToG1 = 56,\n    // Cost of hashing to a BLS12-381 G1 point\n    Bls12381HashToG1 = 57,\n    // Cost of performing BLS12-381 G2 point addition\n    Bls12381G2Add = 58,\n    // Cost of performing BLS12-381 G2 scalar multiplication\n    Bls12381G2Mul = 59,\n    // Cost of performing BLS12-381 G2 multi-scalar multiplication (MSM)\n    Bls12381G2Msm = 60,\n    // Cost of mapping a BLS12-381 Fp2 field element to a G2 point\n    Bls12381MapFp2ToG2 = 61,\n    // Cost of hashing to a BLS12-381 G2 point\n    Bls12381HashToG2 = 62,\n    // Cost of performing BLS12-381 pairing operation\n    Bls12381Pairing = 63,\n    // Cost of converting a BLS12-381 scalar element from U256\n    Bls12381FrFromU256 = 64,\n    // Cost of converting a BLS12-381 scalar element to U256\n    Bls12381FrToU256 = 65,\n    // Cost of performing BLS12-381 scalar element addition/subtraction\n    Bls12381FrAddSub = 66,\n    // Cost of performing BLS12-381 scalar element multiplication\n    Bls12381FrMul = 67,\n    // Cost of performing BLS12-381 scalar element exponentiation\n    Bls12381FrPow = 68,\n    // Cost of performing BLS12-381 scalar element inversion\n    Bls12381FrInv = 69,\n\n    // Cost of encoding a BN254 Fp (base field element)\n    Bn254EncodeFp = 70,\n    // Cost of decoding a BN254 Fp (base field element)\n    Bn254DecodeFp = 71,\n    // Cost of checking a G1 point lies on the curve\n    Bn254G1CheckPointOnCurve = 72,\n    // Cost of checking a G2 point lies on the curve\n    Bn254G2CheckPointOnCurve = 73,\n    // Cost of checking a G2 point belongs to the correct subgroup\n    Bn254G2CheckPointInSubgroup = 74,\n    // Cost of converting a BN254 G1 point from projective to affine coordinates\n    Bn254G1ProjectiveToAffine = 75,\n    // Cost of performing BN254 G1 point addition\n    Bn254G1Add = 76,\n    // Cost of performing BN254 G1 scalar multiplication\n    Bn254G1Mul = 77,\n    // Cost of performing BN254 pairing operation\n    Bn254Pairing = 78,\n    // Cost of converting a BN254 scalar element from U256\n    Bn254FrFromU256 = 79,\n    // Cost of converting a BN254 scalar element to U256\n    Bn254FrToU256 = 80,\n    // // Cost of performing BN254 scalar element addition/subtraction\n    Bn254FrAddSub = 81,\n    // Cost of performing BN254 scalar element multiplication\n    Bn254FrMul = 82,\n    // Cost of performing BN254 scalar element exponentiation\n    Bn254FrPow = 83,\n     // Cost of performing BN254 scalar element inversion\n    Bn254FrInv = 84\n};",
       "file_index": 1,
       "member_prefix": "",
       "members": [
@@ -1067,10 +1058,6 @@
         {
           "name": "Bn254FrInv",
           "value": 84
-        },
-        {
-          "name": "Bn254G1Msm",
-          "value": 85
         }
       ]
     },
@@ -1257,102 +1244,6 @@
       ]
     },
     {
-      "kind": "struct",
-      "name": "FrozenLedgerKeys",
-      "fixed_size": null,
-      "source": "struct FrozenLedgerKeys {\n    EncodedLedgerKey keys<>;\n};",
-      "file_index": 1,
-      "fields": [
-        {
-          "name": "keys",
-          "type": {
-            "kind": "var_array",
-            "element": {
-              "kind": "ref",
-              "name": "EncodedLedgerKey"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "kind": "struct",
-      "name": "FrozenLedgerKeysDelta",
-      "fixed_size": null,
-      "source": "struct FrozenLedgerKeysDelta {\n    EncodedLedgerKey keysToFreeze<>;\n    EncodedLedgerKey keysToUnfreeze<>;\n};",
-      "file_index": 1,
-      "fields": [
-        {
-          "name": "keysToFreeze",
-          "type": {
-            "kind": "var_array",
-            "element": {
-              "kind": "ref",
-              "name": "EncodedLedgerKey"
-            }
-          }
-        },
-        {
-          "name": "keysToUnfreeze",
-          "type": {
-            "kind": "var_array",
-            "element": {
-              "kind": "ref",
-              "name": "EncodedLedgerKey"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "kind": "struct",
-      "name": "FreezeBypassTxs",
-      "fixed_size": null,
-      "source": "struct FreezeBypassTxs {\n    Hash txHashes<>;\n};",
-      "file_index": 1,
-      "fields": [
-        {
-          "name": "txHashes",
-          "type": {
-            "kind": "var_array",
-            "element": {
-              "kind": "ref",
-              "name": "Hash"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "kind": "struct",
-      "name": "FreezeBypassTxsDelta",
-      "fixed_size": null,
-      "source": "struct FreezeBypassTxsDelta {\n    Hash addTxs<>;\n    Hash removeTxs<>;\n};",
-      "file_index": 1,
-      "fields": [
-        {
-          "name": "addTxs",
-          "type": {
-            "kind": "var_array",
-            "element": {
-              "kind": "ref",
-              "name": "Hash"
-            }
-          }
-        },
-        {
-          "name": "removeTxs",
-          "type": {
-            "kind": "var_array",
-            "element": {
-              "kind": "ref",
-              "name": "Hash"
-            }
-          }
-        }
-      ]
-    },
-    {
       "kind": "const",
       "name": "CONTRACT_COST_COUNT_LIMIT",
       "value": 1024,
@@ -1376,7 +1267,7 @@
     {
       "kind": "enum",
       "name": "ConfigSettingID",
-      "source": "enum ConfigSettingID\n{\n    CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0,\n    CONFIG_SETTING_CONTRACT_COMPUTE_V0 = 1,\n    CONFIG_SETTING_CONTRACT_LEDGER_COST_V0 = 2,\n    CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0 = 3,\n    CONFIG_SETTING_CONTRACT_EVENTS_V0 = 4,\n    CONFIG_SETTING_CONTRACT_BANDWIDTH_V0 = 5,\n    CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS = 6,\n    CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,\n    CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,\n    CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,\n    CONFIG_SETTING_STATE_ARCHIVAL = 10,\n    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,\n    CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW = 12,\n    CONFIG_SETTING_EVICTION_ITERATOR = 13,\n    CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,\n    CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15,\n    CONFIG_SETTING_SCP_TIMING = 16,\n    CONFIG_SETTING_FROZEN_LEDGER_KEYS = 17,\n    CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA = 18,\n    CONFIG_SETTING_FREEZE_BYPASS_TXS = 19,\n    CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA = 20\n};",
+      "source": "enum ConfigSettingID\n{\n    CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0,\n    CONFIG_SETTING_CONTRACT_COMPUTE_V0 = 1,\n    CONFIG_SETTING_CONTRACT_LEDGER_COST_V0 = 2,\n    CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0 = 3,\n    CONFIG_SETTING_CONTRACT_EVENTS_V0 = 4,\n    CONFIG_SETTING_CONTRACT_BANDWIDTH_V0 = 5,\n    CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS = 6,\n    CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,\n    CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,\n    CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,\n    CONFIG_SETTING_STATE_ARCHIVAL = 10,\n    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,\n    CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW = 12,\n    CONFIG_SETTING_EVICTION_ITERATOR = 13,\n    CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,\n    CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15,\n    CONFIG_SETTING_SCP_TIMING = 16\n};",
       "file_index": 1,
       "member_prefix": "CONFIG_SETTING_",
       "members": [
@@ -1447,22 +1338,6 @@
         {
           "name": "CONFIG_SETTING_SCP_TIMING",
           "value": 16
-        },
-        {
-          "name": "CONFIG_SETTING_FROZEN_LEDGER_KEYS",
-          "value": 17
-        },
-        {
-          "name": "CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA",
-          "value": 18
-        },
-        {
-          "name": "CONFIG_SETTING_FREEZE_BYPASS_TXS",
-          "value": 19
-        },
-        {
-          "name": "CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA",
-          "value": 20
         }
       ]
     },
@@ -1470,7 +1345,7 @@
       "kind": "union",
       "name": "ConfigSettingEntry",
       "fixed_size": null,
-      "source": "union ConfigSettingEntry switch (ConfigSettingID configSettingID)\n{\ncase CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES:\n    uint32 contractMaxSizeBytes;\ncase CONFIG_SETTING_CONTRACT_COMPUTE_V0:\n    ConfigSettingContractComputeV0 contractCompute;\ncase CONFIG_SETTING_CONTRACT_LEDGER_COST_V0:\n    ConfigSettingContractLedgerCostV0 contractLedgerCost;\ncase CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0:\n    ConfigSettingContractHistoricalDataV0 contractHistoricalData;\ncase CONFIG_SETTING_CONTRACT_EVENTS_V0:\n    ConfigSettingContractEventsV0 contractEvents;\ncase CONFIG_SETTING_CONTRACT_BANDWIDTH_V0:\n    ConfigSettingContractBandwidthV0 contractBandwidth;\ncase CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS:\n    ContractCostParams contractCostParamsCpuInsns;\ncase CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES:\n    ContractCostParams contractCostParamsMemBytes;\ncase CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES:\n    uint32 contractDataKeySizeBytes;\ncase CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES:\n    uint32 contractDataEntrySizeBytes;\ncase CONFIG_SETTING_STATE_ARCHIVAL:\n    StateArchivalSettings stateArchivalSettings;\ncase CONFIG_SETTING_CONTRACT_EXECUTION_LANES:\n    ConfigSettingContractExecutionLanesV0 contractExecutionLanes;\ncase CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW:\n    uint64 liveSorobanStateSizeWindow<>;\ncase CONFIG_SETTING_EVICTION_ITERATOR:\n    EvictionIterator evictionIterator;\ncase CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:\n    ConfigSettingContractParallelComputeV0 contractParallelCompute;\ncase CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0:\n    ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;\ncase CONFIG_SETTING_SCP_TIMING:\n    ConfigSettingSCPTiming contractSCPTiming;\ncase CONFIG_SETTING_FROZEN_LEDGER_KEYS:\n    FrozenLedgerKeys frozenLedgerKeys;\ncase CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA:\n    FrozenLedgerKeysDelta frozenLedgerKeysDelta;\ncase CONFIG_SETTING_FREEZE_BYPASS_TXS:\n    FreezeBypassTxs freezeBypassTxs;\ncase CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA:\n    FreezeBypassTxsDelta freezeBypassTxsDelta;\n};",
+      "source": "union ConfigSettingEntry switch (ConfigSettingID configSettingID)\n{\ncase CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES:\n    uint32 contractMaxSizeBytes;\ncase CONFIG_SETTING_CONTRACT_COMPUTE_V0:\n    ConfigSettingContractComputeV0 contractCompute;\ncase CONFIG_SETTING_CONTRACT_LEDGER_COST_V0:\n    ConfigSettingContractLedgerCostV0 contractLedgerCost;\ncase CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0:\n    ConfigSettingContractHistoricalDataV0 contractHistoricalData;\ncase CONFIG_SETTING_CONTRACT_EVENTS_V0:\n    ConfigSettingContractEventsV0 contractEvents;\ncase CONFIG_SETTING_CONTRACT_BANDWIDTH_V0:\n    ConfigSettingContractBandwidthV0 contractBandwidth;\ncase CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS:\n    ContractCostParams contractCostParamsCpuInsns;\ncase CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES:\n    ContractCostParams contractCostParamsMemBytes;\ncase CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES:\n    uint32 contractDataKeySizeBytes;\ncase CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES:\n    uint32 contractDataEntrySizeBytes;\ncase CONFIG_SETTING_STATE_ARCHIVAL:\n    StateArchivalSettings stateArchivalSettings;\ncase CONFIG_SETTING_CONTRACT_EXECUTION_LANES:\n    ConfigSettingContractExecutionLanesV0 contractExecutionLanes;\ncase CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW:\n    uint64 liveSorobanStateSizeWindow<>;\ncase CONFIG_SETTING_EVICTION_ITERATOR:\n    EvictionIterator evictionIterator;\ncase CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:\n    ConfigSettingContractParallelComputeV0 contractParallelCompute;\ncase CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0:\n    ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;\ncase CONFIG_SETTING_SCP_TIMING:\n    ConfigSettingSCPTiming contractSCPTiming;\n};",
       "file_index": 1,
       "discriminant": {
         "name": "configSettingID",
@@ -1702,58 +1577,6 @@
           "type": {
             "kind": "ref",
             "name": "ConfigSettingSCPTiming"
-          }
-        },
-        {
-          "cases": [
-            {
-              "value": 17,
-              "name": "CONFIG_SETTING_FROZEN_LEDGER_KEYS"
-            }
-          ],
-          "name": "frozenLedgerKeys",
-          "type": {
-            "kind": "ref",
-            "name": "FrozenLedgerKeys"
-          }
-        },
-        {
-          "cases": [
-            {
-              "value": 18,
-              "name": "CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA"
-            }
-          ],
-          "name": "frozenLedgerKeysDelta",
-          "type": {
-            "kind": "ref",
-            "name": "FrozenLedgerKeysDelta"
-          }
-        },
-        {
-          "cases": [
-            {
-              "value": 19,
-              "name": "CONFIG_SETTING_FREEZE_BYPASS_TXS"
-            }
-          ],
-          "name": "freezeBypassTxs",
-          "type": {
-            "kind": "ref",
-            "name": "FreezeBypassTxs"
-          }
-        },
-        {
-          "cases": [
-            {
-              "value": 20,
-              "name": "CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA"
-            }
-          ],
-          "name": "freezeBypassTxsDelta",
-          "type": {
-            "kind": "ref",
-            "name": "FreezeBypassTxsDelta"
           }
         }
       ]
@@ -6764,7 +6587,7 @@
     {
       "kind": "enum",
       "name": "EnvelopeType",
-      "source": "enum EnvelopeType\n{\n    ENVELOPE_TYPE_TX_V0 = 0,\n    ENVELOPE_TYPE_SCP = 1,\n    ENVELOPE_TYPE_TX = 2,\n    ENVELOPE_TYPE_AUTH = 3,\n    ENVELOPE_TYPE_SCPVALUE = 4,\n    ENVELOPE_TYPE_TX_FEE_BUMP = 5,\n    ENVELOPE_TYPE_OP_ID = 6,\n    ENVELOPE_TYPE_POOL_REVOKE_OP_ID = 7,\n    ENVELOPE_TYPE_CONTRACT_ID = 8,\n    ENVELOPE_TYPE_SOROBAN_AUTHORIZATION = 9\n#ifdef CAP_0071\n    ,\n    ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS = 10\n#endif\n};",
+      "source": "enum EnvelopeType\n{\n    ENVELOPE_TYPE_TX_V0 = 0,\n    ENVELOPE_TYPE_SCP = 1,\n    ENVELOPE_TYPE_TX = 2,\n    ENVELOPE_TYPE_AUTH = 3,\n    ENVELOPE_TYPE_SCPVALUE = 4,\n    ENVELOPE_TYPE_TX_FEE_BUMP = 5,\n    ENVELOPE_TYPE_OP_ID = 6,\n    ENVELOPE_TYPE_POOL_REVOKE_OP_ID = 7,\n    ENVELOPE_TYPE_CONTRACT_ID = 8,\n    ENVELOPE_TYPE_SOROBAN_AUTHORIZATION = 9\n};",
       "file_index": 8,
       "member_prefix": "ENVELOPE_TYPE_",
       "members": [
@@ -10794,6 +10617,202 @@
       ]
     },
     {
+      "kind": "struct",
+      "name": "CompactTxSet",
+      "fixed_size": null,
+      "source": "struct CompactTxSet\n{\n    Hash txSetHash; // hash of the full tx set\n    Hash previousLedgerHash;\n    int64* baseFee;\n    // 6 byte siphashes\n    opaque txs<>;\n};",
+      "file_index": 10,
+      "fields": [
+        {
+          "name": "txSetHash",
+          "type": {
+            "kind": "ref",
+            "name": "Hash"
+          }
+        },
+        {
+          "name": "previousLedgerHash",
+          "type": {
+            "kind": "ref",
+            "name": "Hash"
+          }
+        },
+        {
+          "name": "baseFee",
+          "type": {
+            "kind": "optional",
+            "element": {
+              "kind": "ref",
+              "name": "int64"
+            }
+          }
+        },
+        {
+          "name": "txs",
+          "type": {
+            "kind": "opaque_var"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "CompactTxSetGet",
+      "fixed_size": 32,
+      "source": "struct CompactTxSetGet\n{\n    Hash txSetHash;\n};",
+      "file_index": 10,
+      "fields": [
+        {
+          "name": "txSetHash",
+          "type": {
+            "kind": "ref",
+            "name": "Hash"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "CompactTxSetGetTxs",
+      "fixed_size": null,
+      "source": "struct CompactTxSetGetTxs\n{\n    Hash txSetHash;\n    // differentially encoded indices of transactions requested\n    opaque indices<>;\n};",
+      "file_index": 10,
+      "fields": [
+        {
+          "name": "txSetHash",
+          "type": {
+            "kind": "ref",
+            "name": "Hash"
+          }
+        },
+        {
+          "name": "indices",
+          "type": {
+            "kind": "opaque_var"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "CompactTxSetTxs",
+      "fixed_size": null,
+      "source": "struct CompactTxSetTxs\n{\n    Hash txSetHash;\n    TransactionEnvelope txs<>;\n};",
+      "file_index": 10,
+      "fields": [
+        {
+          "name": "txSetHash",
+          "type": {
+            "kind": "ref",
+            "name": "Hash"
+          }
+        },
+        {
+          "name": "txs",
+          "type": {
+            "kind": "var_array",
+            "element": {
+              "kind": "ref",
+              "name": "TransactionEnvelope"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "enum",
+      "name": "CompactTxSetMessageType",
+      "source": "enum CompactTxSetMessageType\n{\n    COMPACT_TX_SET = 0,\n    COMPACT_TX_SET_GET = 1,\n    COMPACT_TX_SET_GET_TXS = 2,\n    COMPACT_TX_SET_TXS = 3\n};",
+      "file_index": 10,
+      "member_prefix": "COMPACT_TX_",
+      "members": [
+        {
+          "name": "COMPACT_TX_SET",
+          "value": 0
+        },
+        {
+          "name": "COMPACT_TX_SET_GET",
+          "value": 1
+        },
+        {
+          "name": "COMPACT_TX_SET_GET_TXS",
+          "value": 2
+        },
+        {
+          "name": "COMPACT_TX_SET_TXS",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "kind": "union",
+      "name": "CompactTxSetMessage",
+      "fixed_size": null,
+      "source": "union CompactTxSetMessage switch (CompactTxSetMessageType type)\n{\ncase COMPACT_TX_SET:\n    CompactTxSet compactTxSet;\ncase COMPACT_TX_SET_GET:\n    CompactTxSetGet compactTxSetGet;\ncase COMPACT_TX_SET_GET_TXS:\n    CompactTxSetGetTxs compactTxSetGetTxs;\ncase COMPACT_TX_SET_TXS:\n    CompactTxSetTxs compactTxSetTxs;\n};",
+      "file_index": 10,
+      "discriminant": {
+        "name": "type",
+        "type": {
+          "kind": "ref",
+          "name": "CompactTxSetMessageType"
+        }
+      },
+      "arms": [
+        {
+          "cases": [
+            {
+              "value": 0,
+              "name": "COMPACT_TX_SET"
+            }
+          ],
+          "name": "compactTxSet",
+          "type": {
+            "kind": "ref",
+            "name": "CompactTxSet"
+          }
+        },
+        {
+          "cases": [
+            {
+              "value": 1,
+              "name": "COMPACT_TX_SET_GET"
+            }
+          ],
+          "name": "compactTxSetGet",
+          "type": {
+            "kind": "ref",
+            "name": "CompactTxSetGet"
+          }
+        },
+        {
+          "cases": [
+            {
+              "value": 2,
+              "name": "COMPACT_TX_SET_GET_TXS"
+            }
+          ],
+          "name": "compactTxSetGetTxs",
+          "type": {
+            "kind": "ref",
+            "name": "CompactTxSetGetTxs"
+          }
+        },
+        {
+          "cases": [
+            {
+              "value": 3,
+              "name": "COMPACT_TX_SET_TXS"
+            }
+          ],
+          "name": "compactTxSetTxs",
+          "type": {
+            "kind": "ref",
+            "name": "CompactTxSetTxs"
+          }
+        }
+      ]
+    },
+    {
       "kind": "const",
       "name": "MAX_OPS_PER_TX",
       "value": 100,
@@ -12304,7 +12323,7 @@
     {
       "kind": "enum",
       "name": "SorobanCredentialsType",
-      "source": "enum SorobanCredentialsType\n{\n    SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0,\n    SOROBAN_CREDENTIALS_ADDRESS = 1\n#ifdef CAP_0071\n    ,\n    SOROBAN_CREDENTIALS_ADDRESS_V2 = 2,\n    SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 3\n#endif\n};",
+      "source": "enum SorobanCredentialsType\n{\n    SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0,\n    SOROBAN_CREDENTIALS_ADDRESS = 1\n};",
       "file_index": 11,
       "member_prefix": "SOROBAN_CREDENTIALS_",
       "members": [
@@ -12322,7 +12341,7 @@
       "kind": "union",
       "name": "SorobanCredentials",
       "fixed_size": null,
-      "source": "union SorobanCredentials switch (SorobanCredentialsType type)\n{\ncase SOROBAN_CREDENTIALS_SOURCE_ACCOUNT:\n    void;\ncase SOROBAN_CREDENTIALS_ADDRESS:\n    SorobanAddressCredentials address;\n#ifdef CAP_0071\ncase SOROBAN_CREDENTIALS_ADDRESS_V2:\n    SorobanAddressCredentials addressV2;\ncase SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES:\n    SorobanAddressCredentialsWithDelegates addressWithDelegates;\n#endif\n};",
+      "source": "union SorobanCredentials switch (SorobanCredentialsType type)\n{\ncase SOROBAN_CREDENTIALS_SOURCE_ACCOUNT:\n    void;\ncase SOROBAN_CREDENTIALS_ADDRESS:\n    SorobanAddressCredentials address;\n};",
       "file_index": 11,
       "discriminant": {
         "name": "type",
@@ -12980,7 +12999,7 @@
       "kind": "union",
       "name": "HashIDPreimage",
       "fixed_size": null,
-      "source": "union HashIDPreimage switch (EnvelopeType type)\n{\ncase ENVELOPE_TYPE_OP_ID:\n    struct\n    {\n        AccountID sourceAccount;\n        SequenceNumber seqNum;\n        uint32 opNum;\n    } operationID;\ncase ENVELOPE_TYPE_POOL_REVOKE_OP_ID:\n    struct\n    {\n        AccountID sourceAccount;\n        SequenceNumber seqNum; \n        uint32 opNum;\n        PoolID liquidityPoolID;\n        Asset asset;\n    } revokeID;\ncase ENVELOPE_TYPE_CONTRACT_ID:\n    struct\n    {\n        Hash networkID;\n        ContractIDPreimage contractIDPreimage;\n    } contractID;\ncase ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:\n    struct\n    {\n        Hash networkID;\n        int64 nonce;\n        uint32 signatureExpirationLedger;\n        SorobanAuthorizedInvocation invocation;\n    } sorobanAuthorization;\n#ifdef CAP_0071\ncase ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS:\n    struct\n    {\n        Hash networkID;\n        int64 nonce;\n        uint32 signatureExpirationLedger;\n        SCAddress address;\n        SorobanAuthorizedInvocation invocation;\n    } sorobanAuthorizationWithAddress;\n#endif\n};",
+      "source": "union HashIDPreimage switch (EnvelopeType type)\n{\ncase ENVELOPE_TYPE_OP_ID:\n    struct\n    {\n        AccountID sourceAccount;\n        SequenceNumber seqNum;\n        uint32 opNum;\n    } operationID;\ncase ENVELOPE_TYPE_POOL_REVOKE_OP_ID:\n    struct\n    {\n        AccountID sourceAccount;\n        SequenceNumber seqNum; \n        uint32 opNum;\n        PoolID liquidityPoolID;\n        Asset asset;\n    } revokeID;\ncase ENVELOPE_TYPE_CONTRACT_ID:\n    struct\n    {\n        Hash networkID;\n        ContractIDPreimage contractIDPreimage;\n    } contractID;\ncase ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:\n    struct\n    {\n        Hash networkID;\n        int64 nonce;\n        uint32 signatureExpirationLedger;\n        SorobanAuthorizedInvocation invocation;\n    } sorobanAuthorization;\n};",
       "file_index": 11,
       "discriminant": {
         "name": "type",
@@ -15861,7 +15880,7 @@
     {
       "kind": "enum",
       "name": "ClaimClaimableBalanceResultCode",
-      "source": "enum ClaimClaimableBalanceResultCode\n{\n    CLAIM_CLAIMABLE_BALANCE_SUCCESS = 0,\n    CLAIM_CLAIMABLE_BALANCE_DOES_NOT_EXIST = -1,\n    CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM = -2,\n    CLAIM_CLAIMABLE_BALANCE_LINE_FULL = -3,\n    CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4,\n    CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED = -5,\n    CLAIM_CLAIMABLE_BALANCE_TRUSTLINE_FROZEN = -6\n};",
+      "source": "enum ClaimClaimableBalanceResultCode\n{\n    CLAIM_CLAIMABLE_BALANCE_SUCCESS = 0,\n    CLAIM_CLAIMABLE_BALANCE_DOES_NOT_EXIST = -1,\n    CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM = -2,\n    CLAIM_CLAIMABLE_BALANCE_LINE_FULL = -3,\n    CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4,\n    CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED = -5\n};",
       "file_index": 11,
       "member_prefix": "CLAIM_CLAIMABLE_BALANCE_",
       "members": [
@@ -15888,10 +15907,6 @@
         {
           "name": "CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED",
           "value": -5
-        },
-        {
-          "name": "CLAIM_CLAIMABLE_BALANCE_TRUSTLINE_FROZEN",
-          "value": -6
         }
       ]
     },
@@ -15899,7 +15914,7 @@
       "kind": "union",
       "name": "ClaimClaimableBalanceResult",
       "fixed_size": 4,
-      "source": "union ClaimClaimableBalanceResult switch (ClaimClaimableBalanceResultCode code)\n{\ncase CLAIM_CLAIMABLE_BALANCE_SUCCESS:\n    void;\ncase CLAIM_CLAIMABLE_BALANCE_DOES_NOT_EXIST:\ncase CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM:\ncase CLAIM_CLAIMABLE_BALANCE_LINE_FULL:\ncase CLAIM_CLAIMABLE_BALANCE_NO_TRUST:\ncase CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED:\ncase CLAIM_CLAIMABLE_BALANCE_TRUSTLINE_FROZEN:\n    void;\n};",
+      "source": "union ClaimClaimableBalanceResult switch (ClaimClaimableBalanceResultCode code)\n{\ncase CLAIM_CLAIMABLE_BALANCE_SUCCESS:\n    void;\ncase CLAIM_CLAIMABLE_BALANCE_DOES_NOT_EXIST:\ncase CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM:\ncase CLAIM_CLAIMABLE_BALANCE_LINE_FULL:\ncase CLAIM_CLAIMABLE_BALANCE_NO_TRUST:\ncase CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED:\n    void;\n};",
       "file_index": 11,
       "discriminant": {
         "name": "code",
@@ -15939,10 +15954,6 @@
             {
               "value": -5,
               "name": "CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED"
-            },
-            {
-              "value": -6,
-              "name": "CLAIM_CLAIMABLE_BALANCE_TRUSTLINE_FROZEN"
             }
           ],
           "name": null
@@ -16378,7 +16389,7 @@
     {
       "kind": "enum",
       "name": "LiquidityPoolDepositResultCode",
-      "source": "enum LiquidityPoolDepositResultCode\n{\n    // codes considered as \"success\" for the operation\n    LIQUIDITY_POOL_DEPOSIT_SUCCESS = 0,\n\n    // codes considered as \"failure\" for the operation\n    LIQUIDITY_POOL_DEPOSIT_MALFORMED = -1,      // bad input\n    LIQUIDITY_POOL_DEPOSIT_NO_TRUST = -2,       // no trust line for one of the\n                                                // assets\n    LIQUIDITY_POOL_DEPOSIT_NOT_AUTHORIZED = -3, // not authorized for one of the\n                                                // assets\n    LIQUIDITY_POOL_DEPOSIT_UNDERFUNDED = -4,    // not enough balance for one of\n                                                // the assets\n    LIQUIDITY_POOL_DEPOSIT_LINE_FULL = -5,      // pool share trust line doesn't\n                                                // have sufficient limit\n    LIQUIDITY_POOL_DEPOSIT_BAD_PRICE = -6,      // deposit price outside bounds\n    LIQUIDITY_POOL_DEPOSIT_POOL_FULL = -7,      // pool reserves are full\n    LIQUIDITY_POOL_DEPOSIT_TRUSTLINE_FROZEN = -8  // trustline for one of the \n                                                  // assets is frozen\n};",
+      "source": "enum LiquidityPoolDepositResultCode\n{\n    // codes considered as \"success\" for the operation\n    LIQUIDITY_POOL_DEPOSIT_SUCCESS = 0,\n\n    // codes considered as \"failure\" for the operation\n    LIQUIDITY_POOL_DEPOSIT_MALFORMED = -1,      // bad input\n    LIQUIDITY_POOL_DEPOSIT_NO_TRUST = -2,       // no trust line for one of the\n                                                // assets\n    LIQUIDITY_POOL_DEPOSIT_NOT_AUTHORIZED = -3, // not authorized for one of the\n                                                // assets\n    LIQUIDITY_POOL_DEPOSIT_UNDERFUNDED = -4,    // not enough balance for one of\n                                                // the assets\n    LIQUIDITY_POOL_DEPOSIT_LINE_FULL = -5,      // pool share trust line doesn't\n                                                // have sufficient limit\n    LIQUIDITY_POOL_DEPOSIT_BAD_PRICE = -6,      // deposit price outside bounds\n    LIQUIDITY_POOL_DEPOSIT_POOL_FULL = -7       // pool reserves are full\n};",
       "file_index": 11,
       "member_prefix": "LIQUIDITY_POOL_DEPOSIT_",
       "members": [
@@ -16413,10 +16424,6 @@
         {
           "name": "LIQUIDITY_POOL_DEPOSIT_POOL_FULL",
           "value": -7
-        },
-        {
-          "name": "LIQUIDITY_POOL_DEPOSIT_TRUSTLINE_FROZEN",
-          "value": -8
         }
       ]
     },
@@ -16424,7 +16431,7 @@
       "kind": "union",
       "name": "LiquidityPoolDepositResult",
       "fixed_size": 4,
-      "source": "union LiquidityPoolDepositResult switch (LiquidityPoolDepositResultCode code)\n{\ncase LIQUIDITY_POOL_DEPOSIT_SUCCESS:\n    void;\ncase LIQUIDITY_POOL_DEPOSIT_MALFORMED:\ncase LIQUIDITY_POOL_DEPOSIT_NO_TRUST:\ncase LIQUIDITY_POOL_DEPOSIT_NOT_AUTHORIZED:\ncase LIQUIDITY_POOL_DEPOSIT_UNDERFUNDED:\ncase LIQUIDITY_POOL_DEPOSIT_LINE_FULL:\ncase LIQUIDITY_POOL_DEPOSIT_BAD_PRICE:\ncase LIQUIDITY_POOL_DEPOSIT_POOL_FULL:\ncase LIQUIDITY_POOL_DEPOSIT_TRUSTLINE_FROZEN:\n    void;\n};",
+      "source": "union LiquidityPoolDepositResult switch (LiquidityPoolDepositResultCode code)\n{\ncase LIQUIDITY_POOL_DEPOSIT_SUCCESS:\n    void;\ncase LIQUIDITY_POOL_DEPOSIT_MALFORMED:\ncase LIQUIDITY_POOL_DEPOSIT_NO_TRUST:\ncase LIQUIDITY_POOL_DEPOSIT_NOT_AUTHORIZED:\ncase LIQUIDITY_POOL_DEPOSIT_UNDERFUNDED:\ncase LIQUIDITY_POOL_DEPOSIT_LINE_FULL:\ncase LIQUIDITY_POOL_DEPOSIT_BAD_PRICE:\ncase LIQUIDITY_POOL_DEPOSIT_POOL_FULL:\n    void;\n};",
       "file_index": 11,
       "discriminant": {
         "name": "code",
@@ -16472,10 +16479,6 @@
             {
               "value": -7,
               "name": "LIQUIDITY_POOL_DEPOSIT_POOL_FULL"
-            },
-            {
-              "value": -8,
-              "name": "LIQUIDITY_POOL_DEPOSIT_TRUSTLINE_FROZEN"
             }
           ],
           "name": null
@@ -16485,7 +16488,7 @@
     {
       "kind": "enum",
       "name": "LiquidityPoolWithdrawResultCode",
-      "source": "enum LiquidityPoolWithdrawResultCode\n{\n    // codes considered as \"success\" for the operation\n    LIQUIDITY_POOL_WITHDRAW_SUCCESS = 0,\n\n    // codes considered as \"failure\" for the operation\n    LIQUIDITY_POOL_WITHDRAW_MALFORMED = -1,    // bad input\n    LIQUIDITY_POOL_WITHDRAW_NO_TRUST = -2,     // no trust line for one of the\n                                               // assets\n    LIQUIDITY_POOL_WITHDRAW_UNDERFUNDED = -3,  // not enough balance of the\n                                               // pool share\n    LIQUIDITY_POOL_WITHDRAW_LINE_FULL = -4,    // would go above limit for one\n                                               // of the assets\n    LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM = -5, // didn't withdraw enough\n    LIQUIDITY_POOL_WITHDRAW_TRUSTLINE_FROZEN = -6  // trustline for one of the \n                                                   // assets is frozen\n};",
+      "source": "enum LiquidityPoolWithdrawResultCode\n{\n    // codes considered as \"success\" for the operation\n    LIQUIDITY_POOL_WITHDRAW_SUCCESS = 0,\n\n    // codes considered as \"failure\" for the operation\n    LIQUIDITY_POOL_WITHDRAW_MALFORMED = -1,    // bad input\n    LIQUIDITY_POOL_WITHDRAW_NO_TRUST = -2,     // no trust line for one of the\n                                               // assets\n    LIQUIDITY_POOL_WITHDRAW_UNDERFUNDED = -3,  // not enough balance of the\n                                               // pool share\n    LIQUIDITY_POOL_WITHDRAW_LINE_FULL = -4,    // would go above limit for one\n                                               // of the assets\n    LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM = -5 // didn't withdraw enough\n};",
       "file_index": 11,
       "member_prefix": "LIQUIDITY_POOL_WITHDRAW_",
       "members": [
@@ -16512,10 +16515,6 @@
         {
           "name": "LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM",
           "value": -5
-        },
-        {
-          "name": "LIQUIDITY_POOL_WITHDRAW_TRUSTLINE_FROZEN",
-          "value": -6
         }
       ]
     },
@@ -16523,7 +16522,7 @@
       "kind": "union",
       "name": "LiquidityPoolWithdrawResult",
       "fixed_size": 4,
-      "source": "union LiquidityPoolWithdrawResult switch (LiquidityPoolWithdrawResultCode code)\n{\ncase LIQUIDITY_POOL_WITHDRAW_SUCCESS:\n    void;\ncase LIQUIDITY_POOL_WITHDRAW_MALFORMED:\ncase LIQUIDITY_POOL_WITHDRAW_NO_TRUST:\ncase LIQUIDITY_POOL_WITHDRAW_UNDERFUNDED:\ncase LIQUIDITY_POOL_WITHDRAW_LINE_FULL:\ncase LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM:\ncase LIQUIDITY_POOL_WITHDRAW_TRUSTLINE_FROZEN:\n    void;\n};",
+      "source": "union LiquidityPoolWithdrawResult switch (LiquidityPoolWithdrawResultCode code)\n{\ncase LIQUIDITY_POOL_WITHDRAW_SUCCESS:\n    void;\ncase LIQUIDITY_POOL_WITHDRAW_MALFORMED:\ncase LIQUIDITY_POOL_WITHDRAW_NO_TRUST:\ncase LIQUIDITY_POOL_WITHDRAW_UNDERFUNDED:\ncase LIQUIDITY_POOL_WITHDRAW_LINE_FULL:\ncase LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM:\n    void;\n};",
       "file_index": 11,
       "discriminant": {
         "name": "code",
@@ -16563,10 +16562,6 @@
             {
               "value": -5,
               "name": "LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM"
-            },
-            {
-              "value": -6,
-              "name": "LIQUIDITY_POOL_WITHDRAW_TRUSTLINE_FROZEN"
             }
           ],
           "name": null
@@ -17259,7 +17254,7 @@
     {
       "kind": "enum",
       "name": "TransactionResultCode",
-      "source": "enum TransactionResultCode\n{\n    txFEE_BUMP_INNER_SUCCESS = 1, // fee bump inner transaction succeeded\n    txSUCCESS = 0,                // all operations succeeded\n\n    txFAILED = -1, // one of the operations failed (none were applied)\n\n    txTOO_EARLY = -2,         // ledger closeTime before minTime\n    txTOO_LATE = -3,          // ledger closeTime after maxTime\n    txMISSING_OPERATION = -4, // no operation was specified\n    txBAD_SEQ = -5,           // sequence number does not match source account\n\n    txBAD_AUTH = -6,             // too few valid signatures / wrong network\n    txINSUFFICIENT_BALANCE = -7, // fee would bring account below reserve\n    txNO_ACCOUNT = -8,           // source account not found\n    txINSUFFICIENT_FEE = -9,     // fee is too small\n    txBAD_AUTH_EXTRA = -10,      // unused signatures attached to transaction\n    txINTERNAL_ERROR = -11,      // an unknown error occurred\n\n    txNOT_SUPPORTED = -12,          // transaction type not supported\n    txFEE_BUMP_INNER_FAILED = -13,  // fee bump inner transaction failed\n    txBAD_SPONSORSHIP = -14,        // sponsorship not confirmed\n    txBAD_MIN_SEQ_AGE_OR_GAP = -15, // minSeqAge or minSeqLedgerGap conditions not met\n    txMALFORMED = -16,              // precondition is invalid\n    txSOROBAN_INVALID = -17,        // soroban-specific preconditions were not met\n    txFROZEN_KEY_ACCESSED = -18     // a 'frozen' ledger key is accessed by any operation\n};",
+      "source": "enum TransactionResultCode\n{\n    txFEE_BUMP_INNER_SUCCESS = 1, // fee bump inner transaction succeeded\n    txSUCCESS = 0,                // all operations succeeded\n\n    txFAILED = -1, // one of the operations failed (none were applied)\n\n    txTOO_EARLY = -2,         // ledger closeTime before minTime\n    txTOO_LATE = -3,          // ledger closeTime after maxTime\n    txMISSING_OPERATION = -4, // no operation was specified\n    txBAD_SEQ = -5,           // sequence number does not match source account\n\n    txBAD_AUTH = -6,             // too few valid signatures / wrong network\n    txINSUFFICIENT_BALANCE = -7, // fee would bring account below reserve\n    txNO_ACCOUNT = -8,           // source account not found\n    txINSUFFICIENT_FEE = -9,     // fee is too small\n    txBAD_AUTH_EXTRA = -10,      // unused signatures attached to transaction\n    txINTERNAL_ERROR = -11,      // an unknown error occurred\n\n    txNOT_SUPPORTED = -12,          // transaction type not supported\n    txFEE_BUMP_INNER_FAILED = -13,  // fee bump inner transaction failed\n    txBAD_SPONSORSHIP = -14,        // sponsorship not confirmed\n    txBAD_MIN_SEQ_AGE_OR_GAP = -15, // minSeqAge or minSeqLedgerGap conditions not met\n    txMALFORMED = -16,              // precondition is invalid\n    txSOROBAN_INVALID = -17         // soroban-specific preconditions were not met\n};",
       "file_index": 11,
       "member_prefix": "",
       "members": [
@@ -17338,10 +17333,6 @@
         {
           "name": "txSOROBAN_INVALID",
           "value": -17
-        },
-        {
-          "name": "txFROZEN_KEY_ACCESSED",
-          "value": -18
         }
       ]
     },
@@ -17349,7 +17340,7 @@
       "kind": "union",
       "name": "InnerTransactionResultResult",
       "fixed_size": null,
-      "source": "union switch (TransactionResultCode code)\n    {\n    // txFEE_BUMP_INNER_SUCCESS is not included\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // txFEE_BUMP_INNER_FAILED is not included\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n    case txFROZEN_KEY_ACCESSED:\n        void;\n    }",
+      "source": "union switch (TransactionResultCode code)\n    {\n    // txFEE_BUMP_INNER_SUCCESS is not included\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // txFEE_BUMP_INNER_FAILED is not included\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n        void;\n    }",
       "file_index": 11,
       "discriminant": {
         "name": "code",
@@ -17440,10 +17431,6 @@
             {
               "value": -17,
               "name": "txSOROBAN_INVALID"
-            },
-            {
-              "value": -18,
-              "name": "txFROZEN_KEY_ACCESSED"
             }
           ],
           "name": null
@@ -17477,7 +17464,7 @@
       "kind": "struct",
       "name": "InnerTransactionResult",
       "fixed_size": null,
-      "source": "struct InnerTransactionResult\n{\n    // Always 0. Here for binary compatibility.\n    int64 feeCharged;\n\n    union switch (TransactionResultCode code)\n    {\n    // txFEE_BUMP_INNER_SUCCESS is not included\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // txFEE_BUMP_INNER_FAILED is not included\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n    case txFROZEN_KEY_ACCESSED:\n        void;\n    }\n    result;\n\n    // reserved for future use\n    union switch (int v)\n    {\n    case 0:\n        void;\n    }\n    ext;\n};",
+      "source": "struct InnerTransactionResult\n{\n    // Always 0. Here for binary compatibility.\n    int64 feeCharged;\n\n    union switch (TransactionResultCode code)\n    {\n    // txFEE_BUMP_INNER_SUCCESS is not included\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // txFEE_BUMP_INNER_FAILED is not included\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n        void;\n    }\n    result;\n\n    // reserved for future use\n    union switch (int v)\n    {\n    case 0:\n        void;\n    }\n    ext;\n};",
       "file_index": 11,
       "fields": [
         {
@@ -17530,7 +17517,7 @@
       "kind": "union",
       "name": "TransactionResultResult",
       "fixed_size": null,
-      "source": "union switch (TransactionResultCode code)\n    {\n    case txFEE_BUMP_INNER_SUCCESS:\n    case txFEE_BUMP_INNER_FAILED:\n        InnerTransactionResultPair innerResultPair;\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // case txFEE_BUMP_INNER_FAILED: handled above\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n    case txFROZEN_KEY_ACCESSED:\n        void;\n    }",
+      "source": "union switch (TransactionResultCode code)\n    {\n    case txFEE_BUMP_INNER_SUCCESS:\n    case txFEE_BUMP_INNER_FAILED:\n        InnerTransactionResultPair innerResultPair;\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // case txFEE_BUMP_INNER_FAILED: handled above\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n        void;\n    }",
       "file_index": 11,
       "discriminant": {
         "name": "code",
@@ -17638,10 +17625,6 @@
             {
               "value": -17,
               "name": "txSOROBAN_INVALID"
-            },
-            {
-              "value": -18,
-              "name": "txFROZEN_KEY_ACCESSED"
             }
           ],
           "name": null
@@ -17675,7 +17658,7 @@
       "kind": "struct",
       "name": "TransactionResult",
       "fixed_size": null,
-      "source": "struct TransactionResult\n{\n    int64 feeCharged; // actual fee charged for the transaction\n\n    union switch (TransactionResultCode code)\n    {\n    case txFEE_BUMP_INNER_SUCCESS:\n    case txFEE_BUMP_INNER_FAILED:\n        InnerTransactionResultPair innerResultPair;\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // case txFEE_BUMP_INNER_FAILED: handled above\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n    case txFROZEN_KEY_ACCESSED:\n        void;\n    }\n    result;\n\n    // reserved for future use\n    union switch (int v)\n    {\n    case 0:\n        void;\n    }\n    ext;\n};",
+      "source": "struct TransactionResult\n{\n    int64 feeCharged; // actual fee charged for the transaction\n\n    union switch (TransactionResultCode code)\n    {\n    case txFEE_BUMP_INNER_SUCCESS:\n    case txFEE_BUMP_INNER_FAILED:\n        InnerTransactionResultPair innerResultPair;\n    case txSUCCESS:\n    case txFAILED:\n        OperationResult results<>;\n    case txTOO_EARLY:\n    case txTOO_LATE:\n    case txMISSING_OPERATION:\n    case txBAD_SEQ:\n    case txBAD_AUTH:\n    case txINSUFFICIENT_BALANCE:\n    case txNO_ACCOUNT:\n    case txINSUFFICIENT_FEE:\n    case txBAD_AUTH_EXTRA:\n    case txINTERNAL_ERROR:\n    case txNOT_SUPPORTED:\n    // case txFEE_BUMP_INNER_FAILED: handled above\n    case txBAD_SPONSORSHIP:\n    case txBAD_MIN_SEQ_AGE_OR_GAP:\n    case txMALFORMED:\n    case txSOROBAN_INVALID:\n        void;\n    }\n    result;\n\n    // reserved for future use\n    union switch (int v)\n    {\n    case 0:\n        void;\n    }\n    ext;\n};",
       "file_index": 11,
       "fields": [
         {

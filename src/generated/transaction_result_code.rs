@@ -28,8 +28,7 @@ use super::*;
 ///     txBAD_SPONSORSHIP = -14,        // sponsorship not confirmed
 ///     txBAD_MIN_SEQ_AGE_OR_GAP = -15, // minSeqAge or minSeqLedgerGap conditions not met
 ///     txMALFORMED = -16,              // precondition is invalid
-///     txSOROBAN_INVALID = -17,        // soroban-specific preconditions were not met
-///     txFROZEN_KEY_ACCESSED = -18     // a 'frozen' ledger key is accessed by any operation
+///     txSOROBAN_INVALID = -17         // soroban-specific preconditions were not met
 /// };
 /// ```
 ///
@@ -65,7 +64,6 @@ pub enum TransactionResultCode {
     TxBadMinSeqAgeOrGap = -15,
     TxMalformed = -16,
     TxSorobanInvalid = -17,
-    TxFrozenKeyAccessed = -18,
 }
 
 impl TransactionResultCode {
@@ -89,7 +87,6 @@ impl TransactionResultCode {
         TransactionResultCode::TxBadMinSeqAgeOrGap,
         TransactionResultCode::TxMalformed,
         TransactionResultCode::TxSorobanInvalid,
-        TransactionResultCode::TxFrozenKeyAccessed,
     ];
     pub const VARIANTS: [TransactionResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -120,7 +117,6 @@ impl TransactionResultCode {
         "TxBadMinSeqAgeOrGap",
         "TxMalformed",
         "TxSorobanInvalid",
-        "TxFrozenKeyAccessed",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -154,7 +150,6 @@ impl TransactionResultCode {
             Self::TxBadMinSeqAgeOrGap => "TxBadMinSeqAgeOrGap",
             Self::TxMalformed => "TxMalformed",
             Self::TxSorobanInvalid => "TxSorobanInvalid",
-            Self::TxFrozenKeyAccessed => "TxFrozenKeyAccessed",
         }
     }
 
@@ -209,7 +204,6 @@ impl TryFrom<i32> for TransactionResultCode {
             -15 => TransactionResultCode::TxBadMinSeqAgeOrGap,
             -16 => TransactionResultCode::TxMalformed,
             -17 => TransactionResultCode::TxSorobanInvalid,
-            -18 => TransactionResultCode::TxFrozenKeyAccessed,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };

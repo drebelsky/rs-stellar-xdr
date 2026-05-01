@@ -13,7 +13,6 @@ use super::*;
 /// case CLAIM_CLAIMABLE_BALANCE_LINE_FULL:
 /// case CLAIM_CLAIMABLE_BALANCE_NO_TRUST:
 /// case CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED:
-/// case CLAIM_CLAIMABLE_BALANCE_TRUSTLINE_FROZEN:
 ///     void;
 /// };
 /// ```
@@ -37,7 +36,6 @@ pub enum ClaimClaimableBalanceResult {
     LineFull,
     NoTrust,
     NotAuthorized,
-    TrustlineFrozen,
 }
 
 #[cfg(feature = "alloc")]
@@ -55,7 +53,6 @@ impl ClaimClaimableBalanceResult {
         ClaimClaimableBalanceResultCode::LineFull,
         ClaimClaimableBalanceResultCode::NoTrust,
         ClaimClaimableBalanceResultCode::NotAuthorized,
-        ClaimClaimableBalanceResultCode::TrustlineFrozen,
     ];
     pub const VARIANTS: [ClaimClaimableBalanceResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -73,7 +70,6 @@ impl ClaimClaimableBalanceResult {
         "LineFull",
         "NoTrust",
         "NotAuthorized",
-        "TrustlineFrozen",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -94,7 +90,6 @@ impl ClaimClaimableBalanceResult {
             Self::LineFull => "LineFull",
             Self::NoTrust => "NoTrust",
             Self::NotAuthorized => "NotAuthorized",
-            Self::TrustlineFrozen => "TrustlineFrozen",
         }
     }
 
@@ -108,7 +103,6 @@ impl ClaimClaimableBalanceResult {
             Self::LineFull => ClaimClaimableBalanceResultCode::LineFull,
             Self::NoTrust => ClaimClaimableBalanceResultCode::NoTrust,
             Self::NotAuthorized => ClaimClaimableBalanceResultCode::NotAuthorized,
-            Self::TrustlineFrozen => ClaimClaimableBalanceResultCode::TrustlineFrozen,
         }
     }
 
@@ -154,7 +148,6 @@ impl ReadXdr for ClaimClaimableBalanceResult {
                 ClaimClaimableBalanceResultCode::LineFull => Self::LineFull,
                 ClaimClaimableBalanceResultCode::NoTrust => Self::NoTrust,
                 ClaimClaimableBalanceResultCode::NotAuthorized => Self::NotAuthorized,
-                ClaimClaimableBalanceResultCode::TrustlineFrozen => Self::TrustlineFrozen,
                 #[allow(unreachable_patterns)]
                 _ => return Err(Error::Invalid),
             };
@@ -176,7 +169,6 @@ impl WriteXdr for ClaimClaimableBalanceResult {
                 Self::LineFull => ().write_xdr(w)?,
                 Self::NoTrust => ().write_xdr(w)?,
                 Self::NotAuthorized => ().write_xdr(w)?,
-                Self::TrustlineFrozen => ().write_xdr(w)?,
             };
             Ok(())
         })

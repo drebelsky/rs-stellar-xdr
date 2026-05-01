@@ -185,9 +185,7 @@ use super::*;
 ///     // Cost of performing BN254 scalar element exponentiation
 ///     Bn254FrPow = 83,
 ///      // Cost of performing BN254 scalar element inversion
-///     Bn254FrInv = 84,
-///     // Cost of performing BN254 G1 multi-scalar multiplication (MSM)
-///     Bn254G1Msm = 85
+///     Bn254FrInv = 84
 /// };
 /// ```
 ///
@@ -289,7 +287,6 @@ pub enum ContractCostType {
     Bn254FrMul = 82,
     Bn254FrPow = 83,
     Bn254FrInv = 84,
-    Bn254G1Msm = 85,
 }
 
 impl ContractCostType {
@@ -379,7 +376,6 @@ impl ContractCostType {
         ContractCostType::Bn254FrMul,
         ContractCostType::Bn254FrPow,
         ContractCostType::Bn254FrInv,
-        ContractCostType::Bn254G1Msm,
     ];
     pub const VARIANTS: [ContractCostType; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -476,7 +472,6 @@ impl ContractCostType {
         "Bn254FrMul",
         "Bn254FrPow",
         "Bn254FrInv",
-        "Bn254G1Msm",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -576,7 +571,6 @@ impl ContractCostType {
             Self::Bn254FrMul => "Bn254FrMul",
             Self::Bn254FrPow => "Bn254FrPow",
             Self::Bn254FrInv => "Bn254FrInv",
-            Self::Bn254G1Msm => "Bn254G1Msm",
         }
     }
 
@@ -697,7 +691,6 @@ impl TryFrom<i32> for ContractCostType {
             82 => ContractCostType::Bn254FrMul,
             83 => ContractCostType::Bn254FrPow,
             84 => ContractCostType::Bn254FrInv,
-            85 => ContractCostType::Bn254G1Msm,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };

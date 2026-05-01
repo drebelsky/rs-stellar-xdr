@@ -20,9 +20,7 @@ use super::*;
 ///     LIQUIDITY_POOL_DEPOSIT_LINE_FULL = -5,      // pool share trust line doesn't
 ///                                                 // have sufficient limit
 ///     LIQUIDITY_POOL_DEPOSIT_BAD_PRICE = -6,      // deposit price outside bounds
-///     LIQUIDITY_POOL_DEPOSIT_POOL_FULL = -7,      // pool reserves are full
-///     LIQUIDITY_POOL_DEPOSIT_TRUSTLINE_FROZEN = -8  // trustline for one of the
-///                                                   // assets is frozen
+///     LIQUIDITY_POOL_DEPOSIT_POOL_FULL = -7       // pool reserves are full
 /// };
 /// ```
 ///
@@ -47,7 +45,6 @@ pub enum LiquidityPoolDepositResultCode {
     LineFull = -5,
     BadPrice = -6,
     PoolFull = -7,
-    TrustlineFrozen = -8,
 }
 
 impl LiquidityPoolDepositResultCode {
@@ -60,7 +57,6 @@ impl LiquidityPoolDepositResultCode {
         LiquidityPoolDepositResultCode::LineFull,
         LiquidityPoolDepositResultCode::BadPrice,
         LiquidityPoolDepositResultCode::PoolFull,
-        LiquidityPoolDepositResultCode::TrustlineFrozen,
     ];
     pub const VARIANTS: [LiquidityPoolDepositResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -80,7 +76,6 @@ impl LiquidityPoolDepositResultCode {
         "LineFull",
         "BadPrice",
         "PoolFull",
-        "TrustlineFrozen",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -103,7 +98,6 @@ impl LiquidityPoolDepositResultCode {
             Self::LineFull => "LineFull",
             Self::BadPrice => "BadPrice",
             Self::PoolFull => "PoolFull",
-            Self::TrustlineFrozen => "TrustlineFrozen",
         }
     }
 
@@ -147,7 +141,6 @@ impl TryFrom<i32> for LiquidityPoolDepositResultCode {
             -5 => LiquidityPoolDepositResultCode::LineFull,
             -6 => LiquidityPoolDepositResultCode::BadPrice,
             -7 => LiquidityPoolDepositResultCode::PoolFull,
-            -8 => LiquidityPoolDepositResultCode::TrustlineFrozen,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };

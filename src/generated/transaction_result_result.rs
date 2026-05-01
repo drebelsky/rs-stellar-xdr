@@ -28,7 +28,6 @@ use super::*;
 ///     case txBAD_MIN_SEQ_AGE_OR_GAP:
 ///     case txMALFORMED:
 ///     case txSOROBAN_INVALID:
-///     case txFROZEN_KEY_ACCESSED:
 ///         void;
 ///     }
 /// ```
@@ -65,7 +64,6 @@ pub enum TransactionResultResult {
     TxBadMinSeqAgeOrGap,
     TxMalformed,
     TxSorobanInvalid,
-    TxFrozenKeyAccessed,
 }
 
 #[cfg(feature = "alloc")]
@@ -96,7 +94,6 @@ impl TransactionResultResult {
         TransactionResultCode::TxBadMinSeqAgeOrGap,
         TransactionResultCode::TxMalformed,
         TransactionResultCode::TxSorobanInvalid,
-        TransactionResultCode::TxFrozenKeyAccessed,
     ];
     pub const VARIANTS: [TransactionResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -127,7 +124,6 @@ impl TransactionResultResult {
         "TxBadMinSeqAgeOrGap",
         "TxMalformed",
         "TxSorobanInvalid",
-        "TxFrozenKeyAccessed",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -161,7 +157,6 @@ impl TransactionResultResult {
             Self::TxBadMinSeqAgeOrGap => "TxBadMinSeqAgeOrGap",
             Self::TxMalformed => "TxMalformed",
             Self::TxSorobanInvalid => "TxSorobanInvalid",
-            Self::TxFrozenKeyAccessed => "TxFrozenKeyAccessed",
         }
     }
 
@@ -188,7 +183,6 @@ impl TransactionResultResult {
             Self::TxBadMinSeqAgeOrGap => TransactionResultCode::TxBadMinSeqAgeOrGap,
             Self::TxMalformed => TransactionResultCode::TxMalformed,
             Self::TxSorobanInvalid => TransactionResultCode::TxSorobanInvalid,
-            Self::TxFrozenKeyAccessed => TransactionResultCode::TxFrozenKeyAccessed,
         }
     }
 
@@ -254,7 +248,6 @@ impl ReadXdr for TransactionResultResult {
                 TransactionResultCode::TxBadMinSeqAgeOrGap => Self::TxBadMinSeqAgeOrGap,
                 TransactionResultCode::TxMalformed => Self::TxMalformed,
                 TransactionResultCode::TxSorobanInvalid => Self::TxSorobanInvalid,
-                TransactionResultCode::TxFrozenKeyAccessed => Self::TxFrozenKeyAccessed,
                 #[allow(unreachable_patterns)]
                 _ => return Err(Error::Invalid),
             };
@@ -289,7 +282,6 @@ impl WriteXdr for TransactionResultResult {
                 Self::TxBadMinSeqAgeOrGap => ().write_xdr(w)?,
                 Self::TxMalformed => ().write_xdr(w)?,
                 Self::TxSorobanInvalid => ().write_xdr(w)?,
-                Self::TxFrozenKeyAccessed => ().write_xdr(w)?,
             };
             Ok(())
         })

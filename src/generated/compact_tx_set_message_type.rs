@@ -1,13 +1,15 @@
 #[allow(unused_imports, clippy::wildcard_imports)]
 use super::*;
 
-/// SorobanCredentialsType is an XDR Enum defined as:
+/// CompactTxSetMessageType is an XDR Enum defined as:
 ///
 /// ```text
-/// enum SorobanCredentialsType
+/// enum CompactTxSetMessageType
 /// {
-///     SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0,
-///     SOROBAN_CREDENTIALS_ADDRESS = 1
+///     COMPACT_TX_SET = 0,
+///     COMPACT_TX_SET_GET = 1,
+///     COMPACT_TX_SET_GET_TXS = 2,
+///     COMPACT_TX_SET_TXS = 3
 /// };
 /// ```
 ///
@@ -22,18 +24,22 @@ use super::*;
 )]
 #[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 #[repr(i32)]
-pub enum SorobanCredentialsType {
+pub enum CompactTxSetMessageType {
     #[cfg_attr(feature = "alloc", default)]
-    SourceAccount = 0,
-    Address = 1,
+    Set = 0,
+    SetGet = 1,
+    SetGetTxs = 2,
+    SetTxs = 3,
 }
 
-impl SorobanCredentialsType {
-    const _VARIANTS: &[SorobanCredentialsType] = &[
-        SorobanCredentialsType::SourceAccount,
-        SorobanCredentialsType::Address,
+impl CompactTxSetMessageType {
+    const _VARIANTS: &[CompactTxSetMessageType] = &[
+        CompactTxSetMessageType::Set,
+        CompactTxSetMessageType::SetGet,
+        CompactTxSetMessageType::SetGetTxs,
+        CompactTxSetMessageType::SetTxs,
     ];
-    pub const VARIANTS: [SorobanCredentialsType; Self::_VARIANTS.len()] = {
+    pub const VARIANTS: [CompactTxSetMessageType; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
         let mut i = 1;
         while i < Self::_VARIANTS.len() {
@@ -42,7 +48,7 @@ impl SorobanCredentialsType {
         }
         arr
     };
-    const _VARIANTS_STR: &[&str] = &["SourceAccount", "Address"];
+    const _VARIANTS_STR: &[&str] = &["Set", "SetGet", "SetGetTxs", "SetTxs"];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
         let mut i = 1;
@@ -56,45 +62,49 @@ impl SorobanCredentialsType {
     #[must_use]
     pub const fn name(&self) -> &'static str {
         match self {
-            Self::SourceAccount => "SourceAccount",
-            Self::Address => "Address",
+            Self::Set => "Set",
+            Self::SetGet => "SetGet",
+            Self::SetGetTxs => "SetGetTxs",
+            Self::SetTxs => "SetTxs",
         }
     }
 
     #[must_use]
-    pub const fn variants() -> [SorobanCredentialsType; Self::_VARIANTS.len()] {
+    pub const fn variants() -> [CompactTxSetMessageType; Self::_VARIANTS.len()] {
         Self::VARIANTS
     }
 }
 
-impl Name for SorobanCredentialsType {
+impl Name for CompactTxSetMessageType {
     #[must_use]
     fn name(&self) -> &'static str {
         Self::name(self)
     }
 }
 
-impl Variants<SorobanCredentialsType> for SorobanCredentialsType {
-    fn variants() -> slice::Iter<'static, SorobanCredentialsType> {
+impl Variants<CompactTxSetMessageType> for CompactTxSetMessageType {
+    fn variants() -> slice::Iter<'static, CompactTxSetMessageType> {
         Self::VARIANTS.iter()
     }
 }
 
-impl Enum for SorobanCredentialsType {}
+impl Enum for CompactTxSetMessageType {}
 
-impl fmt::Display for SorobanCredentialsType {
+impl fmt::Display for CompactTxSetMessageType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.name())
     }
 }
 
-impl TryFrom<i32> for SorobanCredentialsType {
+impl TryFrom<i32> for CompactTxSetMessageType {
     type Error = Error;
 
     fn try_from(i: i32) -> Result<Self, Error> {
         let e = match i {
-            0 => SorobanCredentialsType::SourceAccount,
-            1 => SorobanCredentialsType::Address,
+            0 => CompactTxSetMessageType::Set,
+            1 => CompactTxSetMessageType::SetGet,
+            2 => CompactTxSetMessageType::SetGetTxs,
+            3 => CompactTxSetMessageType::SetTxs,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };
@@ -102,14 +112,14 @@ impl TryFrom<i32> for SorobanCredentialsType {
     }
 }
 
-impl From<SorobanCredentialsType> for i32 {
+impl From<CompactTxSetMessageType> for i32 {
     #[must_use]
-    fn from(e: SorobanCredentialsType) -> Self {
+    fn from(e: CompactTxSetMessageType) -> Self {
         e as Self
     }
 }
 
-impl ReadXdr for SorobanCredentialsType {
+impl ReadXdr for CompactTxSetMessageType {
     #[cfg(feature = "std")]
     fn read_xdr<R: Read>(r: &mut Limited<R>) -> Result<Self, Error> {
         r.with_limited_depth(|r| {
@@ -120,7 +130,7 @@ impl ReadXdr for SorobanCredentialsType {
     }
 }
 
-impl WriteXdr for SorobanCredentialsType {
+impl WriteXdr for CompactTxSetMessageType {
     #[cfg(feature = "std")]
     fn write_xdr<W: Write>(&self, w: &mut Limited<W>) -> Result<(), Error> {
         w.with_limited_depth(|w| {

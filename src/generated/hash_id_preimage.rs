@@ -36,17 +36,6 @@ use super::*;
 ///         uint32 signatureExpirationLedger;
 ///         SorobanAuthorizedInvocation invocation;
 ///     } sorobanAuthorization;
-/// #ifdef CAP_0071
-/// case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS:
-///     struct
-///     {
-///         Hash networkID;
-///         int64 nonce;
-///         uint32 signatureExpirationLedger;
-///         SCAddress address;
-///         SorobanAuthorizedInvocation invocation;
-///     } sorobanAuthorizationWithAddress;
-/// #endif
 /// };
 /// ```
 ///
@@ -67,8 +56,6 @@ pub enum HashIdPreimage {
     PoolRevokeOpId(HashIdPreimageRevokeId),
     ContractId(HashIdPreimageContractId),
     SorobanAuthorization(HashIdPreimageSorobanAuthorization),
-    #[cfg(feature = "cap_0071")]
-    SorobanAuthorizationWithAddress(HashIdPreimageSorobanAuthorizationWithAddress),
 }
 
 #[cfg(feature = "alloc")]
@@ -84,8 +71,6 @@ impl HashIdPreimage {
         EnvelopeType::PoolRevokeOpId,
         EnvelopeType::ContractId,
         EnvelopeType::SorobanAuthorization,
-        #[cfg(feature = "cap_0071")]
-        EnvelopeType::SorobanAuthorizationWithAddress,
     ];
     pub const VARIANTS: [EnvelopeType; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -101,8 +86,6 @@ impl HashIdPreimage {
         "PoolRevokeOpId",
         "ContractId",
         "SorobanAuthorization",
-        #[cfg(feature = "cap_0071")]
-        "SorobanAuthorizationWithAddress",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -121,8 +104,6 @@ impl HashIdPreimage {
             Self::PoolRevokeOpId(_) => "PoolRevokeOpId",
             Self::ContractId(_) => "ContractId",
             Self::SorobanAuthorization(_) => "SorobanAuthorization",
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAuthorizationWithAddress(_) => "SorobanAuthorizationWithAddress",
         }
     }
 
@@ -134,10 +115,6 @@ impl HashIdPreimage {
             Self::PoolRevokeOpId(_) => EnvelopeType::PoolRevokeOpId,
             Self::ContractId(_) => EnvelopeType::ContractId,
             Self::SorobanAuthorization(_) => EnvelopeType::SorobanAuthorization,
-            #[cfg(feature = "cap_0071")]
-            Self::SorobanAuthorizationWithAddress(_) => {
-                EnvelopeType::SorobanAuthorizationWithAddress
-            }
         }
     }
 
@@ -186,12 +163,6 @@ impl ReadXdr for HashIdPreimage {
                 EnvelopeType::SorobanAuthorization => {
                     Self::SorobanAuthorization(HashIdPreimageSorobanAuthorization::read_xdr(r)?)
                 }
-                #[cfg(feature = "cap_0071")]
-                EnvelopeType::SorobanAuthorizationWithAddress => {
-                    Self::SorobanAuthorizationWithAddress(
-                        HashIdPreimageSorobanAuthorizationWithAddress::read_xdr(r)?,
-                    )
-                }
                 #[allow(unreachable_patterns)]
                 _ => return Err(Error::Invalid),
             };
@@ -211,8 +182,6 @@ impl WriteXdr for HashIdPreimage {
                 Self::PoolRevokeOpId(v) => v.write_xdr(w)?,
                 Self::ContractId(v) => v.write_xdr(w)?,
                 Self::SorobanAuthorization(v) => v.write_xdr(w)?,
-                #[cfg(feature = "cap_0071")]
-                Self::SorobanAuthorizationWithAddress(v) => v.write_xdr(w)?,
             };
             Ok(())
         })

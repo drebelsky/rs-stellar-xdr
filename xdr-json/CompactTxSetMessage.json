@@ -1,27 +1,49 @@
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "title": "TransactionSignaturePayloadTaggedTransaction",
-  "description": "TransactionSignaturePayloadTaggedTransaction is an XDR NestedUnion defined as:\n\n```text union switch (EnvelopeType type) { // Backwards Compatibility: Use ENVELOPE_TYPE_TX to sign ENVELOPE_TYPE_TX_V0 case ENVELOPE_TYPE_TX: Transaction tx; case ENVELOPE_TYPE_TX_FEE_BUMP: FeeBumpTransaction feeBump; } ```",
+  "title": "CompactTxSetMessage",
+  "description": "CompactTxSetMessage is an XDR Union defined as:\n\n```text union CompactTxSetMessage switch (CompactTxSetMessageType type) { case COMPACT_TX_SET: CompactTxSet compactTxSet; case COMPACT_TX_SET_GET: CompactTxSetGet compactTxSetGet; case COMPACT_TX_SET_GET_TXS: CompactTxSetGetTxs compactTxSetGetTxs; case COMPACT_TX_SET_TXS: CompactTxSetTxs compactTxSetTxs; }; ```",
   "oneOf": [
     {
       "type": "object",
       "required": [
-        "tx"
+        "set"
       ],
       "properties": {
-        "tx": {
-          "$ref": "#/definitions/Transaction"
+        "set": {
+          "$ref": "#/definitions/CompactTxSet"
         }
       }
     },
     {
       "type": "object",
       "required": [
-        "tx_fee_bump"
+        "set_get"
       ],
       "properties": {
-        "tx_fee_bump": {
-          "$ref": "#/definitions/FeeBumpTransaction"
+        "set_get": {
+          "$ref": "#/definitions/CompactTxSetGet"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "set_get_txs"
+      ],
+      "properties": {
+        "set_get_txs": {
+          "$ref": "#/definitions/CompactTxSetGetTxs"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "set_txs"
+      ],
+      "properties": {
+        "set_txs": {
+          "$ref": "#/definitions/CompactTxSetTxs"
         }
       }
     }
@@ -376,6 +398,105 @@
         }
       }
     },
+    "CompactTxSet": {
+      "description": "CompactTxSet is an XDR Struct defined as:\n\n```text struct CompactTxSet { Hash txSetHash; // hash of the full tx set Hash previousLedgerHash; int64* baseFee; // 6 byte siphashes opaque txs<>; }; ```",
+      "type": "object",
+      "required": [
+        "previous_ledger_hash",
+        "tx_set_hash",
+        "txs"
+      ],
+      "properties": {
+        "base_fee": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "previous_ledger_hash": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        },
+        "tx_set_hash": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        },
+        "txs": {
+          "type": "string",
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        }
+      }
+    },
+    "CompactTxSetGet": {
+      "description": "CompactTxSetGet is an XDR Struct defined as:\n\n```text struct CompactTxSetGet { Hash txSetHash; }; ```",
+      "type": "object",
+      "required": [
+        "tx_set_hash"
+      ],
+      "properties": {
+        "tx_set_hash": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        }
+      }
+    },
+    "CompactTxSetGetTxs": {
+      "description": "CompactTxSetGetTxs is an XDR Struct defined as:\n\n```text struct CompactTxSetGetTxs { Hash txSetHash; // differentially encoded indices of transactions requested opaque indices<>; }; ```",
+      "type": "object",
+      "required": [
+        "indices",
+        "tx_set_hash"
+      ],
+      "properties": {
+        "indices": {
+          "type": "string",
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        },
+        "tx_set_hash": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        }
+      }
+    },
+    "CompactTxSetTxs": {
+      "description": "CompactTxSetTxs is an XDR Struct defined as:\n\n```text struct CompactTxSetTxs { Hash txSetHash; TransactionEnvelope txs<>; }; ```",
+      "type": "object",
+      "required": [
+        "tx_set_hash",
+        "txs"
+      ],
+      "properties": {
+        "tx_set_hash": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        },
+        "txs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TransactionEnvelope"
+          },
+          "maxItems": 4294967295
+        }
+      }
+    },
     "ConfigSettingId": {
       "description": "ConfigSettingId is an XDR Enum defined as:\n\n```text enum ConfigSettingID { CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0, CONFIG_SETTING_CONTRACT_COMPUTE_V0 = 1, CONFIG_SETTING_CONTRACT_LEDGER_COST_V0 = 2, CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0 = 3, CONFIG_SETTING_CONTRACT_EVENTS_V0 = 4, CONFIG_SETTING_CONTRACT_BANDWIDTH_V0 = 5, CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS = 6, CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7, CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8, CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9, CONFIG_SETTING_STATE_ARCHIVAL = 10, CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11, CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW = 12, CONFIG_SETTING_EVICTION_ITERATOR = 13, CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14, CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15, CONFIG_SETTING_SCP_TIMING = 16 }; ```",
       "type": "string",
@@ -661,6 +782,26 @@
         },
         "inner_tx": {
           "$ref": "#/definitions/FeeBumpTransactionInnerTx"
+        }
+      }
+    },
+    "FeeBumpTransactionEnvelope": {
+      "description": "FeeBumpTransactionEnvelope is an XDR Struct defined as:\n\n```text struct FeeBumpTransactionEnvelope { FeeBumpTransaction tx; /* Each decorated signature is a signature over the SHA256 hash of * a TransactionSignaturePayload */ DecoratedSignature signatures<20>; }; ```",
+      "type": "object",
+      "required": [
+        "signatures",
+        "tx"
+      ],
+      "properties": {
+        "signatures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DecoratedSignature"
+          },
+          "maxItems": 20
+        },
+        "tx": {
+          "$ref": "#/definitions/FeeBumpTransaction"
         }
       }
     },
@@ -2801,6 +2942,44 @@
         }
       }
     },
+    "TransactionEnvelope": {
+      "description": "TransactionEnvelope is an XDR Union defined as:\n\n```text union TransactionEnvelope switch (EnvelopeType type) { case ENVELOPE_TYPE_TX_V0: TransactionV0Envelope v0; case ENVELOPE_TYPE_TX: TransactionV1Envelope v1; case ENVELOPE_TYPE_TX_FEE_BUMP: FeeBumpTransactionEnvelope feeBump; }; ```",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "tx_v0"
+          ],
+          "properties": {
+            "tx_v0": {
+              "$ref": "#/definitions/TransactionV0Envelope"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "tx"
+          ],
+          "properties": {
+            "tx": {
+              "$ref": "#/definitions/TransactionV1Envelope"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "tx_fee_bump"
+          ],
+          "properties": {
+            "tx_fee_bump": {
+              "$ref": "#/definitions/FeeBumpTransactionEnvelope"
+            }
+          }
+        }
+      ]
+    },
     "TransactionExt": {
       "description": "TransactionExt is an XDR NestedUnion defined as:\n\n```text union switch (int v) { case 0: void; case 1: SorobanTransactionData sorobanData; } ```",
       "oneOf": [
@@ -2821,6 +3000,85 @@
             }
           }
         }
+      ]
+    },
+    "TransactionV0": {
+      "description": "TransactionV0 is an XDR Struct defined as:\n\n```text struct TransactionV0 { uint256 sourceAccountEd25519; uint32 fee; SequenceNumber seqNum; TimeBounds* timeBounds; Memo memo; Operation operations<MAX_OPS_PER_TX>; union switch (int v) { case 0: void; } ext; }; ```",
+      "type": "object",
+      "required": [
+        "ext",
+        "fee",
+        "memo",
+        "operations",
+        "seq_num",
+        "source_account_ed25519"
+      ],
+      "properties": {
+        "ext": {
+          "$ref": "#/definitions/TransactionV0Ext"
+        },
+        "fee": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "memo": {
+          "$ref": "#/definitions/Memo"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Operation"
+          },
+          "maxItems": 100
+        },
+        "seq_num": {
+          "$ref": "#/definitions/SequenceNumber"
+        },
+        "source_account_ed25519": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "contentEncoding": "hex",
+          "contentMediaType": "application/binary"
+        },
+        "time_bounds": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeBounds"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "TransactionV0Envelope": {
+      "description": "TransactionV0Envelope is an XDR Struct defined as:\n\n```text struct TransactionV0Envelope { TransactionV0 tx; /* Each decorated signature is a signature over the SHA256 hash of * a TransactionSignaturePayload */ DecoratedSignature signatures<20>; }; ```",
+      "type": "object",
+      "required": [
+        "signatures",
+        "tx"
+      ],
+      "properties": {
+        "signatures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DecoratedSignature"
+          },
+          "maxItems": 20
+        },
+        "tx": {
+          "$ref": "#/definitions/TransactionV0"
+        }
+      }
+    },
+    "TransactionV0Ext": {
+      "description": "TransactionV0Ext is an XDR NestedUnion defined as:\n\n```text union switch (int v) { case 0: void; } ```",
+      "type": "string",
+      "enum": [
+        "v0"
       ]
     },
     "TransactionV1Envelope": {

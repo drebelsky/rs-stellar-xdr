@@ -22,11 +22,7 @@ use super::*;
 ///     CONFIG_SETTING_EVICTION_ITERATOR = 13,
 ///     CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,
 ///     CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15,
-///     CONFIG_SETTING_SCP_TIMING = 16,
-///     CONFIG_SETTING_FROZEN_LEDGER_KEYS = 17,
-///     CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA = 18,
-///     CONFIG_SETTING_FREEZE_BYPASS_TXS = 19,
-///     CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA = 20
+///     CONFIG_SETTING_SCP_TIMING = 16
 /// };
 /// ```
 ///
@@ -60,10 +56,6 @@ pub enum ConfigSettingId {
     ContractParallelComputeV0 = 14,
     ContractLedgerCostExtV0 = 15,
     ScpTiming = 16,
-    FrozenLedgerKeys = 17,
-    FrozenLedgerKeysDelta = 18,
-    FreezeBypassTxs = 19,
-    FreezeBypassTxsDelta = 20,
 }
 
 impl ConfigSettingId {
@@ -85,10 +77,6 @@ impl ConfigSettingId {
         ConfigSettingId::ContractParallelComputeV0,
         ConfigSettingId::ContractLedgerCostExtV0,
         ConfigSettingId::ScpTiming,
-        ConfigSettingId::FrozenLedgerKeys,
-        ConfigSettingId::FrozenLedgerKeysDelta,
-        ConfigSettingId::FreezeBypassTxs,
-        ConfigSettingId::FreezeBypassTxsDelta,
     ];
     pub const VARIANTS: [ConfigSettingId; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -117,10 +105,6 @@ impl ConfigSettingId {
         "ContractParallelComputeV0",
         "ContractLedgerCostExtV0",
         "ScpTiming",
-        "FrozenLedgerKeys",
-        "FrozenLedgerKeysDelta",
-        "FreezeBypassTxs",
-        "FreezeBypassTxsDelta",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -152,10 +136,6 @@ impl ConfigSettingId {
             Self::ContractParallelComputeV0 => "ContractParallelComputeV0",
             Self::ContractLedgerCostExtV0 => "ContractLedgerCostExtV0",
             Self::ScpTiming => "ScpTiming",
-            Self::FrozenLedgerKeys => "FrozenLedgerKeys",
-            Self::FrozenLedgerKeysDelta => "FrozenLedgerKeysDelta",
-            Self::FreezeBypassTxs => "FreezeBypassTxs",
-            Self::FreezeBypassTxsDelta => "FreezeBypassTxsDelta",
         }
     }
 
@@ -208,10 +188,6 @@ impl TryFrom<i32> for ConfigSettingId {
             14 => ConfigSettingId::ContractParallelComputeV0,
             15 => ConfigSettingId::ContractLedgerCostExtV0,
             16 => ConfigSettingId::ScpTiming,
-            17 => ConfigSettingId::FrozenLedgerKeys,
-            18 => ConfigSettingId::FrozenLedgerKeysDelta,
-            19 => ConfigSettingId::FreezeBypassTxs,
-            20 => ConfigSettingId::FreezeBypassTxsDelta,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };

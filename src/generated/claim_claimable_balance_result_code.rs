@@ -11,8 +11,7 @@ use super::*;
 ///     CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM = -2,
 ///     CLAIM_CLAIMABLE_BALANCE_LINE_FULL = -3,
 ///     CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4,
-///     CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED = -5,
-///     CLAIM_CLAIMABLE_BALANCE_TRUSTLINE_FROZEN = -6
+///     CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED = -5
 /// };
 /// ```
 ///
@@ -35,7 +34,6 @@ pub enum ClaimClaimableBalanceResultCode {
     LineFull = -3,
     NoTrust = -4,
     NotAuthorized = -5,
-    TrustlineFrozen = -6,
 }
 
 impl ClaimClaimableBalanceResultCode {
@@ -46,7 +44,6 @@ impl ClaimClaimableBalanceResultCode {
         ClaimClaimableBalanceResultCode::LineFull,
         ClaimClaimableBalanceResultCode::NoTrust,
         ClaimClaimableBalanceResultCode::NotAuthorized,
-        ClaimClaimableBalanceResultCode::TrustlineFrozen,
     ];
     pub const VARIANTS: [ClaimClaimableBalanceResultCode; Self::_VARIANTS.len()] = {
         let mut arr = [Self::_VARIANTS[0]; Self::_VARIANTS.len()];
@@ -64,7 +61,6 @@ impl ClaimClaimableBalanceResultCode {
         "LineFull",
         "NoTrust",
         "NotAuthorized",
-        "TrustlineFrozen",
     ];
     pub const VARIANTS_STR: [&'static str; Self::_VARIANTS_STR.len()] = {
         let mut arr = [Self::_VARIANTS_STR[0]; Self::_VARIANTS_STR.len()];
@@ -85,7 +81,6 @@ impl ClaimClaimableBalanceResultCode {
             Self::LineFull => "LineFull",
             Self::NoTrust => "NoTrust",
             Self::NotAuthorized => "NotAuthorized",
-            Self::TrustlineFrozen => "TrustlineFrozen",
         }
     }
 
@@ -127,7 +122,6 @@ impl TryFrom<i32> for ClaimClaimableBalanceResultCode {
             -3 => ClaimClaimableBalanceResultCode::LineFull,
             -4 => ClaimClaimableBalanceResultCode::NoTrust,
             -5 => ClaimClaimableBalanceResultCode::NotAuthorized,
-            -6 => ClaimClaimableBalanceResultCode::TrustlineFrozen,
             #[allow(unreachable_patterns)]
             _ => return Err(Error::Invalid),
         };
