@@ -43,7 +43,7 @@
     },
     {
       "name": "xdr/Stellar-overlay.x",
-      "sha256": "1645397cdf7684281936b19cd168b1ddee36d929e9c9e94dd668887a70fe6f85"
+      "sha256": "330102c98303fbef8c634b01a93dbe9212b74752a7a16f0ab51a0f17dd26a85b"
     },
     {
       "name": "xdr/Stellar-transaction.x",
@@ -10620,7 +10620,7 @@
       "kind": "struct",
       "name": "CompactTxSet",
       "fixed_size": null,
-      "source": "struct CompactTxSet\n{\n    Hash txSetHash; // hash of the full tx set\n    Hash previousLedgerHash;\n    int64* baseFee;\n    // 6 byte siphashes\n    opaque txs<>;\n};",
+      "source": "struct CompactTxSet\n{\n    Hash txSetHash; // hash of the full tx set\n    Hash previousLedgerHash;\n    int64* baseFee;\n    uint32 numSorobanTxs;\n    int64* sorobanBaseFee;\n    // 6 byte siphashes\n    opaque txs<>;\n};",
       "file_index": 10,
       "fields": [
         {
@@ -10639,6 +10639,23 @@
         },
         {
           "name": "baseFee",
+          "type": {
+            "kind": "optional",
+            "element": {
+              "kind": "ref",
+              "name": "int64"
+            }
+          }
+        },
+        {
+          "name": "numSorobanTxs",
+          "type": {
+            "kind": "ref",
+            "name": "uint32"
+          }
+        },
+        {
+          "name": "sorobanBaseFee",
           "type": {
             "kind": "optional",
             "element": {

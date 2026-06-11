@@ -9,6 +9,8 @@ use super::*;
 ///     Hash txSetHash; // hash of the full tx set
 ///     Hash previousLedgerHash;
 ///     int64* baseFee;
+///     uint32 numSorobanTxs;
+///     int64* sorobanBaseFee;
 ///     // 6 byte siphashes
 ///     opaque txs<>;
 /// };
@@ -33,6 +35,12 @@ pub struct CompactTxSet {
         serde_as(as = "Option<NumberOrString>")
     )]
     pub base_fee: Option<i64>,
+    pub num_soroban_txs: u32,
+    #[cfg_attr(
+        all(feature = "serde", feature = "alloc"),
+        serde_as(as = "Option<NumberOrString>")
+    )]
+    pub soroban_base_fee: Option<i64>,
     pub txs: BytesM,
 }
 
@@ -44,6 +52,8 @@ impl ReadXdr for CompactTxSet {
                 tx_set_hash: Hash::read_xdr(r)?,
                 previous_ledger_hash: Hash::read_xdr(r)?,
                 base_fee: Option::<i64>::read_xdr(r)?,
+                num_soroban_txs: u32::read_xdr(r)?,
+                soroban_base_fee: Option::<i64>::read_xdr(r)?,
                 txs: BytesM::read_xdr(r)?,
             })
         })
@@ -57,6 +67,8 @@ impl WriteXdr for CompactTxSet {
             self.tx_set_hash.write_xdr(w)?;
             self.previous_ledger_hash.write_xdr(w)?;
             self.base_fee.write_xdr(w)?;
+            self.num_soroban_txs.write_xdr(w)?;
+            self.soroban_base_fee.write_xdr(w)?;
             self.txs.write_xdr(w)?;
             Ok(())
         })

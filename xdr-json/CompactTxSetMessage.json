@@ -399,9 +399,10 @@
       }
     },
     "CompactTxSet": {
-      "description": "CompactTxSet is an XDR Struct defined as:\n\n```text struct CompactTxSet { Hash txSetHash; // hash of the full tx set Hash previousLedgerHash; int64* baseFee; // 6 byte siphashes opaque txs<>; }; ```",
+      "description": "CompactTxSet is an XDR Struct defined as:\n\n```text struct CompactTxSet { Hash txSetHash; // hash of the full tx set Hash previousLedgerHash; int64* baseFee; uint32 numSorobanTxs; int64* sorobanBaseFee; // 6 byte siphashes opaque txs<>; }; ```",
       "type": "object",
       "required": [
+        "num_soroban_txs",
         "previous_ledger_hash",
         "tx_set_hash",
         "txs"
@@ -414,12 +415,24 @@
             "null"
           ]
         },
+        "num_soroban_txs": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
         "previous_ledger_hash": {
           "type": "string",
           "maxLength": 64,
           "minLength": 64,
           "contentEncoding": "hex",
           "contentMediaType": "application/binary"
+        },
+        "soroban_base_fee": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "tx_set_hash": {
           "type": "string",

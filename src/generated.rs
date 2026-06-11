@@ -63,7 +63,7 @@ pub const XDR_FILES_SHA256: [(&str, &str); 13] = [
     ),
     (
         "xdr/Stellar-overlay.x",
-        "1645397cdf7684281936b19cd168b1ddee36d929e9c9e94dd668887a70fe6f85",
+        "330102c98303fbef8c634b01a93dbe9212b74752a7a16f0ab51a0f17dd26a85b",
     ),
     (
         "xdr/Stellar-transaction.x",
